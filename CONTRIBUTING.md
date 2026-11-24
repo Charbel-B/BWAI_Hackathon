@@ -19,5 +19,5 @@
 4. Mettre à jour la documentation touchée.
 5. Vérifier en local que tout passe : **[À COMPLÉTER]** commande unique de vérification, livrée
    avec le squelette.
-6. Ouvrir la PR en remplissant le modèle, demander une revue au responsable du périmètre.
-7. Corriger, obtenir l'approbation et la CI verte, puis *Squash and merge* et supprimer la branche.
+6. Ouvrir la PR en remplissant le modèle et demander la revue au membre dont le travail dépend le plus de la tâche.
+7. Corriger jusqu'à l'approbation. Le relecteur fusionne en *Squash and merge* et supprime la branche.

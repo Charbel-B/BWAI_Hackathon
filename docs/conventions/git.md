@@ -11,7 +11,7 @@ flowchart LR
     C --> P[Pull request]
     P --> V{CI verte et 1 approbation}
     V -- non --> C
-    V -- oui --> S[Squash and merge dans main]
+    V -- oui --> S[Le relecteur fusionne en Squash and merge]
     S --> T[Branche supprimée]
 ```
 
@@ -88,7 +88,9 @@ Règles :
   pourquoi, comment vérifier, liste de contrôle.
 - Une PR n'est fusionnable que si : la CI est verte, un autre membre l'a approuvée, la
   documentation concernée est à jour **dans la même PR**, et aucune discussion n'est ouverte.
-- L'auteur fusionne lui-même après approbation, en **Squash and merge**, puis supprime la branche.
+- Le relecteur est le membre dont le travail dépend le plus de la PR. C'est lui qui l'approuve
+  puis la fusionne en **Squash and merge** et supprime la branche. L'auteur ne fusionne jamais
+  sa propre PR.
 
 Pourquoi *Squash and merge* : chaque entrée de `main` correspond exactement à une PR relue, ce
 qui rend l'historique lisible et chaque fonctionnalité annulable par un seul `git revert`. Le

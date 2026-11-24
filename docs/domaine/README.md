@@ -8,4 +8,6 @@ Description du métier de la facturation tel que le projet le modélise.
 | --- | --- |
 | [glossaire.md](glossaire.md) | Vocabulaire unique du projet et nom de chaque terme dans le code |
 
-**[À COMPLÉTER]** : modèle de domaine, cycle de vie de la facture, règles de calcul et contrôles.
+Modèle de domaine, cycle de vie et formats : [contrats partagés](../contrats/README.md).
+
+**[À COMPLÉTER]** : règles de calcul et contrôles détaillés, par Grâce.

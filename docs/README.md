@@ -9,4 +9,5 @@
 | [equipe/](equipe/README.md) | Membres, périmètres et responsables |
 | [domaine/](domaine/README.md) | Métier de la facturation : glossaire et modèle |
 | [architecture/](architecture/README.md) | Vue d'ensemble : parcours, couches, ports, structure du dépôt |
+| [contrats/](contrats/README.md) | Contrats entre périmètres : domaine, cycle de vie, champ extrait, API, formats de données |
 | [adr/](adr/README.md) | Décisions d'architecture |

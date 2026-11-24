@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.hypothesis/
+
+# Node
+node_modules/
+dist/
+build/
+
+# Environnement et secrets
+.env
+.env.*
+!.env.example
+
+# Données générées à l'exécution
+*.sqlite
+*.sqlite3
+*.db
+
+# Éditeurs et systèmes
+.vscode/
+.idea/
+.DS_Store

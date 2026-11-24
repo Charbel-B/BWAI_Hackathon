@@ -1,0 +1,10 @@
+# Décisions d'architecture (ADR)
+
+> Statut : en vigueur · Mis à jour : 2026-11-24 · Responsable : Ange-Marie
+
+Chaque décision structurante est consignée ici selon le [modèle](0000-modele.md) et les règles
+de la [doctrine de documentation](../conventions/documentation.md#6-décisions-darchitecture-adr).
+
+| Numéro | Titre | Statut | Date |
+| --- | --- | --- | --- |
+| [0000](0000-modele.md) | Modèle d'ADR | modèle | 2026-11-24 |

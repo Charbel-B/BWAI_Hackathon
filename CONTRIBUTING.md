@@ -6,6 +6,11 @@
 
 Développement sous Linux uniquement ([ADR 0002](docs/adr/0002-plateforme-linux.md)).
 
+**Sous Windows** : ouvrir PowerShell en administrateur, lancer `wsl --install -d Ubuntu`,
+redémarrer, ouvrir « Ubuntu » depuis le menu Démarrer. Toutes les commandes ci-dessous se
+tapent ensuite dans ce terminal Ubuntu, et le dépôt se clone dans `~/`, jamais dans `C:\`.
+Docker : installer Docker Desktop et activer « Use the WSL 2 based engine ».
+
 | Outil | Installation | Vérification |
 | --- | --- | --- |
 | Git | `sudo apt install git` (Ubuntu, Debian) ou `sudo dnf install git` (Fedora) | `git --version` |

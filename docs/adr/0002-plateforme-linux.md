@@ -4,7 +4,7 @@
 
 ## Contexte
 
-- Les quatre membres de l'équipe développent sous Linux.
+- Deux membres développent sous Linux (Ange-Marie, Promis), deux sous Windows (Charbel, Grâce).
 - Le jury peut utiliser n'importe quel système. L'ADR 0001 fixe Docker Compose comme
   installation de référence : elle fonctionne partout où Docker fonctionne.
 - Il faut un point d'entrée unique pour les commandes courantes (installer, lancer, tester,
@@ -14,12 +14,12 @@
 
 | Option | Avantages | Inconvénients |
 | --- | --- | --- |
-| A. Linux pour le développement, Docker Compose pour le jury | Outils Linux standard ; aucune contrainte sur les bibliothèques | Un membre qui passerait sous Windows devrait utiliser WSL |
-| B. Support natif de Linux et de Windows | Aucune dépendance à WSL | Contraintes inutiles pour une équipe entièrement sous Linux : pas de `make`, bibliothèques à logiciel système exclues |
+| A. Linux pour le développement (WSL 2 sous Windows), Docker Compose pour le jury | Outils Linux standard pour les quatre ; aucune contrainte sur les bibliothèques | Les membres sous Windows installent WSL 2 une fois |
+| B. Support natif de Linux et de Windows | Aucune dépendance à WSL | Contraintes lourdes : pas de `make`, bibliothèques à logiciel système exclues |
 
 ## Décision
 
-**Option A : développement sous Linux uniquement ; Docker Compose pour le jury, quel que soit
+**Option A : développement sous Linux uniquement, WSL 2 pour les membres sous Windows ; Docker Compose pour le jury, quel que soit
 son système.**
 
 | Règle | Application |
@@ -34,4 +34,6 @@ son système.**
 - Les commandes sont les mêmes pour les quatre membres et pour la CI (Ubuntu).
 - Le jury n'a besoin que de Docker pour reproduire le prototype ; l'installation native est
   documentée pour Linux uniquement.
-- Si un membre doit travailler sous Windows, il utilise WSL 2. Aucun support natif n'est prévu.
+- Les membres sous Windows travaillent dans WSL 2 (Ubuntu) : mêmes commandes, mêmes outils.
+  Le dépôt est cloné dans le système de fichiers de WSL (`~/`), pas dans `C:\`, pour la vitesse
+  et les droits sur les fichiers. Aucun support natif de Windows n'est prévu.

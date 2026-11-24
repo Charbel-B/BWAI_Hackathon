@@ -9,9 +9,9 @@ flowchart LR
     I[Issue] --> B[Branche courte depuis main]
     B --> C[Commits atomiques]
     C --> P[Pull request]
-    P --> V{CI verte et 1 approbation}
+    P --> V{CI verte et relecture d'Ange-Marie}
     V -- non --> C
-    V -- oui --> S[Le relecteur fusionne en Squash and merge]
+    V -- oui --> S[Ange-Marie fusionne en Squash and merge]
     S --> T[Branche supprimée]
 ```
 
@@ -20,7 +20,8 @@ flowchart LR
 - `main` est toujours dans un état qui s'installe, se lance et passe les tests.
 - Personne ne pousse directement sur `main`. Tout passe par une pull request (PR).
 - Protection à activer par le propriétaire du dépôt (Charbel) dans *Settings > Branches* :
-  PR obligatoire, une approbation, historique linéaire, poussée forcée interdite, suppression
+  PR obligatoire, **sans approbation obligatoire** (Ange-Marie doit pouvoir fusionner ses propres PR),
+  historique linéaire, poussée forcée interdite, suppression
   interdite. « CI verte obligatoire » s'active seulement une fois la CI en place : activée avant,
   elle bloque toutes les fusions.
 
@@ -87,11 +88,10 @@ Règles :
 - Le titre de la PR suit le format des commits : il devient le message du commit dans `main`.
 - La description suit le [modèle de PR](../../.github/pull_request_template.md) : quoi,
   pourquoi, comment vérifier, liste de contrôle.
-- Une PR n'est fusionnable que si : la CI est verte, un autre membre l'a approuvée, la
-  documentation concernée est à jour **dans la même PR**, et aucune discussion n'est ouverte.
-- Le relecteur est le membre dont le travail dépend le plus de la PR. C'est lui qui l'approuve
-  puis la fusionne en **Squash and merge** et supprime la branche. L'auteur ne fusionne jamais
-  sa propre PR.
+- **Intégrateur unique** : toute PR a Ange-Marie pour relecteur, et c'est lui seul qui fusionne,
+  en **Squash and merge**, puis supprime la branche. Il fusionne ses propres PR directement.
+- Une PR n'est fusionnable que si : la CI est verte, la documentation concernée est à jour
+  **dans la même PR**, et le changement respecte les [contrats](../contrats/README.md).
 
 Pourquoi *Squash and merge* : chaque entrée de `main` correspond exactement à une PR relue, ce
 qui rend l'historique lisible et chaque fonctionnalité annulable par un seul `git revert`. Le
@@ -99,7 +99,8 @@ détail des commits reste consultable dans la PR.
 
 ## 6. Revue de code
 
-- Relire dans les 2 heures qui suivent la demande, pendant le hackathon.
+- Relecture par Ange-Marie : respect des contrats et présence de tests. Le reste (format, types,
+  tests qui passent) est vérifié par la CI.
 - Un commentaire dit ce qui ne va pas et pourquoi, et propose une solution si possible.
 - Préfixes : `bloquant :` doit être corrigé avant fusion ; `suggestion :` laissé au choix de
   l'auteur ; `question :` demande d'explication.

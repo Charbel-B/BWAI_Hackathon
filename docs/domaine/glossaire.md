@@ -28,6 +28,7 @@ en Python comme en TypeScript. Un terme qui n'est pas ici est ajouté avant d'ê
 | Taxe | `Tax` | Prélèvement calculé sur une base selon un taux paramétré |
 | Montant hors taxes | `net_amount` | Montant après remises, avant taxes |
 | Montant toutes taxes comprises | `gross_amount` | Montant hors taxes plus taxes |
+| Règlement | `Payment` | Paiement simulé reçu pour une facture, total ou partiel, avec sa référence fictive (mobile money ou autre) |
 | Numéro de facture | `invoice_number` | Identifiant unique, attribué uniquement à la validation, sans trou ni doublon |
 | Avoir | `CreditNote` | Document lié à une facture validée qui l'annule en tout ou partie |
 | Brouillon | `InvoiceStatus.DRAFT` | Facture en préparation, modifiable, sans numéro |

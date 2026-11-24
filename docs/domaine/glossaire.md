@@ -34,8 +34,12 @@ en Python comme en TypeScript. Un terme qui n'est pas ici est ajouté avant d'ê
 | Brouillon | `InvoiceStatus.DRAFT` | Facture en préparation, modifiable, sans numéro |
 | Validée | `InvoiceStatus.VALIDATED` | Facture approuvée par un humain, numérotée, non modifiable |
 | Émise | `InvoiceStatus.ISSUED` | Facture validée envoyée au client par un canal simulé |
+| Abandonnée | `InvoiceStatus.DISCARDED` | Brouillon abandonné, sans numéro consommé |
+| Annulée | `InvoiceStatus.CANCELLED` | Facture entièrement annulée par un ou plusieurs avoirs validés |
+| Solde | `balance` | Montant TTC moins avoirs validés moins règlements ; calculé, jamais stocké |
+| Statut de paiement | `PaymentStatus` | `UNPAID`, `PARTIALLY_PAID` ou `PAID`, dérivé du solde |
 
-Les statuts et transitions définitifs seront fixés par l'ADR sur le cycle de vie.
+Statuts et transitions : [cycle de vie](../contrats/cycle-de-vie.md).
 
 ## Extraction et contrôles
 
@@ -57,4 +61,6 @@ Les statuts et transitions définitifs seront fixés par l'ADR sur le cycle de v
 | Date de référence | `reference_date` | Date fixée qui rend les calculs reproductibles |
 | Canal | `Channel` | Moyen d'envoi simulé : WhatsApp, SMS ou courriel |
 | Émission simulée | `Dispatch` | Envoi fictif d'une facture validée sur un canal |
+| Opérateur | `Role.OPERATOR` | Personne qui importe les pièces, revoit les champs et prépare les brouillons |
 | Validateur | `Role.VALIDATOR` | Personne habilitée à valider une facture |
+| Administrateur | `Role.ADMIN` | Personne habilitée à réinitialiser les données de démonstration |

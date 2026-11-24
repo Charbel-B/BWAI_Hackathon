@@ -53,5 +53,10 @@ Les seuils sont vérifiés en CI. Une PR qui les fait baisser ne passe pas.
 
 ## Commandes
 
-**[À COMPLÉTER]** avec le squelette du dépôt : commande unique pour lancer tous les tests,
-commande par niveau, commande d'évaluation de l'IA.
+| Commande | Effet |
+| --- | --- |
+| `make test` | Tous les tests, avec couverture ; échoue sous 80 % |
+| `cd backend && uv run pytest tests/unit` | Tests unitaires seuls |
+| `cd backend && uv run pytest tests/integration` | Tests d'intégration seuls |
+
+Commande d'évaluation de l'IA : **[À COMPLÉTER]** par Charbel.

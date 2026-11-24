@@ -10,7 +10,17 @@ complet.
 
 ## Installation et lancement
 
-**[À COMPLÉTER]** avec le squelette du dépôt.
+Prérequis : voir [CONTRIBUTING.md](CONTRIBUTING.md#prérequis).
+
+```bash
+make install   # installe Python 3.13 et les dépendances verrouillées
+make dev       # API sur http://localhost:8000, documentation interactive sur /docs
+make check     # format, analyse statique, types, sens des dépendances
+make test      # tests et couverture
+make help      # liste des commandes
+```
+
+Installation par Docker pour le jury : **[À COMPLÉTER]**.
 
 ## Documentation
 

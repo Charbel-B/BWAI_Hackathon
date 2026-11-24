@@ -1,0 +1,1 @@
+"""Prototype de facturation assistée."""

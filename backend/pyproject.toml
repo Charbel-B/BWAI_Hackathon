@@ -1,0 +1,91 @@
+[project]
+name = "invoicing"
+version = "0.1.0"
+description = "Prototype de facturation assistée, hackathon BWAI 2026, cas 2"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "pyyaml>=6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "hypothesis>=6.115",
+    "httpx>=0.27",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "types-pyyaml>=6.0",
+    "import-linter>=2.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/invoicing"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W", "F", "I", "N", "UP", "B", "A", "C4", "SIM", "RET", "PTH", "DTZ", "T20",
+    "ERA", "PL", "RUF", "S",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Les tests utilisent assert et des valeurs littérales attendues par construction.
+"tests/**" = ["S101", "PLR2004"]
+
+[tool.mypy]
+strict = true
+mypy_path = "src"
+files = ["src", "tests"]
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers --cov=invoicing --cov-report=term-missing --cov-fail-under=80"
+
+[tool.importlinter]
+root_package = "invoicing"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Les couches ne dépendent que des couches inférieures"
+type = "layers"
+layers = [
+    "invoicing.bootstrap",
+    "invoicing.api",
+    "invoicing.infrastructure",
+    "invoicing.application",
+    "invoicing.domain",
+]
+
+[[tool.importlinter.contracts]]
+name = "Le cœur métier n'importe aucune bibliothèque extérieure"
+type = "forbidden"
+source_modules = ["invoicing.domain"]
+forbidden_modules = ["fastapi", "pydantic", "pydantic_settings", "yaml", "uvicorn"]
+
+[[tool.importlinter.contracts]]
+name = "L'API ne touche pas l'infrastructure : elle passe par l'application"
+type = "forbidden"
+source_modules = ["invoicing.api"]
+forbidden_modules = ["invoicing.infrastructure"]
+
+[[tool.importlinter.contracts]]
+name = "L'extraction ne dépend que du cœur métier"
+type = "forbidden"
+source_modules = ["invoicing.extraction"]
+forbidden_modules = [
+    "invoicing.application", "invoicing.infrastructure", "invoicing.api", "invoicing.bootstrap",
+]

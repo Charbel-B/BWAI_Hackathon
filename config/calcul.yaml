@@ -1,0 +1,10 @@
+# Règles de calcul. Responsable : Grâce. Valeurs fiscales à vérifier sur source officielle.
+devise: XOF
+arrondi:
+  mode: ROUND_HALF_UP
+  unite: 1
+ordre_des_remises: [ligne, globale]
+taxes:
+  - code: TVA
+    libelle: Taxe sur la valeur ajoutée
+    taux_par_defaut: 18

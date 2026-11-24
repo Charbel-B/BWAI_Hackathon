@@ -1,10 +1,8 @@
 # Conventions de code frontend
 
-> Statut : partiel · Mis à jour : 2026-11-24 · Responsable : Ange-Marie
+> Statut : en vigueur · Mis à jour : 2026-11-24 · Responsable : Ange-Marie
 
-Le cadriciel du frontend n'est pas encore choisi. Il sera fixé par un ADR après la matrice de
-décision. Les règles ci-dessous valent quel que soit ce choix ; les règles propres au cadriciel
-seront ajoutées à la section dédiée.
+Cadriciel : React ([ADR 0004](../adr/0004-frontend-react.md)).
 
 ## Règles indépendantes du cadriciel
 
@@ -50,5 +48,12 @@ seront ajoutées à la section dédiée.
 
 ## Règles propres au cadriciel
 
-**[À COMPLÉTER]** après l'ADR de choix du frontend : structure des dossiers, gestion d'état,
-routage, outils de test.
+| Sujet | Règle |
+| --- | --- |
+| Structure | `src/app/` (assemblage, routes), `src/features/<fonctionnalité>/` (composants, hooks, tests d'une fonctionnalité), `src/api/` (client et types générés), `src/i18n/` (textes), `src/components/` (composants partagés) |
+| Noms de fichiers | Minuscules et tirets : `health-status.tsx`, `use-health.ts` ; test à côté du fichier : `health-status.test.tsx` |
+| Imports | Alias `@/` pour `src/` ; jamais de chemin relatif qui remonte de plus d'un niveau |
+| Données serveur | Uniquement par TanStack Query et le client `api`. Pas de `fetch` direct dans un composant |
+| État local | `useState` ou `useReducer` ; aucune bibliothèque d'état global sans ADR |
+| Types de l'API | `make api-types` après tout changement du backend ; ne jamais modifier `src/api/schema.ts` |
+| Commandes | `npm run lint`, `npm run typecheck`, `npm run format`, `npm test` (ou `make check test` à la racine) |

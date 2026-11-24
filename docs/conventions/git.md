@@ -20,8 +20,9 @@ flowchart LR
 - `main` est toujours dans un état qui s'installe, se lance et passe les tests.
 - Personne ne pousse directement sur `main`. Tout passe par une pull request (PR).
 - Protection à activer par le propriétaire du dépôt (Charbel) dans *Settings > Branches* :
-  PR obligatoire, une approbation, CI verte obligatoire, historique linéaire, poussée forcée
-  interdite, suppression interdite.
+  PR obligatoire, une approbation, historique linéaire, poussée forcée interdite, suppression
+  interdite. « CI verte obligatoire » s'active seulement une fois la CI en place : activée avant,
+  elle bloque toutes les fusions.
 
 ## 2. Issues
 

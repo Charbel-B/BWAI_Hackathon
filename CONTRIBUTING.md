@@ -17,7 +17,7 @@ Docker : installer Docker Desktop et activer « Use the WSL 2 based engine ».
 | GNU Make | `sudo apt install make` ou `sudo dnf install make` | `make --version` |
 | uv (installe aussi Python) | `curl -LsSf https://astral.sh/uv/install.sh \| sh`, puis rouvrir le terminal | `uv --version` |
 | Docker | [Docker Engine](https://docs.docker.com/engine/install/) | `docker compose version` |
-| Node.js (frontend uniquement) | **[À COMPLÉTER]** après l'ADR du frontend | `node --version` |
+| Node.js 24 | [nvm](https://github.com/nvm-sh/nvm) puis `nvm install 24`, ou le gestionnaire de paquets de la distribution | `node --version` |
 
 ## À lire avant le premier commit
 

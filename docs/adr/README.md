@@ -11,3 +11,4 @@ de la [doctrine de documentation](../conventions/documentation.md#6-décisions-d
 | [0001](0001-architecture-generale.md) | Architecture générale | accepté | 2026-11-24 |
 | [0002](0002-plateforme-linux.md) | Plateforme de développement Linux | accepté | 2026-11-24 |
 | [0003](0003-contrats-partages.md) | Contrats partagés | accepté | 2026-11-24 |
+| [0004](0004-frontend-react.md) | Frontend en React | accepté | 2026-11-24 |

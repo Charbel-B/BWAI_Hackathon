@@ -1,0 +1,9 @@
+{
+  "name": "openapi-generator-tool",
+  "private": true,
+  "description": "Générateur des types de l'API, isolé car il exige TypeScript 5 alors que le frontend utilise TypeScript 7.",
+  "devDependencies": {
+    "openapi-typescript": "7.13.0",
+    "typescript": "5.9.3"
+  }
+}

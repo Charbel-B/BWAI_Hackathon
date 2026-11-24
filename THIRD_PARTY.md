@@ -15,4 +15,13 @@ Toute dépendance ajoutée est déclarée ici dans la même PR. Versions exactes
 | HTTPX | Client de test de l'API (développement) | BSD-3-Clause |
 | Ruff | Formatage et analyse statique (développement) | MIT |
 | mypy, types-PyYAML | Vérification des types (développement) | MIT, Apache-2.0 |
+| React, React DOM | Interface | MIT |
+| Vite, @vitejs/plugin-react | Serveur de développement et construction (développement) | MIT |
+| TypeScript | Typage du frontend (développement) | Apache-2.0 |
+| TanStack Query | Données serveur dans l'interface | MIT |
+| React Router | Navigation | MIT |
+| openapi-fetch, openapi-typescript | Client d'API typé et génération des types | MIT |
+| Tailwind CSS | Styles | MIT |
+| oxlint, Prettier | Analyse statique et formatage (développement) | MIT |
+| Vitest, Testing Library, jsdom | Tests du frontend (développement) | MIT |
 | import-linter | Vérification du sens des dépendances (développement) | BSD-2-Clause |

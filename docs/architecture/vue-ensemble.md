@@ -76,7 +76,7 @@ flowchart TB
 │       ├── unit/
 │       ├── integration/
 │       └── fixtures/
-├── frontend/                   [À COMPLÉTER] après l'ADR du frontend
+├── frontend/                   React, Vite, TypeScript (ADR 0004)
 ├── config/                     règles métier en YAML : taxes, arrondis, seuils, numérotation, canaux
 ├── data/
 │   ├── referentiels/           clients et articles en CSV

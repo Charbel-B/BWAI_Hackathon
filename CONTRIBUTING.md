@@ -2,6 +2,19 @@
 
 > Statut : en vigueur · Mis à jour : 2026-11-24 · Responsable : Ange-Marie
 
+## Prérequis
+
+Le projet fonctionne nativement sous Linux et sous Windows ([ADR 0002](docs/adr/0002-support-linux-et-windows.md)).
+
+| Outil | Linux | Windows (PowerShell) |
+| --- | --- | --- |
+| Git | Gestionnaire de paquets de la distribution, par exemple `sudo apt install git` ou `sudo dnf install git` | `winget install --id Git.Git -e` |
+| uv (installe aussi Python) | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | `winget install --id astral-sh.uv -e` |
+| Node.js (frontend uniquement) | **[À COMPLÉTER]** après l'ADR du frontend | **[À COMPLÉTER]** après l'ADR du frontend |
+| Docker (facultatif, installation de référence du jury) | Docker Engine | Docker Desktop |
+
+Après installation, fermer puis rouvrir le terminal, et vérifier : `git --version` puis `uv --version`.
+
 ## À lire avant le premier commit
 
 1. [Principes d'ingénierie](docs/conventions/principes.md)

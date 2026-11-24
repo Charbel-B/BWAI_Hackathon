@@ -10,11 +10,15 @@ S'applique au backend, au moteur métier et au pipeline IA. Les principes géné
 | Outil | Rôle | Commande |
 | --- | --- | --- |
 | [uv](https://docs.astral.sh/uv/) | Version de Python, environnement, dépendances, verrouillage | `uv sync`, `uv run ...` |
+| [Poe the Poet](https://poethepoet.natn.io/) | Lanceur de tâches identique sous Linux et Windows | `uv run poe <tâche>` |
 | [Ruff](https://docs.astral.sh/ruff/) | Formatage et analyse statique | `uv run ruff format`, `uv run ruff check` |
 | [mypy](https://mypy.readthedocs.io/) | Vérification des types, en mode strict | `uv run mypy` |
 | [import-linter](https://import-linter.readthedocs.io/) | Respect du sens des dépendances entre couches | `uv run lint-imports` |
 | [pytest](https://docs.pytest.org/) | Tests (voir [tests.md](tests.md)) | `uv run pytest` |
 
+- Tout doit fonctionner nativement sous Linux et sous Windows : voir
+  [ADR 0002](../adr/0002-support-linux-et-windows.md). Aucune dépendance qui exige un logiciel
+  système installé à part.
 - La version de Python est fixée dans `.python-version`. Le fichier `uv.lock` est versionné :
   tout le monde, CI comprise, installe exactement les mêmes versions.
 - Ajouter une dépendance : `uv add <paquet>`, justifier le besoin dans la PR et la déclarer avec

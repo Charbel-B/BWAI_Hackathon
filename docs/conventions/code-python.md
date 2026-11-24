@@ -10,6 +10,7 @@ S'applique au backend, au moteur métier et au pipeline IA. Les principes géné
 | Outil | Rôle | Commande |
 | --- | --- | --- |
 | [uv](https://docs.astral.sh/uv/) | Version de Python, environnement, dépendances, verrouillage | `uv sync`, `uv run ...` |
+| GNU Make | Point d'entrée unique des commandes du projet ([ADR 0002](../adr/0002-plateforme-linux.md)) | `make help` |
 | [Ruff](https://docs.astral.sh/ruff/) | Formatage et analyse statique | `uv run ruff format`, `uv run ruff check` |
 | [mypy](https://mypy.readthedocs.io/) | Vérification des types, en mode strict | `uv run mypy` |
 | [import-linter](https://import-linter.readthedocs.io/) | Respect du sens des dépendances entre couches | `uv run lint-imports` |

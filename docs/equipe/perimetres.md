@@ -23,7 +23,7 @@ portée à utiliser dans les messages de commit et les noms de branche
 | A2 | Évaluation IA | `evaluation` | Mesure de précision par champ, calibrage des seuils, fiche IA | Charbel | Automatisation |
 | A3 | Interface de l'incertitude | `front` | Pièce et champs côte à côte, source surlignée, confiance visible, correction et confirmation | Ange-Marie | Automatisation, usage |
 | B | Moteur métier | `metier` | Calcul (bases, remises, taxes, arrondis, totaux), contrôles et anomalies | Grâce | Fiabilité |
-| C | Cycle de vie et intégrité | `cycle-de-vie` | Statuts, numérotation, avoirs, idempotence, validations concurrentes, reprise, journal d'audit | Promis | Fiabilité, sécurité |
+| C | Cycle de vie et intégrité | `cycle-de-vie` | Statuts, numérotation, avoirs, suivi des règlements simulés, idempotence, validations concurrentes, reprise, journal d'audit | Promis | Fiabilité, sécurité |
 | D | Backend et API | `api` | API, persistance, migrations, authentification, rôles, journalisation technique | Promis | Technique, sécurité |
 | E | Frontend | `front` | Écrans d'import, de revue, d'anomalies, de validation, de journal, tableau de bord | Ange-Marie | Usage, utilité |
 | F | Documents et canaux | `documents` | Brouillon et facture en PDF, émission simulée (WhatsApp, SMS, courriel), référence mobile money fictive | Grâce | Utilité |

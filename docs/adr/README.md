@@ -8,3 +8,4 @@ de la [doctrine de documentation](../conventions/documentation.md#6-décisions-d
 | Numéro | Titre | Statut | Date |
 | --- | --- | --- | --- |
 | [0000](0000-modele.md) | Modèle d'ADR | modèle | 2026-11-24 |
+| [0001](0001-architecture-generale.md) | Architecture générale | accepté | 2026-11-24 |

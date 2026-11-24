@@ -8,4 +8,5 @@
 | [conventions/](conventions/README.md) | Règles de travail de l'équipe : principes, Git, code, tests, documentation |
 | [equipe/](equipe/README.md) | Membres, périmètres et responsables |
 | [domaine/](domaine/README.md) | Métier de la facturation : glossaire et modèle |
+| [architecture/](architecture/README.md) | Vue d'ensemble : parcours, couches, ports, structure du dépôt |
 | [adr/](adr/README.md) | Décisions d'architecture |

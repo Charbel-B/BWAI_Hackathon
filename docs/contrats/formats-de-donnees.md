@@ -67,7 +67,8 @@ anomalies que la pièce doit déclencher :
 | `config/controles.yaml` | Seuil de prix inhabituel, seuil de gros montant, gravité de chaque code d'anomalie | Grâce |
 | `config/numerotation.yaml` | Formats des numéros de facture et d'avoir | Promis |
 | `config/extraction.yaml` | Extracteur actif, modèle et version, seuil de confiance | Charbel |
-| `config/canaux.yaml` | Canaux activés et modèles de message | Grâce |
+| `config/canaux.yaml` | Canaux activés et modèles de message (`{numero}`, `{montant}`, `{echeance}`, `{client}`) | Charbel |
+| `config/utilisateurs.yaml` | Comptes de démonstration : identifiant, nom, rôle, empreinte scrypt du mot de passe | Ange-Marie |
 | `config/securite.yaml` | `separation_des_taches`, durée de validité du jeton | Promis |
 
 Règle d'arrondi par défaut, à confirmer par Grâce : calcul en précision complète, arrondi à

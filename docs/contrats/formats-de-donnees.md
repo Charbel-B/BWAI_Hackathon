@@ -12,8 +12,8 @@ Tous les fichiers sont en UTF-8. Noms en minuscules, chiffres et tirets, sans ac
 | --- | --- | --- |
 | `id` | `CLI-` + 3 chiffres | `CLI-003` |
 | `raison_sociale` | texte | `Boutique Akpro SARL` |
-| `ifu` | 13 chiffres fictifs | **[À COMPLÉTER]** format vérifié par Grâce |
-| `telephone` | texte | **[À COMPLÉTER]** format vérifié par Grâce |
+| `ifu` | 13 chiffres fictifs (`^\d{13}$`) | `3999900000011` |
+| `telephone` | format béninois à 10 chiffres avec indicatif (`+22901XXXXXXXX`, espaces tolérés) | `+2290199990001` |
 | `email` | texte, domaine `example` | `contact@akpro.example` |
 | `canal_prefere` | `whatsapp`, `sms`, `email` | `whatsapp` |
 | `delai_paiement_jours` | entier | `30` |

@@ -5,6 +5,7 @@ extracteur conforme au port ``Extractor``, et génère le rapport Markdown
 prêt à être inséré dans la fiche IA.
 """
 
+import argparse
 import csv
 import sys
 from collections.abc import Sequence
@@ -23,6 +24,7 @@ from invoicing.extraction.evaluation import (
     format_calibration_markdown,
 )
 from invoicing.extraction.rules_extractor import RuleBasedExtractor
+from invoicing.infrastructure.extraction_config import load_extraction_config
 from invoicing.settings import REPO_ROOT
 
 
@@ -51,16 +53,22 @@ def load_catalog_hint(referentiels_dir: Path) -> CatalogHint:
                     tax_ids.append(row["ifu"].strip())
 
     articles_csv = referentiels_dir / "articles.csv"
+    item_prices: list[tuple[str, str]] = []
     if articles_csv.is_file():
         with articles_csv.open(encoding="utf-8") as handle:
             for row in csv.DictReader(handle):
-                if row.get("designation"):
-                    items.append(row["designation"].strip())
+                designation = (row.get("designation") or "").strip()
+                price = (row.get("prix_unitaire_ht") or "").strip()
+                if designation:
+                    items.append(designation)
+                    if price:
+                        item_prices.append((designation, price))
 
     return CatalogHint(
         customer_names=tuple(customers),
         tax_ids=tuple(tax_ids),
         item_labels=tuple(items),
+        item_prices=tuple(item_prices),
     )
 
 
@@ -135,15 +143,27 @@ def build_markdown_report(
     return "\n".join(lines)
 
 
-def main() -> None:
-    """Point d'entrée CLI pour évaluer l'extracteur local sur mise-au-point et test."""
-    data_dir = REPO_ROOT / "data"
-    catalog = load_catalog_hint(data_dir / "referentiels")
-    extractor = RuleBasedExtractor(catalog=catalog)
+def main(argv: Sequence[str] | None = None) -> None:
+    """Point d'entrée CLI : évalue par défaut uniquement ``mise-au-point``."""
+    parser = argparse.ArgumentParser(description="Évaluation chiffrée de l'extracteur.")
+    parser.add_argument(
+        "--split",
+        choices=("mise-au-point", "test", "all"),
+        default="mise-au-point",
+    )
+    args = parser.parse_args(list(argv) if argv is not None else None)
 
-    for split in ("mise-au-point", "test"):
+    data_dir = REPO_ROOT / "data"
+    cfg, policy = load_extraction_config(REPO_ROOT / "config")
+    catalog = load_catalog_hint(data_dir / "referentiels")
+    extractor = RuleBasedExtractor(catalog=catalog, policy=policy)
+
+    splits = ("mise-au-point", "test") if args.split == "all" else (args.split,)
+    for split in splits:
         split_dir = data_dir / "pieces" / split
-        metrics, calibration = run_extractor_on_split(extractor, split_dir)
+        metrics, calibration = run_extractor_on_split(
+            extractor, split_dir, review_threshold=cfg.seuil_confiance_revue
+        )
         report = build_markdown_report(extractor.name, split, metrics, calibration)
         sys.stdout.write(report + "\n")
 

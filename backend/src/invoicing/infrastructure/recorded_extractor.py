@@ -21,6 +21,7 @@ from invoicing.domain.extraction import (
     SourceAnchor,
     TextAnchor,
 )
+from invoicing.extraction.confidence import finalize_extracted_fields
 
 
 class _SerializedAnchor(BaseModel):
@@ -154,4 +155,4 @@ class RecordedExtractor:
             return recorded
         if self._fallback is not None:
             return self._fallback.extract(content, media_type)
-        return ()
+        return finalize_extracted_fields(())

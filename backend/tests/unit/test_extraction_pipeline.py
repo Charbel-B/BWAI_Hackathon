@@ -2,16 +2,21 @@
 
 import pytest
 
+from invoicing.domain.errors import InvariantViolationError
 from invoicing.domain.extraction import ExtractedField, FieldStatus, TextAnchor
 from invoicing.extraction import (
+    CalibrationPolicy,
     CatalogHint,
     ExpectedDocument,
     RawFieldCandidate,
     RuleBasedExtractor,
+    apply_financial_cross_validation,
     calibrate_thresholds,
     evaluate_predictions,
+    finalize_extracted_fields,
     find_text_anchor,
     format_calibration_markdown,
+    is_local_extraction_sufficient,
     is_value_grounded_in_raw_text,
     normalize_date,
     normalize_decimal,
@@ -327,3 +332,140 @@ def test_evaluation_metrics_and_threshold_calibration() -> None:
 
     table = format_calibration_markdown(calibrate_thresholds(expected, predictions, (0.75, 0.85)))
     assert "| 0.85 | 100.0 % | 0.0 % (0) |" in table
+
+
+def test_apply_financial_cross_validation_caps_deviating_price_and_mismatched_total() -> None:
+    catalog = CatalogHint(
+        item_labels=("Serrure de porte à cylindre",),
+        item_prices=(("Serrure de porte à cylindre", "6500"),),
+    )
+    fields = [
+        ExtractedField(
+            "lines[0].label",
+            FieldStatus.FOUND,
+            "Serrure de porte à cylindre",
+            "Serrure de porte à cylindre",
+            0.95,
+            TextAnchor(0, 27),
+        ),
+        ExtractedField(
+            "lines[0].quantity",
+            FieldStatus.FOUND,
+            "10",
+            "10",
+            0.95,
+            TextAnchor(28, 30),
+        ),
+        ExtractedField(
+            "lines[0].unit_price",
+            FieldStatus.FOUND,
+            "4000",
+            "4 000 FCFA",
+            0.92,
+            TextAnchor(31, 41),
+        ),
+        ExtractedField(
+            "totals.net",
+            FieldStatus.FOUND,
+            "35000",
+            "35 000 FCFA",
+            0.90,
+            TextAnchor(42, 53),
+        ),
+    ]
+    validated = {f.name: f for f in apply_financial_cross_validation(fields, catalog)}
+    assert validated["lines[0].unit_price"].confidence == 0.75
+    assert validated["totals.net"].confidence == 0.70
+
+    normal_fields = [
+        fields[0],
+        fields[1],
+        ExtractedField(
+            "lines[0].unit_price",
+            FieldStatus.FOUND,
+            "6500",
+            "6 500 FCFA",
+            0.92,
+            TextAnchor(31, 41),
+        ),
+        ExtractedField(
+            "totals.net",
+            FieldStatus.FOUND,
+            "65000",
+            "65 000 FCFA",
+            0.90,
+            TextAnchor(42, 53),
+        ),
+    ]
+    normal_validated = {f.name: f for f in apply_financial_cross_validation(normal_fields, catalog)}
+    assert normal_validated["lines[0].unit_price"].confidence == 0.92
+    assert normal_validated["totals.net"].confidence == 0.90
+
+
+def _extract(text: str) -> dict[str, ExtractedField]:
+    return {f.name: f for f in RuleBasedExtractor().extract(text.encode(), "text/plain")}
+
+
+def test_quantity_anchor_targets_the_line_not_an_earlier_number() -> None:
+    text = "Commande CMD-2026-001 du 20/11/2026\nClient : X\n- 20 sacs de Ciment à 5 500 FCFA\n"
+    anchor = _extract(text)["lines[0].quantity"].anchor
+    assert isinstance(anchor, TextAnchor)
+    assert text[anchor.start : anchor.start + 7] == "20 sacs"
+
+
+def test_unrecognized_second_line_is_flagged_and_forces_escalation() -> None:
+    text = (
+        "Client : Test\nDate : 20/11/2026\n- 2 sacs de ciment à 5500 F\n"
+        "Envoyez aussi 3 barres de fer pour demain"
+    )
+    fields = _extract(text)
+    assert fields["lines[1].quantity"].status is FieldStatus.AMBIGUOUS
+    assert fields["lines[1].unit_price"].status is FieldStatus.MISSING
+    assert not is_local_extraction_sufficient(list(fields.values()))
+
+
+def test_cumulated_discounts_without_repeated_keyword_are_ambiguous() -> None:
+    fields = _extract("Client : Test\n- 2 sacs de ciment à 5500 F\nRemise 5% fidelite + 2% cash")
+    assert fields["discount.global_rate"].status is FieldStatus.AMBIGUOUS
+    assert fields["discount.global_rate"].value is None
+
+
+def test_ambiguous_discount_does_not_trigger_external_escalation() -> None:
+    text = (
+        "Commande du 20/11/2026\nClient : Test\n- 2 sacs de ciment à 5500 F\n"
+        "Remise fidélité 5 % et remise cash 2 %\nDélai de paiement : 30 jours"
+    )
+    fields = _extract(text)
+    assert fields["discount.global_rate"].status is FieldStatus.AMBIGUOUS
+    assert is_local_extraction_sufficient(list(fields.values()))
+
+
+def test_vat_rate_is_not_read_as_a_vat_amount_and_phone_is_not_an_ifu() -> None:
+    fields = _extract("Client : Test\nTel 2290199990001\n- 2 sacs de farine à 5000 F\nTVA 18 %")
+    assert fields["totals.vat"].status is FieldStatus.MISSING
+    assert fields["customer.tax_id"].status is FieldStatus.MISSING
+    assert _extract("Client : Test\nTVA : 27 540 FCFA")["totals.vat"].value == "27540"
+
+
+def test_calibration_policy_rejects_cap_at_or_above_threshold() -> None:
+    with pytest.raises(InvariantViolationError):
+        CalibrationPolicy(review_threshold=0.70, price_deviation_cap=0.75)
+
+
+def test_conflicting_duplicate_fields_become_ambiguous() -> None:
+    f1 = ExtractedField("customer.name", FieldStatus.FOUND, "A", "A", 0.9, TextAnchor(0, 1))
+    f2 = ExtractedField("customer.name", FieldStatus.FOUND, "B", "B", 0.9, TextAnchor(2, 3))
+    merged = {f.name: f for f in finalize_extracted_fields([f1, f2])}
+    assert merged["customer.name"].status is FieldStatus.AMBIGUOUS
+    assert merged["customer.name"].value is None
+    assert merged["customer.name"].confidence == 0.50
+
+
+def test_total_mismatch_check_is_skipped_when_discount_is_present() -> None:
+    text = (
+        "Commande du 20/11/2026\nClient : Test\n"
+        "- 10 sacs de Ciment à 5 000 FCFA\nRemise 10 %\nTotal HT : 45 000 FCFA\n"
+    )
+    fields = _extract(text)
+    assert fields["totals.net"].value == "45000"
+    assert fields["totals.net"].confidence == 0.88

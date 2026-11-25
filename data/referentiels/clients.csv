@@ -1,0 +1,11 @@
+id,raison_sociale,ifu,telephone,email,canal_prefere,delai_paiement_jours,assujetti_tva
+CLI-001,Entreprise Kpadonou et Fils,3999900000011,+2290199990001,contact@kpadonou.example,whatsapp,30,oui
+CLI-002,Quincaillerie Le Bon Choix,3999900000022,+2290199990002,achats@bonchoix.example,sms,15,oui
+CLI-003,Société Atlantique Construction,3999900000033,+2290199990003,compta@atlantique-bat.example,email,45,oui
+CLI-004,Menuiserie Houénou,3999900000044,+2290199990004,houenou@menuiserie.example,whatsapp,0,non
+CLI-005,Groupe Scolaire Les Palmiers,3999900000055,+2290199990005,intendance@palmiers.example,email,30,non
+CLI-006,Pharmacie Espoir de Calavi,3999900000066,+2290199990006,pharmacie@espoir.example,sms,15,oui
+CLI-007,Société Agbodjan Travaux Publics,3999900000077,+2290199990007,marches@agbodjan-tp.example,email,60,oui
+CLI-008,Atelier de Couture Mawuli,3999900000088,+2290199990008,atelier@mawuli.example,whatsapp,0,non
+CLI-009,Hôtel Résidence du Lac,3999900000099,+2290199990009,gestion@residence-lac.example,email,30,oui
+CLI-010,Coopérative Agricole Tèvi,3999900000100,+2290199990010,coop@tevi.example,sms,45,non

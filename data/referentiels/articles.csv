@@ -1,0 +1,21 @@
+id,designation,unite,prix_unitaire_ht,taux_tva
+ART-001,Ciment CPJ 35 (sac de 50 kg),sac,5500,18
+ART-002,Ciment CPA 42.5 (sac de 50 kg),sac,6200,18
+ART-003,Fer à béton HA 8 mm (barre de 12 m),barre,2800,18
+ART-004,Fer à béton HA 10 mm (barre de 12 m),barre,4300,18
+ART-005,Fer à béton HA 12 mm (barre de 12 m),barre,6100,18
+ART-006,Sable lagunaire (camion de 10 m3),camion,45000,18
+ART-007,Gravier 15/25,m3,14000,18
+ART-008,Brique creuse 15 cm,unité,350,18
+ART-009,Tôle ondulée 0.30 mm (feuille de 3 m),feuille,5200,18
+ART-010,Peinture vinylique blanche (seau de 20 kg),seau,28000,18
+ART-011,Peinture à huile (pot de 4 kg),pot,9500,18
+ART-012,Carreaux de sol 40x40,m2,5500,18
+ART-013,Colle à carrelage (sac de 25 kg),sac,4200,18
+ART-014,Fil électrique 2.5 mm2 (rouleau de 100 m),rouleau,32000,18
+ART-015,Tuyau PVC pression 63 mm (barre de 6 m),barre,7500,18
+ART-016,Serrure de porte à cylindre,unité,6500,18
+ART-017,Clous (carton de 25 kg),carton,22000,18
+ART-018,Brouette renforcée,unité,28000,18
+ART-019,Location de bétonnière,jour,15000,18
+ART-020,Formation sécurité sur chantier (demi-journée),forfait,50000,0

@@ -1,6 +1,6 @@
 # Documentation
 
-> Statut : en vigueur · Mis à jour : 2026-11-24 · Responsable : Ange-Marie
+> Statut : en vigueur · Mis à jour : 2026-11-26 · Responsable : Ange-Marie
 
 | Dossier | Contenu |
 | --- | --- |
@@ -11,3 +11,4 @@
 | [architecture/](architecture/README.md) | Vue d'ensemble : parcours, couches, ports, structure du dépôt |
 | [contrats/](contrats/README.md) | Contrats entre périmètres : domaine, cycle de vie, champ extrait, API, formats de données |
 | [adr/](adr/README.md) | Décisions d'architecture |
+| [design/](design/README.md) | Charte graphique et écrans |

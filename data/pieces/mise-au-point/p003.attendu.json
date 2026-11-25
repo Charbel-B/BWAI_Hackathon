@@ -1,0 +1,12 @@
+{
+  "fields": {
+    "customer.name": "Bâtiment Moderne du Golfe SARL",
+    "customer.tax_id": null,
+    "document.date": "2026-11-21",
+    "lines[0].label": "Ciment CPA 42.5 (sac de 50 kg)",
+    "lines[0].quantity": "30",
+    "lines[0].unit": "sacs",
+    "lines[0].unit_price": "6200"
+  },
+  "expected_anomalies": ["UNKNOWN_CUSTOMER"]
+}

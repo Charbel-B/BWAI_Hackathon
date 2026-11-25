@@ -107,7 +107,7 @@ def evaluate_predictions(
             pred = by_name.get(name)
             if expected_val is None:
                 missing_count += 1
-                if pred is None or pred.status is FieldStatus.MISSING:
+                if pred is None or pred.value is None:
                     true_missing += 1
                 elif pred.confidence is not None and pred.confidence >= review_threshold:
                     high_conf_err += 1

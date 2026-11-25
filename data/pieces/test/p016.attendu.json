@@ -1,0 +1,9 @@
+{
+  "fields": {
+    "customer.name": "Menuiserie Houénou",
+    "document.date": null,
+    "lines[0].quantity": null,
+    "lines[0].unit_price": null
+  },
+  "expected_anomalies": ["MISSING_REQUIRED_FIELD"]
+}

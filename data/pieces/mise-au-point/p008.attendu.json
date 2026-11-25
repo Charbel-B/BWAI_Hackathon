@@ -1,0 +1,12 @@
+{
+  "fields": {
+    "customer.name": "Pharmacie Espoir de Calavi",
+    "customer.tax_id": "3999900000066",
+    "document.date": "2026-11-23",
+    "lines[0].label": "Fil électrique 2.5 mm2 (rouleau de 100 m)",
+    "lines[0].quantity": "8",
+    "lines[0].unit": "rouleaux",
+    "lines[0].unit_price": "32000"
+  },
+  "expected_anomalies": ["QUANTITY_MISMATCH"]
+}

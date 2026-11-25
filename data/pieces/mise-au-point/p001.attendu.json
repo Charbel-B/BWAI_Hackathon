@@ -1,0 +1,19 @@
+{
+  "fields": {
+    "customer.name": "Entreprise Kpadonou et Fils",
+    "customer.tax_id": "3999900000011",
+    "document.reference": "CMD-2026-001",
+    "document.date": "2026-11-20",
+    "lines[0].label": "Ciment CPJ 35 (sac de 50 kg)",
+    "lines[0].quantity": "20",
+    "lines[0].unit": "sacs",
+    "lines[0].unit_price": "5500",
+    "lines[1].label": "Fer à béton HA 10 mm (barre de 12 m)",
+    "lines[1].quantity": "10",
+    "lines[1].unit": "barres",
+    "lines[1].unit_price": "4300",
+    "payment.terms_days": "30",
+    "totals.net": "153000"
+  },
+  "expected_anomalies": []
+}

@@ -1,0 +1,12 @@
+{
+  "fields": {
+    "customer.name": "Hôtel Résidence du Lac",
+    "customer.tax_id": "3999900000099",
+    "document.date": null,
+    "lines[0].label": "Climatiseur split 12000 BTU",
+    "lines[0].quantity": "4",
+    "lines[0].unit": "unités",
+    "lines[0].unit_price": "185000"
+  },
+  "expected_anomalies": ["UNKNOWN_ITEM", "MISSING_REQUIRED_FIELD"]
+}

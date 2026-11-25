@@ -59,9 +59,9 @@ _RE_STRUCTURED_LINE = re.compile(
     r"(?:(?P<unit>sacs?|barres?|camions?|m3|m2|m|unit[eé]s?|feuilles?|seaux?|pots?|"
     r"rouleaux?|cartons?|lots?|citernes?|voyages?|heures?|jours?|forfaits?)\s+"
     r"(?:de\s+|d')?)?"
-    r"(?P<label>[A-Za-zÀ-ÿ0-9 ()/.,'-]{3,70}?)\s*"
-    r"(?:[aà@]|pu(?:\s*ht)?\s*[:=]?|prix\s*[:=]?)\s*"
-    r"(?P<price>\d[\d\s.\u00a0]*)\s*(?:fcfa|f\b)?",
+    r"(?P<label>[A-Za-zÀ-ÿ0-9 ()/.,'-]{3,70})\s+"
+    r"(?:[à@]|au\s+prix\s+de|pu(?:\s*ht)?\s*[:=]?|prix\s*[:=]?)\s+"
+    r"(?P<price>\d[\d\s.\u00a0]*)\s*(?:fcfa|f\b)?\s*$",
     re.IGNORECASE | re.MULTILINE,
 )
 

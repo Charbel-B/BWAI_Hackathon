@@ -1,11 +1,12 @@
-"""Contrôles d'un brouillon contre la pièce et les référentiels.
+"""Contrôles d'un brouillon contre la pièce, le dossier et les référentiels.
 
-Couvre 8 des 10 codes du contrat. QUANTITY_MISMATCH et DOCUMENT_INCONSISTENCY portent sur
-plusieurs pièces d'un même dossier, que ce prototype ne regroupe pas encore.
+Couvre les 10 codes d'anomalie de ``docs/contrats/modele-de-domaine.md``.
+Toutes les gravités et tous les seuils viennent de ``ControlRules`` (jamais en dur).
 """
 
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from datetime import date
 from decimal import Decimal
 
 from invoicing.domain.drafting import (
@@ -18,9 +19,10 @@ from invoicing.domain.drafting import (
 )
 from invoicing.domain.extraction import ExtractedField, FieldStatus, ReviewState
 from invoicing.domain.invoice import Anomaly, DraftContent, Severity, Totals
-from invoicing.domain.referentials import Referentials
+from invoicing.domain.referentials import Item, Referentials
 
 HUNDRED = Decimal(100)
+_QUOTE_KINDS = frozenset({"devis", "quote"})
 
 
 @dataclass(frozen=True, slots=True)
@@ -38,27 +40,59 @@ class ControlRules:
 
 
 @dataclass(frozen=True, slots=True)
+class RelatedDocument:
+    """Autre pièce d'un même dossier (ex. bon de livraison, devis) comparée au brouillon."""
+
+    kind: str
+    customer_name: str | None = None
+    reference: str | None = None
+    issue_date: date | None = None
+
+
+@dataclass(frozen=True, slots=True)
 class DraftUnderReview:
-    """Ce que les contrôles examinent : le brouillon calculé et les champs de sa pièce."""
+    """Ce que les contrôles examinent : le brouillon calculé, les champs et les pièces liées."""
 
     content: DraftContent
     totals: Totals
     fields: Sequence[ExtractedField]
     duplicate_of: str | None = None
+    delivered_quantities: Mapping[int, Decimal] = field(default_factory=dict)
+    related_documents: Sequence[RelatedDocument] = ()
 
 
 def check_draft(
     draft: DraftUnderReview, referentials: Referentials, rules: ControlRules
 ) -> tuple[Anomaly, ...]:
-    """Liste les anomalies. L'identifiant code:champ reste stable d'un recalcul à l'autre."""
-    content, totals, fields, duplicate_of = (
-        draft.content,
-        draft.totals,
-        draft.fields,
-        draft.duplicate_of,
-    )
+    """Liste les anomalies dédoublonnées par identifiant stable ``code:champ``."""
+    found: list[tuple[str, str | None, str]] = [
+        *_field_checks(draft.fields, rules),
+        *_referential_checks(draft.content, referentials, rules),
+        *_quantity_checks(draft.content, draft.delivered_quantities),
+        *_dossier_checks(draft.content, draft.related_documents),
+        *_amount_checks(draft.content, draft.totals, rules),
+    ]
+    if draft.duplicate_of:
+        found.append(("DUPLICATE_DOCUMENT", None, f"Pièce déjà traitée : {draft.duplicate_of}"))
+
+    unique: dict[str, Anomaly] = {}
+    for code, field_name, message in found:
+        anomaly_id = f"{code}:{field_name or '-'}"
+        if anomaly_id not in unique:
+            unique[anomaly_id] = Anomaly(
+                id=anomaly_id,
+                code=code,
+                severity=rules.severity(code),
+                field=field_name,
+                message=message,
+            )
+    return tuple(unique.values())
+
+
+def _referential_checks(
+    content: DraftContent, referentials: Referentials, rules: ControlRules
+) -> list[tuple[str, str | None, str]]:
     found: list[tuple[str, str | None, str]] = []
-    found += _field_checks(fields, rules)
     if content.customer_id is None and content.customer_name:
         found.append(
             (
@@ -68,7 +102,7 @@ def check_draft(
             )
         )
     for idx, line in enumerate(content.lines):
-        item = referentials.find_item(line.label)
+        item = _resolve_item(referentials, line.item_id, line.label)
         if item is None:
             found.append(
                 (
@@ -78,7 +112,7 @@ def check_draft(
                 )
             )
         elif (
-            item.unit_price_net
+            item.unit_price_net > 0
             and _deviation(line.unit_price_net, item.unit_price_net) > rules.unusual_price_percent
         ):
             found.append(
@@ -88,35 +122,119 @@ def check_draft(
                     f"Prix {line.unit_price_net} loin du prix de référence {item.unit_price_net}",
                 )
             )
-    found += _amount_checks(content, totals, rules)
-    if duplicate_of:
-        found.append(("DUPLICATE_DOCUMENT", None, f"Pièce déjà traitée : {duplicate_of}"))
-    return tuple(
-        Anomaly(
-            id=f"{code}:{field or '-'}",
-            code=code,
-            severity=rules.severity(code),
-            field=field,
-            message=message,
+    return found
+
+
+def _resolve_item(referentials: Referentials, item_id: str | None, label: str) -> Item | None:
+    if item_id:
+        match = next((it for it in referentials.items if it.id == item_id), None)
+        if match is not None:
+            return match
+    return referentials.find_item(label)
+
+
+def _quantity_checks(
+    content: DraftContent, delivered_quantities: Mapping[int, Decimal]
+) -> list[tuple[str, str | None, str]]:
+    found: list[tuple[str, str | None, str]] = []
+    for idx, line in enumerate(content.lines):
+        delivered = delivered_quantities.get(idx)
+        if delivered is not None and delivered != line.quantity:
+            found.append(
+                (
+                    "QUANTITY_MISMATCH",
+                    f"lines[{idx}].quantity",
+                    f"Quantité commandée {line.quantity} différente de la quantité livrée "
+                    f"{delivered}",
+                )
+            )
+    for idx, delivered in sorted(delivered_quantities.items()):
+        if idx >= len(content.lines) and delivered > 0:
+            found.append(
+                (
+                    "QUANTITY_MISMATCH",
+                    f"lines[{idx}].quantity",
+                    f"Quantité livrée {delivered} sans ligne commandée correspondante",
+                )
+            )
+    return found
+
+
+def _dossier_checks(
+    content: DraftContent, related_documents: Sequence[RelatedDocument]
+) -> list[tuple[str, str | None, str]]:
+    found: list[tuple[str, str | None, str]] = []
+    for doc in related_documents:
+        found.extend(_check_related_document(content, doc))
+    return found
+
+
+def _check_related_document(
+    content: DraftContent, doc: RelatedDocument
+) -> list[tuple[str, str | None, str]]:
+    found: list[tuple[str, str | None, str]] = []
+    if (
+        content.customer_name
+        and doc.customer_name
+        and _norm(content.customer_name) != _norm(doc.customer_name)
+    ):
+        found.append(
+            (
+                "DOCUMENT_INCONSISTENCY",
+                "customer.name",
+                f"Client contradictoire avec {doc.kind} : "
+                f"« {content.customer_name} » vs « {doc.customer_name} »",
+            )
         )
-        for code, field, message in found
-    )
+    if content.reference and doc.reference and _norm(content.reference) != _norm(doc.reference):
+        found.append(
+            (
+                "DOCUMENT_INCONSISTENCY",
+                "document.reference",
+                f"Référence contradictoire avec {doc.kind} : "
+                f"« {content.reference} » vs « {doc.reference} »",
+            )
+        )
+    if content.issue_date and doc.issue_date:
+        is_quote = _norm(doc.kind) in _QUOTE_KINDS
+        if is_quote and doc.issue_date > content.issue_date:
+            found.append(
+                (
+                    "DOCUMENT_INCONSISTENCY",
+                    "document.date",
+                    f"Date du {doc.kind} ({doc.issue_date}) postérieure à la pièce "
+                    f"({content.issue_date})",
+                )
+            )
+        elif not is_quote and doc.issue_date < content.issue_date:
+            found.append(
+                (
+                    "DOCUMENT_INCONSISTENCY",
+                    "document.date",
+                    f"Date de {doc.kind} ({doc.issue_date}) antérieure à la pièce "
+                    f"({content.issue_date})",
+                )
+            )
+    return found
 
 
 def _field_checks(
     fields: Sequence[ExtractedField], rules: ControlRules
 ) -> list[tuple[str, str | None, str]]:
     values = effective_values(fields)
-    required = [*REQUIRED_HEADER_FIELDS]
     indexes = line_indexes(fields)
+    required = [*REQUIRED_HEADER_FIELDS]
     required += [f"lines[{i}].{attr}" for i in indexes for attr in REQUIRED_LINE_ATTRS]
+
     result: list[tuple[str, str | None, str]] = []
+    missing_names: set[str] = set()
     if not indexes:
         result.append(
             ("MISSING_REQUIRED_FIELD", "lines", "Aucune ligne de facture trouvée dans la pièce")
         )
     for name in required:
         if not _is_readable(name, values.get(name)):
+            missing_names.add(name)
             result.append(
                 (
                     "MISSING_REQUIRED_FIELD",
@@ -125,10 +243,15 @@ def _field_checks(
                 )
             )
     for f in fields:
-        uncertain = f.status is FieldStatus.AMBIGUOUS or (
-            f.confidence is not None and f.confidence < rules.review_threshold
+        if f.name in missing_names or f.review.state is not ReviewState.PENDING:
+            continue
+        is_ambiguous = f.status is FieldStatus.AMBIGUOUS
+        is_low_conf = (
+            f.confidence is not None
+            and f.confidence < rules.review_threshold
+            and f.value is not None
         )
-        if uncertain and f.value is not None and f.review.state is ReviewState.PENDING:
+        if is_ambiguous or is_low_conf:
             result.append(
                 (
                     "LOW_CONFIDENCE",
@@ -183,3 +306,7 @@ def _amount_checks(
 
 def _deviation(price: Decimal, reference: Decimal) -> Decimal:
     return abs(price - reference) / reference * HUNDRED
+
+
+def _norm(value: str) -> str:
+    return " ".join(value.strip().lower().split())

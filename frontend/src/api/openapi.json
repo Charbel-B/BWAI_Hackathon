@@ -22,10 +22,1892 @@
           }
         }
       }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "système"
+        ],
+        "summary": "Login",
+        "description": "Échange des identifiants contre un jeton porteur.",
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": [
+          "système"
+        ],
+        "summary": "Me",
+        "description": "Utilisateur courant.",
+        "operationId": "me_api_v1_auth_me_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/audit-log": {
+      "get": {
+        "tags": [
+          "système"
+        ],
+        "summary": "Audit Log",
+        "description": "Journal, filtrable par entité.",
+        "operationId": "audit_log_api_v1_audit_log_get",
+        "parameters": [
+          {
+            "name": "entity_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Entity Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditOut"
+                  },
+                  "title": "Response Audit Log Api V1 Audit Log Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/audit-log/verify": {
+      "get": {
+        "tags": [
+          "système"
+        ],
+        "summary": "Verify Audit Log",
+        "description": "Recalcule toute la chaîne d'empreintes.",
+        "operationId": "verify_audit_log_api_v1_audit_log_verify_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditVerifyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/reset": {
+      "post": {
+        "tags": [
+          "système"
+        ],
+        "summary": "Reset",
+        "description": "Vide les données de démonstration. Refusé hors mode démonstration.",
+        "operationId": "reset_api_v1_admin_reset_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/source-documents": {
+      "post": {
+        "tags": [
+          "pièces"
+        ],
+        "summary": "Import Document",
+        "description": "Importe une pièce, l'extrait et crée son brouillon.",
+        "operationId": "import_document_api_v1_source_documents_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_import_document_api_v1_source_documents_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/source-documents/{document_id}": {
+      "get": {
+        "tags": [
+          "pièces"
+        ],
+        "summary": "Get Document",
+        "description": "Pièce, champs extraits et texte pour l'affichage côte à côte.",
+        "operationId": "get_document_api_v1_source_documents__document_id__get",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/source-documents/{document_id}/file": {
+      "get": {
+        "tags": [
+          "pièces"
+        ],
+        "summary": "Get File",
+        "description": "Fichier original.",
+        "operationId": "get_file_api_v1_source_documents__document_id__file_get",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/source-documents/{document_id}/fields/{name}/review": {
+      "post": {
+        "tags": [
+          "pièces"
+        ],
+        "summary": "Review Field",
+        "description": "Confirme ou corrige un champ ; les brouillons de la pièce sont recalculés.",
+        "operationId": "review_field_api_v1_source_documents__document_id__fields__name__review_post",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices": {
+      "get": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "List Invoices",
+        "description": "Liste, la plus récente d'abord, filtrable par statut.",
+        "operationId": "list_invoices_api_v1_invoices_get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/InvoiceStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceSummaryOut"
+                  },
+                  "title": "Response List Invoices Api V1 Invoices Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "Create Invoice",
+        "description": "Nouveau brouillon depuis une pièce déjà importée.",
+        "operationId": "create_invoice_api_v1_invoices_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInvoiceIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/{invoice_id}": {
+      "get": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "Get Invoice",
+        "description": "Facture, totaux, anomalies et statut de paiement dérivé.",
+        "operationId": "get_invoice_api_v1_invoices__invoice_id__get",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/{invoice_id}/anomalies/{anomaly_id}/resolve": {
+      "post": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "Resolve Anomaly",
+        "description": "Lève une anomalie avec justification.",
+        "operationId": "resolve_anomaly_api_v1_invoices__invoice_id__anomalies__anomaly_id__resolve_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "anomaly_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Anomaly Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "if-match",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/{invoice_id}/validate": {
+      "post": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "Validate Invoice",
+        "description": "Valide et numérote.",
+        "operationId": "validate_invoice_api_v1_invoices__invoice_id__validate_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "if-match",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/{invoice_id}/discard": {
+      "post": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "Discard Invoice",
+        "description": "Abandonne un brouillon.",
+        "operationId": "discard_invoice_api_v1_invoices__invoice_id__discard_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "if-match",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/{invoice_id}/dispatch": {
+      "post": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "Dispatch Invoice",
+        "description": "Émet sur un canal simulé.",
+        "operationId": "dispatch_invoice_api_v1_invoices__invoice_id__dispatch_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DispatchIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/{invoice_id}/payments": {
+      "post": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "Record Payment",
+        "description": "Enregistre un règlement simulé.",
+        "operationId": "record_payment_api_v1_invoices__invoice_id__payments_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/{invoice_id}/credit-notes": {
+      "post": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "Create Credit Note",
+        "description": "Crée un avoir en brouillon, total ou par ligne.",
+        "operationId": "create_credit_note_api_v1_invoices__invoice_id__credit_notes_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreditNoteIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditNoteOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/credit-notes/{credit_note_id}/validate": {
+      "post": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "Validate Credit Note",
+        "description": "Valide et numérote l'avoir.",
+        "operationId": "validate_credit_note_api_v1_credit_notes__credit_note_id__validate_post",
+        "parameters": [
+          {
+            "name": "credit_note_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Credit Note Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "if-match",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditNoteOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AnchorOut": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "text",
+              "region"
+            ],
+            "title": "Kind"
+          },
+          "start": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start"
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "box": {
+            "anyOf": [
+              {
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "type": "array",
+                "maxItems": 4,
+                "minItems": 4
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Box"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "title": "AnchorOut",
+        "description": "Emplacement de la valeur dans la pièce."
+      },
+      "AnomalyOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "severity": {
+            "type": "string",
+            "title": "Severity"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "resolved": {
+            "type": "boolean",
+            "title": "Resolved"
+          },
+          "resolved_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolved By"
+          },
+          "justification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Justification"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "severity",
+          "field",
+          "message",
+          "resolved",
+          "resolved_by",
+          "justification"
+        ],
+        "title": "AnomalyOut",
+        "description": "Anomalie et sa résolution éventuelle."
+      },
+      "AuditOut": {
+        "properties": {
+          "seq": {
+            "type": "integer",
+            "title": "Seq"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "At"
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "entity": {
+            "type": "string",
+            "title": "Entity"
+          },
+          "entity_id": {
+            "type": "string",
+            "title": "Entity Id"
+          },
+          "before": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Before"
+          },
+          "after": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "After"
+          },
+          "hash": {
+            "type": "string",
+            "title": "Hash"
+          }
+        },
+        "type": "object",
+        "required": [
+          "seq",
+          "at",
+          "user_id",
+          "action",
+          "entity",
+          "entity_id",
+          "before",
+          "after",
+          "hash"
+        ],
+        "title": "AuditOut",
+        "description": "Entrée du journal."
+      },
+      "AuditVerifyOut": {
+        "properties": {
+          "intact": {
+            "type": "boolean",
+            "title": "Intact"
+          },
+          "entries": {
+            "type": "integer",
+            "title": "Entries"
+          },
+          "first_broken_seq": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Broken Seq"
+          }
+        },
+        "type": "object",
+        "required": [
+          "intact",
+          "entries",
+          "first_broken_seq"
+        ],
+        "title": "AuditVerifyOut",
+        "description": "Résultat de la vérification de la chaîne."
+      },
+      "BalanceOut": {
+        "properties": {
+          "credited_total": {
+            "type": "string",
+            "title": "Credited Total"
+          },
+          "paid_total": {
+            "type": "string",
+            "title": "Paid Total"
+          },
+          "amount_due": {
+            "type": "string",
+            "title": "Amount Due"
+          }
+        },
+        "type": "object",
+        "required": [
+          "credited_total",
+          "paid_total",
+          "amount_due"
+        ],
+        "title": "BalanceOut",
+        "description": "Solde dérivé."
+      },
+      "Body_import_document_api_v1_source_documents_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_import_document_api_v1_source_documents_post"
+      },
+      "CreateInvoiceIn": {
+        "properties": {
+          "source_document_id": {
+            "type": "string",
+            "title": "Source Document Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source_document_id"
+        ],
+        "title": "CreateInvoiceIn",
+        "description": "Nouveau brouillon depuis une pièce déjà importée."
+      },
+      "CreditLineIn": {
+        "properties": {
+          "line_index": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Line Index"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Quantity"
+          }
+        },
+        "type": "object",
+        "required": [
+          "line_index",
+          "quantity"
+        ],
+        "title": "CreditLineIn",
+        "description": "Quantité à créditer sur une ligne de la facture."
+      },
+      "CreditNoteIn": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 3,
+            "title": "Reason"
+          },
+          "lines": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/CreditLineIn"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lines"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason"
+        ],
+        "title": "CreditNoteIn",
+        "description": "Avoir : total si `lines` est absent."
+      },
+      "CreditNoteOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Number"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/LineOut"
+            },
+            "type": "array",
+            "title": "Lines"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/TotalsOut"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "invoice_id",
+          "status",
+          "number",
+          "reason",
+          "version",
+          "lines",
+          "totals",
+          "created_at"
+        ],
+        "title": "CreditNoteOut",
+        "description": "Avoir."
+      },
+      "DispatchIn": {
+        "properties": {
+          "channel": {
+            "type": "string",
+            "title": "Channel"
+          }
+        },
+        "type": "object",
+        "required": [
+          "channel"
+        ],
+        "title": "DispatchIn",
+        "description": "Canal d'émission."
+      },
+      "DispatchOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "channel": {
+            "type": "string",
+            "title": "Channel"
+          },
+          "recipient": {
+            "type": "string",
+            "title": "Recipient"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "sent_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Sent At"
+          },
+          "is_simulated": {
+            "type": "boolean",
+            "title": "Is Simulated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "channel",
+          "recipient",
+          "message",
+          "sent_at",
+          "is_simulated"
+        ],
+        "title": "DispatchOut",
+        "description": "Émission simulée."
+      },
+      "DocumentOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "filename": {
+            "type": "string",
+            "title": "Filename"
+          },
+          "media_type": {
+            "type": "string",
+            "title": "Media Type"
+          },
+          "file_sha256": {
+            "type": "string",
+            "title": "File Sha256"
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Received At"
+          },
+          "uploaded_by": {
+            "type": "string",
+            "title": "Uploaded By"
+          },
+          "extractor": {
+            "type": "string",
+            "title": "Extractor"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/FieldOut"
+            },
+            "type": "array",
+            "title": "Fields"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "filename",
+          "media_type",
+          "file_sha256",
+          "received_at",
+          "uploaded_by",
+          "extractor",
+          "fields"
+        ],
+        "title": "DocumentOut",
+        "description": "Pièce source et ses champs."
+      },
+      "FieldOut": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "raw_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Text"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          },
+          "anchor": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AnchorOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "review": {
+            "$ref": "#/components/schemas/ReviewOut"
+          },
+          "effective_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "status",
+          "value",
+          "raw_text",
+          "confidence",
+          "anchor",
+          "review",
+          "effective_value"
+        ],
+        "title": "FieldOut",
+        "description": "Champ extrait, au format du contrat champ-extrait."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
       "HealthResponse": {
         "properties": {
           "status": {
@@ -39,16 +1921,759 @@
           "config_sha256": {
             "type": "string",
             "title": "Config Sha256"
+          },
+          "demo_mode": {
+            "type": "boolean",
+            "title": "Demo Mode"
+          },
+          "extractor": {
+            "type": "string",
+            "title": "Extractor"
+          },
+          "simulated": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Simulated"
           }
         },
         "type": "object",
         "required": [
           "status",
           "version",
-          "config_sha256"
+          "config_sha256",
+          "demo_mode",
+          "extractor",
+          "simulated"
         ],
         "title": "HealthResponse",
-        "description": "Réponse de GET /api/v1/health."
+        "description": "Réponse de GET /api/v1/health. `simulated` liste ce qui est simulé, sans détour."
+      },
+      "ImportOut": {
+        "properties": {
+          "document": {
+            "$ref": "#/components/schemas/DocumentOut"
+          },
+          "invoice": {
+            "$ref": "#/components/schemas/InvoiceOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document",
+          "invoice"
+        ],
+        "title": "ImportOut",
+        "description": "Résultat d'un import : la pièce extraite et son brouillon."
+      },
+      "InvoiceOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Number"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "source_document_id": {
+            "type": "string",
+            "title": "Source Document Id"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Id"
+          },
+          "customer_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Name"
+          },
+          "reference": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference"
+          },
+          "issue_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issue Date"
+          },
+          "due_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due Date"
+          },
+          "global_discount_rate": {
+            "type": "string",
+            "title": "Global Discount Rate"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/LineOut"
+            },
+            "type": "array",
+            "title": "Lines"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/TotalsOut"
+          },
+          "balance": {
+            "$ref": "#/components/schemas/BalanceOut"
+          },
+          "payment_status": {
+            "type": "string",
+            "title": "Payment Status"
+          },
+          "anomalies": {
+            "items": {
+              "$ref": "#/components/schemas/AnomalyOut"
+            },
+            "type": "array",
+            "title": "Anomalies"
+          },
+          "blocking_count": {
+            "type": "integer",
+            "title": "Blocking Count"
+          },
+          "credit_notes": {
+            "items": {
+              "$ref": "#/components/schemas/CreditNoteOut"
+            },
+            "type": "array",
+            "title": "Credit Notes"
+          },
+          "payments": {
+            "items": {
+              "$ref": "#/components/schemas/PaymentOut"
+            },
+            "type": "array",
+            "title": "Payments"
+          },
+          "dispatches": {
+            "items": {
+              "$ref": "#/components/schemas/DispatchOut"
+            },
+            "type": "array",
+            "title": "Dispatches"
+          },
+          "created_by": {
+            "type": "string",
+            "title": "Created By"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "validated_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Validated By"
+          },
+          "validated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Validated At"
+          },
+          "config_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Config Sha256"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "number",
+          "version",
+          "source_document_id",
+          "customer_id",
+          "customer_name",
+          "reference",
+          "issue_date",
+          "due_date",
+          "global_discount_rate",
+          "lines",
+          "totals",
+          "balance",
+          "payment_status",
+          "anomalies",
+          "blocking_count",
+          "credit_notes",
+          "payments",
+          "dispatches",
+          "created_by",
+          "created_at",
+          "validated_by",
+          "validated_at",
+          "config_sha256"
+        ],
+        "title": "InvoiceOut",
+        "description": "Facture complète."
+      },
+      "InvoiceStatus": {
+        "type": "string",
+        "enum": [
+          "DRAFT",
+          "VALIDATED",
+          "ISSUED",
+          "DISCARDED",
+          "CANCELLED"
+        ],
+        "title": "InvoiceStatus",
+        "description": "Statut de cycle de vie, stocké. Voir docs/contrats/cycle-de-vie.md."
+      },
+      "InvoiceSummaryOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Number"
+          },
+          "customer_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Name"
+          },
+          "gross_total": {
+            "type": "string",
+            "title": "Gross Total"
+          },
+          "payment_status": {
+            "type": "string",
+            "title": "Payment Status"
+          },
+          "blocking_count": {
+            "type": "integer",
+            "title": "Blocking Count"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "number",
+          "customer_name",
+          "gross_total",
+          "payment_status",
+          "blocking_count",
+          "created_at"
+        ],
+        "title": "InvoiceSummaryOut",
+        "description": "Ligne de la liste des factures."
+      },
+      "LineOut": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "item_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Item Id"
+          },
+          "quantity": {
+            "type": "string",
+            "title": "Quantity"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "unit_price_net": {
+            "type": "string",
+            "title": "Unit Price Net"
+          },
+          "discount_rate": {
+            "type": "string",
+            "title": "Discount Rate"
+          },
+          "vat_rate": {
+            "type": "string",
+            "title": "Vat Rate"
+          },
+          "line_net": {
+            "type": "string",
+            "title": "Line Net"
+          },
+          "line_vat": {
+            "type": "string",
+            "title": "Line Vat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "item_id",
+          "quantity",
+          "unit",
+          "unit_price_net",
+          "discount_rate",
+          "vat_rate",
+          "line_net",
+          "line_vat"
+        ],
+        "title": "LineOut",
+        "description": "Ligne calculée."
+      },
+      "LoginIn": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "LoginIn",
+        "description": "Identifiants."
+      },
+      "PaymentIn": {
+        "properties": {
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Amount"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "mobile_money",
+              "especes",
+              "virement"
+            ],
+            "title": "Method",
+            "default": "mobile_money"
+          },
+          "reference": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference"
+          }
+        },
+        "type": "object",
+        "required": [
+          "amount"
+        ],
+        "title": "PaymentIn",
+        "description": "Règlement simulé."
+      },
+      "PaymentOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "amount": {
+            "type": "string",
+            "title": "Amount"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method"
+          },
+          "reference": {
+            "type": "string",
+            "title": "Reference"
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Received At"
+          },
+          "is_simulated": {
+            "type": "boolean",
+            "title": "Is Simulated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "amount",
+          "method",
+          "reference",
+          "received_at",
+          "is_simulated"
+        ],
+        "title": "PaymentOut",
+        "description": "Règlement simulé."
+      },
+      "ResolveIn": {
+        "properties": {
+          "justification": {
+            "type": "string",
+            "minLength": 3,
+            "title": "Justification"
+          }
+        },
+        "type": "object",
+        "required": [
+          "justification"
+        ],
+        "title": "ResolveIn",
+        "description": "Levée d'une anomalie."
+      },
+      "ReviewIn": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "confirm",
+              "correct"
+            ],
+            "title": "Action"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action"
+        ],
+        "title": "ReviewIn",
+        "description": "Confirmer la valeur extraite, ou la corriger."
+      },
+      "ReviewOut": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "By"
+          },
+          "at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "state",
+          "value",
+          "by",
+          "at"
+        ],
+        "title": "ReviewOut",
+        "description": "Décision humaine sur un champ."
+      },
+      "TokenOut": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "user"
+        ],
+        "title": "TokenOut",
+        "description": "Jeton porteur."
+      },
+      "TotalsOut": {
+        "properties": {
+          "net_total": {
+            "type": "string",
+            "title": "Net Total"
+          },
+          "vat_total": {
+            "type": "string",
+            "title": "Vat Total"
+          },
+          "gross_total": {
+            "type": "string",
+            "title": "Gross Total"
+          },
+          "global_discount_amount": {
+            "type": "string",
+            "title": "Global Discount Amount"
+          },
+          "vat_breakdown": {
+            "items": {
+              "$ref": "#/components/schemas/VatOut"
+            },
+            "type": "array",
+            "title": "Vat Breakdown"
+          }
+        },
+        "type": "object",
+        "required": [
+          "net_total",
+          "vat_total",
+          "gross_total",
+          "global_discount_amount",
+          "vat_breakdown"
+        ],
+        "title": "TotalsOut",
+        "description": "Totaux stockés et dérivés."
+      },
+      "UserOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "username",
+          "display_name",
+          "role"
+        ],
+        "title": "UserOut",
+        "description": "Utilisateur courant."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VatOut": {
+        "properties": {
+          "rate": {
+            "type": "string",
+            "title": "Rate"
+          },
+          "base": {
+            "type": "string",
+            "title": "Base"
+          },
+          "amount": {
+            "type": "string",
+            "title": "Amount"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rate",
+          "base",
+          "amount"
+        ],
+        "title": "VatOut",
+        "description": "TVA par taux."
       }
     }
   }

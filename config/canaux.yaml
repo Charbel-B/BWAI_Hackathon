@@ -1,2 +1,7 @@
-# Canaux d'émission simulés. Responsable : Grâce.
+# Canaux d'émission simulés. Responsable : Charbel (reprise du périmètre de Grâce).
+# Variables disponibles : {numero}, {montant}, {echeance}, {client}.
 actifs: [whatsapp, sms, email]
+modeles:
+  whatsapp: "Bonjour {client}, voici votre facture {numero} : {montant} FCFA TTC, à régler avant le {echeance}. Merci de votre confiance."
+  sms: "Facture {numero} : {montant} FCFA TTC, échéance {echeance}."
+  email: "Bonjour {client},\n\nVeuillez trouver votre facture {numero} d'un montant de {montant} FCFA TTC, payable avant le {echeance}.\n\nCordialement."

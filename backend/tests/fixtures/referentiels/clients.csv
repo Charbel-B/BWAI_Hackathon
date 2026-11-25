@@ -1,0 +1,3 @@
+id,raison_sociale,ifu,telephone,email,canal_prefere,delai_paiement_jours,assujetti_tva
+CLI-001,Entreprise Kpadonou et Fils,3999900000011,+229 01 90 00 00 01,contact@kpadonou.example,whatsapp,30,oui
+CLI-002,Association Les Bâtisseurs,3999900000028,+229 01 90 00 00 02,contact@batisseurs.example,sms,15,non

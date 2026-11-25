@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # backend/src/invoicing/settings.py -> racine du dépôt
@@ -15,4 +16,7 @@ class Settings(BaseSettings):
 
     config_dir: Path = REPO_ROOT / "config"
     data_dir: Path = REPO_ROOT / "data"
+    database_path: Path = REPO_ROOT / "var" / "invoicing.sqlite3"
+    demo_mode: bool = True
+    gemini_api_key: SecretStr = SecretStr("")
     log_level: str = "INFO"

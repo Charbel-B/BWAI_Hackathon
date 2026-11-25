@@ -406,12 +406,7 @@ export interface components {
             /** Page */
             page?: number | null;
             /** Box */
-            box?: [
-                number,
-                number,
-                number,
-                number
-            ] | null;
+            box?: number[] | null;
         };
         /**
          * AnomalyOut
@@ -869,6 +864,8 @@ export interface components {
          * @description Totaux stockés et dérivés.
          */
         TotalsOut: {
+            /** Lines Net Total */
+            lines_net_total: string;
             /** Net Total */
             net_total: string;
             /** Vat Total */

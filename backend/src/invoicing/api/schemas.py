@@ -98,7 +98,7 @@ class AnchorOut(BaseModel):
     start: int | None = None
     end: int | None = None
     page: int | None = None
-    box: tuple[float, float, float, float] | None = None
+    box: list[float] | None = Field(default=None, min_length=4, max_length=4)
 
 
 class ReviewOut(BaseModel):
@@ -162,6 +162,7 @@ class VatOut(BaseModel):
 class TotalsOut(BaseModel):
     """Totaux stockés et dérivés."""
 
+    lines_net_total: Decimal
     net_total: Decimal
     vat_total: Decimal
     gross_total: Decimal
@@ -312,7 +313,7 @@ def _anchor(field: ExtractedField) -> AnchorOut | None:
     if isinstance(field.anchor, TextAnchor):
         return AnchorOut(kind="text", start=field.anchor.start, end=field.anchor.end)
     if isinstance(field.anchor, RegionAnchor):
-        return AnchorOut(kind="region", page=field.anchor.page, box=field.anchor.box)
+        return AnchorOut(kind="region", page=field.anchor.page, box=list(field.anchor.box))
     return None
 
 
@@ -366,6 +367,7 @@ def _line(line: InvoiceLine) -> LineOut:
 
 def _totals(t: Totals) -> TotalsOut:
     return TotalsOut(
+        lines_net_total=t.net_total + t.global_discount_amount,
         net_total=t.net_total,
         vat_total=t.vat_total,
         gross_total=t.gross_total,

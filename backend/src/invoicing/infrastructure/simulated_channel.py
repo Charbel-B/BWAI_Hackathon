@@ -26,7 +26,7 @@ class SimulatedChannel:
         message = template.format(
             numero=invoice.number,
             montant=f"{invoice.totals.gross_total:,}".replace(",", " "),
-            echeance=due.isoformat() if due else "à réception",
+            echeance=due.strftime("%d/%m/%Y") if due else "à réception",
             client=invoice.content.customer_name or "",
         )
         return SentMessage(recipient=recipient, message=message)

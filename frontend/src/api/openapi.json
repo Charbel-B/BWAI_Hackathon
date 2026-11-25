@@ -1294,20 +1294,9 @@
           "box": {
             "anyOf": [
               {
-                "prefixItems": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "number"
-                  }
-                ],
+                "items": {
+                  "type": "number"
+                },
                 "type": "array",
                 "maxItems": 4,
                 "minItems": 4
@@ -2547,6 +2536,10 @@
       },
       "TotalsOut": {
         "properties": {
+          "lines_net_total": {
+            "type": "string",
+            "title": "Lines Net Total"
+          },
           "net_total": {
             "type": "string",
             "title": "Net Total"
@@ -2573,6 +2566,7 @@
         },
         "type": "object",
         "required": [
+          "lines_net_total",
           "net_total",
           "vat_total",
           "gross_total",

@@ -10,6 +10,7 @@ from invoicing.domain.controls import DraftUnderReview, check_draft
 from invoicing.domain.documents import SourceDocument
 from invoicing.domain.drafting import build_draft
 from invoicing.domain.invoice import (
+    EMPTY_TOTALS,
     Anomaly,
     DraftContent,
     Invoice,
@@ -62,7 +63,12 @@ def _evaluate(
 ) -> _Evaluation:
     """Brouillon, calcul et contrôles : la même chaîne à la création et à chaque correction."""
     content = build_draft(document.fields, ctx.referentials, ctx.calculation.default_vat_rate)
-    lines, totals = compute_invoice(content.lines, content.global_discount_rate, ctx.calculation)
+    if content.lines:
+        lines, totals = compute_invoice(
+            content.lines, content.global_discount_rate, ctx.calculation
+        )
+    else:
+        lines, totals = (), EMPTY_TOTALS
     duplicate = _duplicate_of(tx, document, content.customer_id, content.reference, invoice_id)
     draft = DraftUnderReview(content, totals, document.fields, duplicate)
     anomalies = check_draft(draft, ctx.referentials, ctx.controls)

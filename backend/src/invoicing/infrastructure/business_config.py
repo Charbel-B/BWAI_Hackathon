@@ -31,6 +31,7 @@ class _Tax(_Strict):
 class _Calculation(_Strict):
     devise: str = "XOF"
     arrondi: _Rounding = Field(default_factory=_Rounding)
+    ordre_des_remises: list[str] = Field(default_factory=lambda: ["ligne", "globale"])
     taxes: list[_Tax]
 
 
@@ -83,6 +84,7 @@ class BusinessConfig(_Strict):
             rounding_mode=self.calcul.arrondi.mode,
             rounding_unit=self.calcul.arrondi.unite,
             default_vat_rate=vat.taux_par_defaut if vat else Decimal(0),
+            discount_order=tuple(self.calcul.ordre_des_remises),
         )
 
     def control_rules(self, review_threshold: float) -> ControlRules:

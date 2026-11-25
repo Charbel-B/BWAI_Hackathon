@@ -56,6 +56,11 @@ class InvoiceLine:
     line_net: Decimal
     line_vat: Decimal
 
+    @property
+    def line_gross(self) -> Decimal:
+        """Montant TTC indicatif de la ligne (HT + TVA)."""
+        return self.line_net + self.line_vat
+
 
 @dataclass(frozen=True, slots=True)
 class VatAmount:

@@ -1,0 +1,14 @@
+{
+  "fields": {
+    "customer.name": "Société Atlantique Construction",
+    "customer.tax_id": "3999900000033",
+    "document.date": "2026-11-22",
+    "lines[0].label": "Sable lagunaire (camion de 10 m3)",
+    "lines[0].quantity": "2",
+    "lines[0].unit": "camions",
+    "lines[0].unit_price": "45000",
+    "discount.global_rate": null,
+    "payment.terms_days": "45"
+  },
+  "expected_anomalies": ["LOW_CONFIDENCE"]
+}

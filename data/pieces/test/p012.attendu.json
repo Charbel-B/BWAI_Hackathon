@@ -1,0 +1,17 @@
+{
+  "fields": {
+    "customer.name": "Coopérative Agricole Tèvi",
+    "customer.tax_id": null,
+    "document.date": "2026-11-23",
+    "lines[0].label": "Formation sécurité sur chantier (demi-journée)",
+    "lines[0].quantity": "1",
+    "lines[0].unit": "forfait",
+    "lines[0].unit_price": "50000",
+    "lines[1].label": "Brouette renforcée",
+    "lines[1].quantity": "3",
+    "lines[1].unit": "unités",
+    "lines[1].unit_price": "28000",
+    "payment.terms_days": "45"
+  },
+  "expected_anomalies": []
+}

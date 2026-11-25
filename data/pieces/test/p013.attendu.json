@@ -1,0 +1,12 @@
+{
+  "fields": {
+    "customer.name": "Quincaillerie Centrale de Parakou",
+    "customer.tax_id": null,
+    "document.date": "2026-11-24",
+    "lines[0].label": "Clous (carton de 25 kg)",
+    "lines[0].quantity": "12",
+    "lines[0].unit": "cartons",
+    "lines[0].unit_price": "22000"
+  },
+  "expected_anomalies": ["UNKNOWN_CUSTOMER"]
+}

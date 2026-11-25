@@ -1,0 +1,19 @@
+{
+  "fields": {
+    "customer.name": "Quincaillerie Le Bon Choix",
+    "customer.tax_id": null,
+    "document.reference": "BC-2026-014",
+    "document.date": "2026-11-21",
+    "lines[0].label": "Tôle ondulée 0.30 mm (feuille de 3 m)",
+    "lines[0].quantity": "15",
+    "lines[0].unit": "feuilles",
+    "lines[0].unit_price": "5200",
+    "lines[1].label": "Peinture vinylique blanche (seau de 20 kg)",
+    "lines[1].quantity": "5",
+    "lines[1].unit": "seaux",
+    "lines[1].unit_price": "28000",
+    "discount.global_rate": "0.05",
+    "payment.terms_days": "15"
+  },
+  "expected_anomalies": []
+}

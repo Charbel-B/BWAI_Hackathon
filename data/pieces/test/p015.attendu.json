@@ -1,0 +1,14 @@
+{
+  "fields": {
+    "customer.name": "Société Atlantique Construction",
+    "customer.tax_id": null,
+    "document.date": "2026-11-24",
+    "lines[0].label": "Location de bétonnière",
+    "lines[0].quantity": "4",
+    "lines[0].unit": "jours",
+    "lines[0].unit_price": "15000",
+    "discount.global_rate": null,
+    "totals.net": "50000"
+  },
+  "expected_anomalies": ["LOW_CONFIDENCE", "AMOUNT_MISMATCH"]
+}

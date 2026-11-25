@@ -1,3 +1,15 @@
 # Extraction. Responsable : Charbel.
-extracteur_actif: "[À COMPLÉTER]"
+extracteur_actif: recorded
+modele_en_ligne: gemini-2.5-flash
+extracteur_repli: local-rules-v1
+local_first: true
 seuil_confiance_revue: 0.85
+plafonds:
+  ambigu: 0.50
+  non_ancre: 0.40
+  format_invalide: 0.35
+  referentiel_partiel: 0.75
+  referentiel_inconnu: 0.70
+  ecart_prix: 0.75
+  ecart_total: 0.70
+  confiance_modele_defaut: 0.70

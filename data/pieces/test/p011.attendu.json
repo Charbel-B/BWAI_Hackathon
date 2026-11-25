@@ -1,0 +1,19 @@
+{
+  "fields": {
+    "customer.name": "Société Agbodjan Travaux Publics",
+    "customer.tax_id": "3999900000077",
+    "document.reference": "BC-2026-105",
+    "document.date": "2026-11-23",
+    "lines[0].label": "Ciment CPJ 35 (sac de 50 kg)",
+    "lines[0].quantity": "50",
+    "lines[0].unit": "sacs",
+    "lines[0].unit_price": "5500",
+    "lines[1].label": "Fer à béton HA 12 mm (barre de 12 m)",
+    "lines[1].quantity": "20",
+    "lines[1].unit": "barres",
+    "lines[1].unit_price": "6100",
+    "payment.terms_days": "60",
+    "totals.net": "397000"
+  },
+  "expected_anomalies": []
+}

@@ -1,6 +1,6 @@
 # Contrat d'API
 
-> Statut : en vigueur · Mis à jour : 2026-11-24 · Responsable : Promis
+> Statut : en vigueur · Mis à jour : 2026-11-25 · Responsable : Ange-Marie
 
 Préfixe : `/api/v1`. JSON en entrée et en sortie, sauf envoi de fichier et PDF. Le schéma
 OpenAPI généré par FastAPI fait foi une fois le code écrit ; ce document en est la référence de
@@ -23,25 +23,27 @@ départ et reste à jour avec lui.
 | --- | --- | --- |
 | `POST /auth/login` | aucun | Renvoie un jeton |
 | `GET /auth/me` | tous | Utilisateur courant et rôle |
-| `POST /source-documents` | OPERATOR | Envoi d'une pièce (multipart), extraction lancée, résultat renvoyé |
+| `POST /source-documents` | OPERATOR | Envoi d'une pièce (multipart, champ `file`, 2 Mo au plus) ; extraction, puis brouillon créé dans la même transaction ; renvoie la pièce et le brouillon |
 | `GET /source-documents/{id}` | OPERATOR | Pièce, résultat d'extraction et champs |
 | `GET /source-documents/{id}/file` | OPERATOR | Fichier original, pour l'affichage côte à côte |
-| `POST /source-documents/{id}/fields/{name}/review` | OPERATOR | Confirmer ou corriger un champ : `{"action": "confirm"}` ou `{"action": "correct", "value": "..."}` |
-| `POST /invoices` | OPERATOR | Créer un brouillon depuis une pièce : `{"source_document_id": "..."}` |
+| `POST /source-documents/{id}/fields/{name}/review` | OPERATOR | Confirmer ou corriger un champ : `{"action": "confirm"}` ou `{"action": "correct", "value": "..."}`. Un champ absent peut être saisi par `correct`. Les brouillons de la pièce sont recalculés (version + 1) |
+| `POST /invoices` | OPERATOR | Nouveau brouillon depuis une pièce déjà importée (par exemple après un avoir total) : `{"source_document_id": "..."}` |
 | `GET /invoices` | OPERATOR | Liste filtrable par statut |
 | `GET /invoices/{id}` | OPERATOR | Facture, totaux, anomalies, statut de paiement |
-| `PATCH /invoices/{id}` | OPERATOR | Corriger un brouillon |
 | `POST /invoices/{id}/anomalies/{anomaly_id}/resolve` | OPERATOR | Résoudre avec justification |
 | `POST /invoices/{id}/validate` | VALIDATOR | Valider et numéroter |
 | `POST /invoices/{id}/discard` | OPERATOR | Abandonner un brouillon |
 | `POST /invoices/{id}/dispatch` | OPERATOR | Émettre sur un canal : `{"channel": "whatsapp"}` |
-| `GET /invoices/{id}/pdf` | OPERATOR | Brouillon ou facture en PDF ; un brouillon porte la mention BROUILLON |
-| `POST /invoices/{id}/payments` | OPERATOR | Enregistrer un règlement simulé |
-| `POST /invoices/{id}/credit-notes` | VALIDATOR | Créer un avoir en brouillon |
+| `GET /invoices/{id}/pdf` | OPERATOR | Brouillon ou facture en PDF ; un brouillon porte la mention BROUILLON. **[À COMPLÉTER]** : pas encore implémenté (Charbel) |
+| `POST /invoices/{id}/payments` | OPERATOR | Enregistrer un règlement simulé : `{"amount": "5000", "method": "mobile_money"}` |
+| `POST /invoices/{id}/credit-notes` | VALIDATOR | Créer un avoir en brouillon : `{"reason": "..."}` pour un avoir total, ou avec `"lines": [{"line_index": 0, "quantity": "2"}]` |
 | `POST /credit-notes/{id}/validate` | VALIDATOR | Valider et numéroter l'avoir |
 | `GET /audit-log` | VALIDATOR | Journal filtrable par entité |
 | `GET /audit-log/verify` | VALIDATOR | Vérifie la chaîne d'empreintes du journal |
 | `POST /admin/reset` | ADMIN | Réinitialise les données de démonstration ; désactivé hors mode démonstration |
+
+Une correction de brouillon passe toujours par la revue d'un champ de la pièce : la pièce reste
+la source unique du contenu, et le brouillon en est recalculé.
 
 ## Codes d'erreur
 
@@ -50,8 +52,9 @@ départ et reste à jour avec lui.
 | 401 | `UNAUTHENTICATED` | Jeton absent ou invalide |
 | 403 | `FORBIDDEN` | Rôle insuffisant, ou validateur auteur du brouillon |
 | 404 | `NOT_FOUND` | Ressource inconnue |
+| 428 | `PRECONDITION_REQUIRED` | En-tête `If-Match` absent sur une modification |
 | 409 | `VERSION_CONFLICT` | `If-Match` différent de la version courante |
 | 409 | `IDEMPOTENCY_KEY_REUSED` | Même clé, contenu différent |
 | 409 | `INVALID_TRANSITION` | Transition interdite depuis le statut courant |
 | 422 | `VALIDATION_BLOCKED` | Anomalies bloquantes ouvertes ; la liste est dans la réponse |
-| 422 | `INVALID_INPUT` | Corps de requête invalide |
+| 422 | `INVALID_INPUT` | Corps de requête invalide, `Idempotency-Key` absent, ou règle métier enfreinte (règlement supérieur au solde, avoir trop élevé) |

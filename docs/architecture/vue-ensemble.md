@@ -1,6 +1,6 @@
 # Vue d'ensemble de l'architecture
 
-> Statut : partiel · Mis à jour : 2026-11-24 · Responsable : Ange-Marie
+> Statut : partiel · Mis à jour : 2026-11-25 · Responsable : Ange-Marie
 
 Décision de référence : [ADR 0001](../adr/0001-architecture-generale.md). Ce document décrit
 l'architecture telle qu'elle est ; il évolue avec le code.
@@ -49,12 +49,12 @@ flowchart TB
 
 | Port | Rôle | Adaptateurs prévus |
 | --- | --- | --- |
-| `Extractor` | Lire une pièce et rendre des champs extraits | Modèle réel en ligne ; repli local réel ; rejeu de réponses réelles enregistrées (tests et sécurité de la démo, signalé à l'écran) |
+| `Extractor` | Lire une pièce et rendre des champs extraits | Extracteur local par règles (actif par défaut, hors ligne) ; modèle en ligne si configuré avec une clé ; rejeu de réponses enregistrées (tests) |
 | `Clock` | Donner la date et l'heure | Horloge système ; horloge figée sur la date de référence |
-| `InvoiceRepository` et autres dépôts | Lire et écrire les entités | SQLAlchemy sur SQLite ; mémoire pour les tests |
-| `IdempotencyStore` | Mémoriser les actions déjà traitées | Table SQLite |
-| `AuditLog` | Ajouter une entrée au journal, sans modification possible | Table SQLite en ajout seul |
-| `Channel` | Émettre une facture | WhatsApp, SMS, courriel simulés |
+| `Store` et `Transaction` | Lire et écrire toutes les entités dans une transaction, compteurs de numéros et journal d'audit compris | SQLite (bibliothèque standard), verrou d'écriture pris à l'ouverture (`BEGIN IMMEDIATE`) ; journal protégé par des déclencheurs contre la modification et la suppression |
+| `IdempotencyStore` | Mémoriser les réponses déjà rendues | Table SQLite |
+| `UserDirectory` | Authentifier et résoudre les jetons | Comptes de `config/utilisateurs.yaml` (scrypt), jetons en mémoire |
+| `Channel` | Émettre une facture | WhatsApp, SMS, courriel simulés ([ADR 0005](../adr/0005-simulation-des-integrations.md)) |
 | `DocumentRenderer` | Produire le PDF | Gabarit HTML rendu en PDF |
 
 ## Structure du dépôt
@@ -64,7 +64,6 @@ flowchart TB
 ├── backend/
 │   ├── pyproject.toml          dépendances et configuration des outils
 │   ├── uv.lock                 versions verrouillées
-│   ├── alembic/                migrations
 │   ├── src/invoicing/
 │   │   ├── domain/
 │   │   ├── application/

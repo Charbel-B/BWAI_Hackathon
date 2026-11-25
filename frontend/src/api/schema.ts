@@ -21,13 +21,618 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Login
+         * @description Échange des identifiants contre un jeton porteur.
+         */
+        post: operations["login_api_v1_auth_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Me
+         * @description Utilisateur courant.
+         */
+        get: operations["me_api_v1_auth_me_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/audit-log": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Audit Log
+         * @description Journal, filtrable par entité.
+         */
+        get: operations["audit_log_api_v1_audit_log_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/audit-log/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Verify Audit Log
+         * @description Recalcule toute la chaîne d'empreintes.
+         */
+        get: operations["verify_audit_log_api_v1_audit_log_verify_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reset
+         * @description Vide les données de démonstration. Refusé hors mode démonstration.
+         */
+        post: operations["reset_api_v1_admin_reset_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/source-documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Import Document
+         * @description Importe une pièce, l'extrait et crée son brouillon.
+         */
+        post: operations["import_document_api_v1_source_documents_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/source-documents/{document_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Document
+         * @description Pièce, champs extraits et texte pour l'affichage côte à côte.
+         */
+        get: operations["get_document_api_v1_source_documents__document_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/source-documents/{document_id}/file": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get File
+         * @description Fichier original.
+         */
+        get: operations["get_file_api_v1_source_documents__document_id__file_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/source-documents/{document_id}/fields/{name}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Review Field
+         * @description Confirme ou corrige un champ ; les brouillons de la pièce sont recalculés.
+         */
+        post: operations["review_field_api_v1_source_documents__document_id__fields__name__review_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invoices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Invoices
+         * @description Liste, la plus récente d'abord, filtrable par statut.
+         */
+        get: operations["list_invoices_api_v1_invoices_get"];
+        put?: never;
+        /**
+         * Create Invoice
+         * @description Nouveau brouillon depuis une pièce déjà importée.
+         */
+        post: operations["create_invoice_api_v1_invoices_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invoices/{invoice_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Invoice
+         * @description Facture, totaux, anomalies et statut de paiement dérivé.
+         */
+        get: operations["get_invoice_api_v1_invoices__invoice_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invoices/{invoice_id}/anomalies/{anomaly_id}/resolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Resolve Anomaly
+         * @description Lève une anomalie avec justification.
+         */
+        post: operations["resolve_anomaly_api_v1_invoices__invoice_id__anomalies__anomaly_id__resolve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invoices/{invoice_id}/validate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Validate Invoice
+         * @description Valide et numérote.
+         */
+        post: operations["validate_invoice_api_v1_invoices__invoice_id__validate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invoices/{invoice_id}/discard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Discard Invoice
+         * @description Abandonne un brouillon.
+         */
+        post: operations["discard_invoice_api_v1_invoices__invoice_id__discard_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invoices/{invoice_id}/dispatch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Dispatch Invoice
+         * @description Émet sur un canal simulé.
+         */
+        post: operations["dispatch_invoice_api_v1_invoices__invoice_id__dispatch_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invoices/{invoice_id}/payments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Record Payment
+         * @description Enregistre un règlement simulé.
+         */
+        post: operations["record_payment_api_v1_invoices__invoice_id__payments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invoices/{invoice_id}/credit-notes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Credit Note
+         * @description Crée un avoir en brouillon, total ou par ligne.
+         */
+        post: operations["create_credit_note_api_v1_invoices__invoice_id__credit_notes_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/credit-notes/{credit_note_id}/validate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Validate Credit Note
+         * @description Valide et numérote l'avoir.
+         */
+        post: operations["validate_credit_note_api_v1_credit_notes__credit_note_id__validate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /**
+         * AnchorOut
+         * @description Emplacement de la valeur dans la pièce.
+         */
+        AnchorOut: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "text" | "region";
+            /** Start */
+            start?: number | null;
+            /** End */
+            end?: number | null;
+            /** Page */
+            page?: number | null;
+            /** Box */
+            box?: [
+                number,
+                number,
+                number,
+                number
+            ] | null;
+        };
+        /**
+         * AnomalyOut
+         * @description Anomalie et sa résolution éventuelle.
+         */
+        AnomalyOut: {
+            /** Id */
+            id: string;
+            /** Code */
+            code: string;
+            /** Severity */
+            severity: string;
+            /** Field */
+            field: string | null;
+            /** Message */
+            message: string;
+            /** Resolved */
+            resolved: boolean;
+            /** Resolved By */
+            resolved_by: string | null;
+            /** Justification */
+            justification: string | null;
+        };
+        /**
+         * AuditOut
+         * @description Entrée du journal.
+         */
+        AuditOut: {
+            /** Seq */
+            seq: number;
+            /**
+             * At
+             * Format: date-time
+             */
+            at: string;
+            /** User Id */
+            user_id: string;
+            /** Action */
+            action: string;
+            /** Entity */
+            entity: string;
+            /** Entity Id */
+            entity_id: string;
+            /** Before */
+            before: {
+                [key: string]: string | number | null;
+            } | null;
+            /** After */
+            after: {
+                [key: string]: string | number | null;
+            } | null;
+            /** Hash */
+            hash: string;
+        };
+        /**
+         * AuditVerifyOut
+         * @description Résultat de la vérification de la chaîne.
+         */
+        AuditVerifyOut: {
+            /** Intact */
+            intact: boolean;
+            /** Entries */
+            entries: number;
+            /** First Broken Seq */
+            first_broken_seq: number | null;
+        };
+        /**
+         * BalanceOut
+         * @description Solde dérivé.
+         */
+        BalanceOut: {
+            /** Credited Total */
+            credited_total: string;
+            /** Paid Total */
+            paid_total: string;
+            /** Amount Due */
+            amount_due: string;
+        };
+        /** Body_import_document_api_v1_source_documents_post */
+        Body_import_document_api_v1_source_documents_post: {
+            /** File */
+            file: string;
+        };
+        /**
+         * CreateInvoiceIn
+         * @description Nouveau brouillon depuis une pièce déjà importée.
+         */
+        CreateInvoiceIn: {
+            /** Source Document Id */
+            source_document_id: string;
+        };
+        /**
+         * CreditLineIn
+         * @description Quantité à créditer sur une ligne de la facture.
+         */
+        CreditLineIn: {
+            /** Line Index */
+            line_index: number;
+            /** Quantity */
+            quantity: number | string;
+        };
+        /**
+         * CreditNoteIn
+         * @description Avoir : total si `lines` est absent.
+         */
+        CreditNoteIn: {
+            /** Reason */
+            reason: string;
+            /** Lines */
+            lines?: components["schemas"]["CreditLineIn"][] | null;
+        };
+        /**
+         * CreditNoteOut
+         * @description Avoir.
+         */
+        CreditNoteOut: {
+            /** Id */
+            id: string;
+            /** Invoice Id */
+            invoice_id: string;
+            /** Status */
+            status: string;
+            /** Number */
+            number: string | null;
+            /** Reason */
+            reason: string;
+            /** Version */
+            version: number;
+            /** Lines */
+            lines: components["schemas"]["LineOut"][];
+            totals: components["schemas"]["TotalsOut"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /**
+         * DispatchIn
+         * @description Canal d'émission.
+         */
+        DispatchIn: {
+            /** Channel */
+            channel: string;
+        };
+        /**
+         * DispatchOut
+         * @description Émission simulée.
+         */
+        DispatchOut: {
+            /** Id */
+            id: string;
+            /** Channel */
+            channel: string;
+            /** Recipient */
+            recipient: string;
+            /** Message */
+            message: string;
+            /**
+             * Sent At
+             * Format: date-time
+             */
+            sent_at: string;
+            /** Is Simulated */
+            is_simulated: boolean;
+        };
+        /**
+         * DocumentOut
+         * @description Pièce source et ses champs.
+         */
+        DocumentOut: {
+            /** Id */
+            id: string;
+            /** Filename */
+            filename: string;
+            /** Media Type */
+            media_type: string;
+            /** File Sha256 */
+            file_sha256: string;
+            /**
+             * Received At
+             * Format: date-time
+             */
+            received_at: string;
+            /** Uploaded By */
+            uploaded_by: string;
+            /** Extractor */
+            extractor: string;
+            /** Fields */
+            fields: components["schemas"]["FieldOut"][];
+            /** Text */
+            text?: string | null;
+        };
+        /**
+         * FieldOut
+         * @description Champ extrait, au format du contrat champ-extrait.
+         */
+        FieldOut: {
+            /** Name */
+            name: string;
+            /** Status */
+            status: string;
+            /** Value */
+            value: string | null;
+            /** Raw Text */
+            raw_text: string | null;
+            /** Confidence */
+            confidence: number | null;
+            anchor: components["schemas"]["AnchorOut"] | null;
+            review: components["schemas"]["ReviewOut"];
+            /** Effective Value */
+            effective_value: string | null;
+        };
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
+        /**
          * HealthResponse
-         * @description Réponse de GET /api/v1/health.
+         * @description Réponse de GET /api/v1/health. `simulated` liste ce qui est simulé, sans détour.
          */
         HealthResponse: {
             /** Status */
@@ -36,6 +641,283 @@ export interface components {
             version: string;
             /** Config Sha256 */
             config_sha256: string;
+            /** Demo Mode */
+            demo_mode: boolean;
+            /** Extractor */
+            extractor: string;
+            /** Simulated */
+            simulated: string[];
+        };
+        /**
+         * ImportOut
+         * @description Résultat d'un import : la pièce extraite et son brouillon.
+         */
+        ImportOut: {
+            document: components["schemas"]["DocumentOut"];
+            invoice: components["schemas"]["InvoiceOut"];
+        };
+        /**
+         * InvoiceOut
+         * @description Facture complète.
+         */
+        InvoiceOut: {
+            /** Id */
+            id: string;
+            /** Status */
+            status: string;
+            /** Number */
+            number: string | null;
+            /** Version */
+            version: number;
+            /** Source Document Id */
+            source_document_id: string;
+            /** Customer Id */
+            customer_id: string | null;
+            /** Customer Name */
+            customer_name: string | null;
+            /** Reference */
+            reference: string | null;
+            /** Issue Date */
+            issue_date: string | null;
+            /** Due Date */
+            due_date: string | null;
+            /** Global Discount Rate */
+            global_discount_rate: string;
+            /** Lines */
+            lines: components["schemas"]["LineOut"][];
+            totals: components["schemas"]["TotalsOut"];
+            balance: components["schemas"]["BalanceOut"];
+            /** Payment Status */
+            payment_status: string;
+            /** Anomalies */
+            anomalies: components["schemas"]["AnomalyOut"][];
+            /** Blocking Count */
+            blocking_count: number;
+            /** Credit Notes */
+            credit_notes: components["schemas"]["CreditNoteOut"][];
+            /** Payments */
+            payments: components["schemas"]["PaymentOut"][];
+            /** Dispatches */
+            dispatches: components["schemas"]["DispatchOut"][];
+            /** Created By */
+            created_by: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Validated By */
+            validated_by: string | null;
+            /** Validated At */
+            validated_at: string | null;
+            /** Config Sha256 */
+            config_sha256: string | null;
+        };
+        /**
+         * InvoiceStatus
+         * @description Statut de cycle de vie, stocké. Voir docs/contrats/cycle-de-vie.md.
+         * @enum {string}
+         */
+        InvoiceStatus: "DRAFT" | "VALIDATED" | "ISSUED" | "DISCARDED" | "CANCELLED";
+        /**
+         * InvoiceSummaryOut
+         * @description Ligne de la liste des factures.
+         */
+        InvoiceSummaryOut: {
+            /** Id */
+            id: string;
+            /** Status */
+            status: string;
+            /** Number */
+            number: string | null;
+            /** Customer Name */
+            customer_name: string | null;
+            /** Gross Total */
+            gross_total: string;
+            /** Payment Status */
+            payment_status: string;
+            /** Blocking Count */
+            blocking_count: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /**
+         * LineOut
+         * @description Ligne calculée.
+         */
+        LineOut: {
+            /** Label */
+            label: string;
+            /** Item Id */
+            item_id: string | null;
+            /** Quantity */
+            quantity: string;
+            /** Unit */
+            unit: string | null;
+            /** Unit Price Net */
+            unit_price_net: string;
+            /** Discount Rate */
+            discount_rate: string;
+            /** Vat Rate */
+            vat_rate: string;
+            /** Line Net */
+            line_net: string;
+            /** Line Vat */
+            line_vat: string;
+        };
+        /**
+         * LoginIn
+         * @description Identifiants.
+         */
+        LoginIn: {
+            /** Username */
+            username: string;
+            /** Password */
+            password: string;
+        };
+        /**
+         * PaymentIn
+         * @description Règlement simulé.
+         */
+        PaymentIn: {
+            /** Amount */
+            amount: number | string;
+            /**
+             * Method
+             * @default mobile_money
+             * @enum {string}
+             */
+            method: "mobile_money" | "especes" | "virement";
+            /** Reference */
+            reference?: string | null;
+        };
+        /**
+         * PaymentOut
+         * @description Règlement simulé.
+         */
+        PaymentOut: {
+            /** Id */
+            id: string;
+            /** Amount */
+            amount: string;
+            /** Method */
+            method: string;
+            /** Reference */
+            reference: string;
+            /**
+             * Received At
+             * Format: date-time
+             */
+            received_at: string;
+            /** Is Simulated */
+            is_simulated: boolean;
+        };
+        /**
+         * ResolveIn
+         * @description Levée d'une anomalie.
+         */
+        ResolveIn: {
+            /** Justification */
+            justification: string;
+        };
+        /**
+         * ReviewIn
+         * @description Confirmer la valeur extraite, ou la corriger.
+         */
+        ReviewIn: {
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "confirm" | "correct";
+            /** Value */
+            value?: string | null;
+        };
+        /**
+         * ReviewOut
+         * @description Décision humaine sur un champ.
+         */
+        ReviewOut: {
+            /** State */
+            state: string;
+            /** Value */
+            value: string | null;
+            /** By */
+            by: string | null;
+            /** At */
+            at: string | null;
+        };
+        /**
+         * TokenOut
+         * @description Jeton porteur.
+         */
+        TokenOut: {
+            /** Access Token */
+            access_token: string;
+            /**
+             * Token Type
+             * @default bearer
+             */
+            token_type: string;
+            user: components["schemas"]["UserOut"];
+        };
+        /**
+         * TotalsOut
+         * @description Totaux stockés et dérivés.
+         */
+        TotalsOut: {
+            /** Net Total */
+            net_total: string;
+            /** Vat Total */
+            vat_total: string;
+            /** Gross Total */
+            gross_total: string;
+            /** Global Discount Amount */
+            global_discount_amount: string;
+            /** Vat Breakdown */
+            vat_breakdown: components["schemas"]["VatOut"][];
+        };
+        /**
+         * UserOut
+         * @description Utilisateur courant.
+         */
+        UserOut: {
+            /** Id */
+            id: string;
+            /** Username */
+            username: string;
+            /** Display Name */
+            display_name: string;
+            /** Role */
+            role: string;
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
+        };
+        /**
+         * VatOut
+         * @description TVA par taux.
+         */
+        VatOut: {
+            /** Rate */
+            rate: string;
+            /** Base */
+            base: string;
+            /** Amount */
+            amount: string;
         };
     };
     responses: never;
@@ -62,6 +944,655 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HealthResponse"];
+                };
+            };
+        };
+    };
+    login_api_v1_auth_login_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    me_api_v1_auth_me_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    audit_log_api_v1_audit_log_get: {
+        parameters: {
+            query?: {
+                entity_id?: string | null;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verify_audit_log_api_v1_audit_log_verify_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditVerifyOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reset_api_v1_admin_reset_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    import_document_api_v1_source_documents_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_import_document_api_v1_source_documents_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_document_api_v1_source_documents__document_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_file_api_v1_source_documents__document_id__file_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    review_field_api_v1_source_documents__document_id__fields__name__review_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_invoices_api_v1_invoices_get: {
+        parameters: {
+            query?: {
+                status?: components["schemas"]["InvoiceStatus"] | null;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvoiceSummaryOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_invoice_api_v1_invoices_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateInvoiceIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvoiceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_invoice_api_v1_invoices__invoice_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                invoice_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvoiceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resolve_anomaly_api_v1_invoices__invoice_id__anomalies__anomaly_id__resolve_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "if-match"?: string | null;
+            };
+            path: {
+                invoice_id: string;
+                anomaly_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResolveIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvoiceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    validate_invoice_api_v1_invoices__invoice_id__validate_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "if-match"?: string | null;
+            };
+            path: {
+                invoice_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvoiceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    discard_invoice_api_v1_invoices__invoice_id__discard_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "if-match"?: string | null;
+            };
+            path: {
+                invoice_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvoiceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    dispatch_invoice_api_v1_invoices__invoice_id__dispatch_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                invoice_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DispatchIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvoiceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_payment_api_v1_invoices__invoice_id__payments_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                invoice_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaymentIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvoiceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_credit_note_api_v1_invoices__invoice_id__credit_notes_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                invoice_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreditNoteIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreditNoteOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    validate_credit_note_api_v1_credit_notes__credit_note_id__validate_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "if-match"?: string | null;
+            };
+            path: {
+                credit_note_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreditNoteOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

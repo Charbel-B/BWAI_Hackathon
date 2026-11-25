@@ -1,6 +1,6 @@
 # Facturation assistée : de la pièce commerciale à la facture validée
 
-> Statut : en construction · Mis à jour : 2026-11-24
+> Statut : en construction · Mis à jour : 2026-11-25
 
 Prototype réalisé pour le hackathon BWAI 2026, cas pratique 2 « Automatisation de la
 facturation ». Il transforme une pièce commerciale (devis, bon de commande ou message) en
@@ -21,6 +21,23 @@ make help      # liste des commandes
 ```
 
 Installation par Docker pour le jury : **[À COMPLÉTER]**.
+
+## Comptes de démonstration
+
+| Identifiant | Mot de passe | Rôle | Peut |
+| --- | --- | --- | --- |
+| `operateur` | `demo-operateur` | OPERATOR | Importer, revoir les champs, résoudre une anomalie, émettre, enregistrer un règlement |
+| `validateur` | `demo-validateur` | VALIDATOR | Tout ce que fait l'opérateur, plus valider, créer et valider un avoir, lire le journal |
+| `admin` | `demo-admin` | ADMIN | Tout, plus réinitialiser les données de démonstration |
+
+La séparation des tâches est active (`config/securite.yaml`) : le validateur ne peut pas valider
+un brouillon qu'il a lui-même créé.
+
+## Ce qui est simulé
+
+Les services extérieurs (WhatsApp, SMS, courriel, mobile money) sont simulés et signalés comme
+tels ; l'extraction, le calcul, les contrôles, la numérotation et l'audit sont réels. Détail et
+points de branchement : [ADR 0005](docs/adr/0005-simulation-des-integrations.md).
 
 ## Documentation
 

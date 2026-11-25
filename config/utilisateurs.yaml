@@ -1,0 +1,16 @@
+# Comptes de démonstration. Responsable : Ange-Marie.
+# Mots de passe (fictifs, documentés dans le README) : demo-<identifiant>.
+# Empreinte scrypt générée par invoicing.infrastructure.accounts.hash_password.
+comptes:
+  - identifiant: operateur
+    nom: Opérateur de saisie
+    role: OPERATOR
+    mot_de_passe_scrypt: "scrypt$d570c1d7e0e3b37594a1ac4a84f874b8$75ec199a8fa4313238657c6b988bff824f7dd5f85336d26b59a3ad2ba7a317ee240a7de01eefa1b48f47c4b9b64ec80ae1a2962061b7e8bae43f52f4a58f7e31"
+  - identifiant: validateur
+    nom: Responsable de validation
+    role: VALIDATOR
+    mot_de_passe_scrypt: "scrypt$94e947ff8ccc39a29efe3be757d9cb3a$0dab9054ee7bb362e4186762fe1a108010e62e4356957833424a172f5107f2bd16f8e35137af71c3854006d06beeb7a9821a0637a44645ae4355c7cbcd88ae1d"
+  - identifiant: admin
+    nom: Administrateur
+    role: ADMIN
+    mot_de_passe_scrypt: "scrypt$e34c1037e30bbd30b21cb60713307599$898c2ca9dce0aabfe36f3e2eaef2d258c903068d539fc2a9c3d295621e170530339bafe7f705d54c8903ab91e8a97815a0cb26c50b75e2b2ed4303ab21bc95c0"

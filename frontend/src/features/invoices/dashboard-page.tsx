@@ -3,6 +3,7 @@ import { ChevronRight, FilePlus2, ShieldCheck, ShieldAlert } from 'lucide-react'
 import { Link, useNavigate } from 'react-router'
 
 import { api } from '@/api/client'
+import uploadImage from '@/assets/depot-pieces-verre.webp'
 import { unwrap } from '@/api/problem'
 import type { InvoiceSummary } from '@/api/types'
 import { Button } from '@/components/button'
@@ -11,6 +12,7 @@ import { PageTitle } from '@/components/page-title'
 import { ErrorView, Loading } from '@/components/state-views'
 import { PaymentBadge, StatusBadge } from '@/components/status-badge'
 import { useCurrentUser } from '@/features/auth/use-session'
+import { paths } from '@/app/paths'
 import { fr } from '@/i18n/fr'
 import { formatDateTime } from '@/lib/format'
 
@@ -33,7 +35,7 @@ function AuditCard() {
   const intact = verify.data?.intact ?? true
   return (
     <Link
-      to="/journal"
+      to={paths.audit}
       className="group flex min-h-[170px] flex-col justify-between rounded-card bg-graphite p-6 text-white transition-transform duration-300 ease-out hover:-translate-y-0.5"
     >
       <span className="label text-white/60">{t.audit}</span>
@@ -65,7 +67,7 @@ function AuditCard() {
 
 function InvoiceRow({ invoice }: { invoice: InvoiceSummary }) {
   const navigate = useNavigate()
-  const open = () => void navigate(`/factures/${invoice.id}`)
+  const open = () => void navigate(paths.invoice(invoice.id))
   return (
     <tr
       onClick={open}
@@ -73,7 +75,7 @@ function InvoiceRow({ invoice }: { invoice: InvoiceSummary }) {
     >
       <td className="py-4 pr-4 pl-6">
         <Link
-          to={`/factures/${invoice.id}`}
+          to={paths.invoice(invoice.id)}
           className="tabular text-sm text-ink"
           onClick={(e) => e.stopPropagation()}
         >
@@ -143,7 +145,7 @@ export function DashboardPage() {
             arrow
             className="self-start"
             icon={<FilePlus2 className="size-4" aria-hidden="true" />}
-            onClick={() => void navigate('/importer')}
+            onClick={() => void navigate(paths.import)}
           >
             {t.importCta}
           </Button>
@@ -177,7 +179,14 @@ export function DashboardPage() {
           <PageTitle light={t.titleLight} bold={t.titleBold} />
         </div>
         {list.length === 0 ? (
-          <p className="px-6 pb-10 text-ink-soft">{t.empty}</p>
+          <div className="flex flex-col items-center gap-3 px-6 pt-2 pb-12 text-center">
+            <img
+              src={uploadImage}
+              alt=""
+              className="w-[140px] drop-shadow-[var(--shadow-object)]"
+            />
+            <p className="max-w-[40ch] text-ink-soft">{t.empty}</p>
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[720px] text-left">

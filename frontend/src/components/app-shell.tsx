@@ -3,15 +3,16 @@ import { NavLink, Outlet } from 'react-router'
 
 import { useCurrentUser } from '@/features/auth/use-session'
 import { session } from '@/features/auth/session'
+import { paths } from '@/app/paths'
 import { fr } from '@/i18n/fr'
 
 import { DemoBadge } from './demo-badge'
 import { Logo } from './logo'
 
 const LINKS = [
-  { to: '/', label: fr.nav.dashboard, end: true },
-  { to: '/importer', label: fr.nav.import, end: false },
-  { to: '/journal', label: fr.nav.audit, end: false },
+  { to: paths.dashboard, label: fr.nav.dashboard, end: true },
+  { to: paths.import, label: fr.nav.import, end: false },
+  { to: paths.audit, label: fr.nav.audit, end: false },
 ] as const
 
 /** Cadre de l'application : bandeau de ciel, menu en pilule de verre, contenu sur fond glace. */
@@ -21,7 +22,7 @@ export function AppShell() {
     <div className="min-h-dvh">
       <header className="sky-band relative pb-44">
         <div className="mx-auto flex max-w-[1320px] flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 pt-5 sm:flex-nowrap sm:px-8">
-          <NavLink to="/" aria-label={fr.nav.dashboard}>
+          <NavLink to={paths.dashboard} aria-label={fr.nav.dashboard}>
             <Logo />
           </NavLink>
           <nav

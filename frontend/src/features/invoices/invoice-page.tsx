@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router'
 import { ApiProblem } from '@/api/problem'
 import { ErrorView, Loading } from '@/components/state-views'
 import { ReviewPage } from '@/features/review/review-page'
+import { paths } from '@/app/paths'
 import { fr } from '@/i18n/fr'
 
 import { IssuedInvoice } from './issued-invoice'
@@ -22,7 +23,7 @@ export function InvoicePage() {
         message={missing ? fr.errors.notFound : fr.errors.generic}
         {...(missing ? {} : { onRetry: () => void invoice.refetch() })}
         action={
-          <Link to="/" className="text-sm underline underline-offset-4">
+          <Link to={paths.dashboard} className="text-sm underline underline-offset-4">
             {fr.errors.back}
           </Link>
         }
@@ -32,7 +33,7 @@ export function InvoicePage() {
   return (
     <div className="grid gap-4">
       <Link
-        to="/"
+        to={paths.dashboard}
         className="inline-flex w-max items-center gap-2 rounded-full bg-white/20 px-3.5 py-2 text-sm text-white backdrop-blur-md transition-colors hover:bg-white/30"
       >
         <ArrowLeft className="size-4" aria-hidden="true" />

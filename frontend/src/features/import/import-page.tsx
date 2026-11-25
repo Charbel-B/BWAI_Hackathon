@@ -1,9 +1,11 @@
-import { CircleAlert, FileText, UploadCloud } from 'lucide-react'
+import { CircleAlert, FileText } from 'lucide-react'
 import { type DragEvent, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 
+import uploadImage from '@/assets/depot-pieces-verre.webp'
 import { Button } from '@/components/button'
 import { PageTitle } from '@/components/page-title'
+import { paths } from '@/app/paths'
 import { fr } from '@/i18n/fr'
 import { problemMessage } from '@/lib/problem-message'
 
@@ -20,7 +22,7 @@ export function ImportPage() {
   const [text, setText] = useState('')
 
   function send(file: File) {
-    upload.mutate(file, { onSuccess: (result) => void navigate(`/factures/${result.invoice.id}`) })
+    upload.mutate(file, { onSuccess: (result) => void navigate(paths.invoice(result.invoice.id)) })
   }
 
   function drop(event: DragEvent) {
@@ -49,9 +51,11 @@ export function ImportPage() {
           className={`group relative grid min-h-[280px] place-items-center overflow-hidden rounded-[22px] p-8 text-center transition-[box-shadow,background] duration-300 ease-out ${dragging ? 'bg-sky-wash shadow-[inset_0_0_0_2px_var(--color-sky)]' : 'bg-ice shadow-[inset_0_0_0_1.5px_var(--color-sky-soft)] hover:shadow-[inset_0_0_0_2px_var(--color-sky)]'}`}
         >
           <span className="grid justify-items-center gap-4">
-            <span className="sky grid size-16 place-items-center rounded-[20px] text-white shadow-float transition-transform duration-300 ease-out group-hover:-translate-y-1">
-              <UploadCloud className="size-7" aria-hidden="true" />
-            </span>
+            <img
+              src={uploadImage}
+              alt=""
+              className="w-[150px] drop-shadow-[var(--shadow-object)] transition-transform duration-300 ease-out group-hover:-translate-y-1.5"
+            />
             <span className="text-lg font-medium">{upload.isPending ? t.reading : t.drop}</span>
             <span className="text-sm text-ink-soft">{t.dropHint}</span>
           </span>

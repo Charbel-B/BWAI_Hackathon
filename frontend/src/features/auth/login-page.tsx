@@ -1,11 +1,11 @@
-import { CircleAlert, PencilLine, ScanText, Sigma } from 'lucide-react'
+import { ArrowLeft, CircleAlert } from 'lucide-react'
 import { type FormEvent, useState } from 'react'
-import { Navigate, useLocation } from 'react-router'
+import { Link, Navigate, useLocation } from 'react-router'
 
-import heroImage from '@/assets/hero-facture-verre.webp'
+import { paths } from '@/app/paths'
 import { Button } from '@/components/button'
-import { ConfidenceRing } from '@/components/confidence-ring'
 import { DemoBadge } from '@/components/demo-badge'
+import { HeroVisual } from '@/components/hero-visual'
 import { Logo } from '@/components/logo'
 import { fr } from '@/i18n/fr'
 
@@ -14,32 +14,10 @@ import { useCurrentUser } from './use-session'
 
 const ACCOUNTS = ['operateur', 'validateur', 'admin'] as const
 const t = fr.login
+const field =
+  'w-full rounded-2xl bg-ice px-4 py-3.5 text-[15px] text-ink outline-none shadow-[inset_0_0_0_1px_var(--color-line)] placeholder:text-ink-soft focus-visible:shadow-[inset_0_0_0_2px_var(--color-sky)]'
 
-function Callout({
-  icon,
-  title,
-  detail,
-  className,
-}: {
-  icon: React.ReactNode
-  title: string
-  detail: string
-  className: string
-}) {
-  return (
-    <div
-      className={`glass absolute hidden items-center gap-3 rounded-[18px] py-3 pr-4 pl-3 text-ink shadow-float lg:flex ${className}`}
-    >
-      {icon}
-      <div>
-        <b className="block text-sm font-semibold">{title}</b>
-        <span className="text-xs text-ink-soft">{detail}</span>
-      </div>
-    </div>
-  )
-}
-
-/** Connexion : le héros montre le mécanisme, une pièce annotée par ses champs. */
+/** Connexion : le formulaire à gauche, le visuel du produit à droite. */
 export function LoginPage() {
   const user = useCurrentUser()
   const location = useLocation()
@@ -47,7 +25,7 @@ export function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const from = (location.state as { from?: string } | null)?.from ?? '/'
+  const from = (location.state as { from?: string } | null)?.from ?? paths.dashboard
   if (user !== null) return <Navigate to={from} replace />
 
   function submit(event: FormEvent) {
@@ -55,137 +33,111 @@ export function LoginPage() {
     login.mutate({ username: username.trim(), password })
   }
 
-  function fill(account: string) {
-    setUsername(account)
-    setPassword(`demo-${account}`)
-  }
-
   return (
-    <div className="min-h-dvh bg-ice p-2 sm:p-3">
-      <section className="relative isolate flex min-h-[calc(100dvh-24px)] flex-col overflow-hidden rounded-[32px] bg-[linear-gradient(180deg,var(--color-sky-strong)_0%,var(--color-sky-horizon)_46%,var(--color-sky-haze)_100%)] text-white">
-        <div className="flex items-center justify-between gap-4 px-5 pt-5 sm:px-8">
-          <Logo />
-          <DemoBadge />
-        </div>
-
-        <div className="mx-auto mt-[clamp(20px,4vh,48px)] px-5 text-center">
-          <h1 className="mx-auto max-w-[15ch] text-[clamp(38px,5.2vw,72px)]">
-            {t.titleLight} <b className="font-semibold">{t.titleBold}</b>
-          </h1>
-        </div>
-        <p className="mx-auto mt-4 max-w-[52ch] px-5 text-center text-[17px] leading-relaxed text-white/90">
-          {t.lead}
-        </p>
-
-        <div className="relative mx-auto mt-2 aspect-[16/9] w-[min(100%,calc(58dvh*16/9),1180px)]">
-          <img
-            src={heroImage}
-            alt={t.heroAlt}
-            className="pointer-events-none absolute inset-0 size-full object-cover [mask-composite:intersect] [mask-image:linear-gradient(to_bottom,transparent_0,#000_20%,#000_78%,transparent_100%),linear-gradient(to_right,transparent_0,#000_14%,#000_86%,transparent_100%)]"
-          />
-          <Callout
-            className="top-[30%] left-[2%]"
-            title={t.callouts.customer.title}
-            detail={t.callouts.customer.detail}
-            icon={
-              <span className="grid size-9 place-items-center rounded-[11px] bg-sky-wash">
-                <ConfidenceRing value={0.95} />
-              </span>
-            }
-          />
-          <Callout
-            className="top-[22%] right-[3%]"
-            title={t.callouts.vat.title}
-            detail={t.callouts.vat.detail}
-            icon={
-              <span className="grid size-9 place-items-center rounded-[11px] bg-ink text-white">
-                <Sigma className="size-[18px]" aria-hidden="true" />
-              </span>
-            }
-          />
-          <Callout
-            className="top-[56%] right-[6%]"
-            title={t.callouts.quantity.title}
-            detail={t.callouts.quantity.detail}
-            icon={
-              <span className="grid size-9 place-items-center rounded-[11px] bg-amber text-amber-ink">
-                <ScanText className="size-[18px]" aria-hidden="true" />
-              </span>
-            }
-          />
-          <Callout
-            className="top-[62%] left-[5%]"
-            title={t.callouts.corrected.title}
-            detail={t.callouts.corrected.detail}
-            icon={
-              <span className="grid size-9 place-items-center rounded-[11px] bg-lime text-lime-ink">
-                <PencilLine className="size-[18px]" aria-hidden="true" />
-              </span>
-            }
-          />
-        </div>
-
-        <div className="relative z-10 -mt-[clamp(40px,7dvh,72px)] px-4 pb-7">
-          <form
-            onSubmit={submit}
-            className="mx-auto flex w-full max-w-[640px] flex-col gap-2 rounded-[26px] border border-white/45 bg-white/25 p-1.5 shadow-float backdrop-blur-[20px] sm:flex-row sm:rounded-full"
+    <div className="grid min-h-dvh bg-ice p-2 sm:p-3 lg:grid-cols-[minmax(420px,0.9fr)_1.1fr] lg:gap-3">
+      <section className="flex flex-col rounded-[32px] bg-white px-6 py-6 shadow-card sm:px-12 sm:py-8">
+        <div className="flex items-center justify-between gap-4">
+          <Link to={paths.landing} aria-label={t.back}>
+            <Logo tone="dark" />
+          </Link>
+          <Link
+            to={paths.landing}
+            className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm text-ink-soft transition-colors hover:bg-ice hover:text-ink"
           >
-            <label className="sr-only" htmlFor="username">
-              {t.username}
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            {t.back}
+          </Link>
+        </div>
+
+        <div className="mx-auto my-auto w-full max-w-[400px] py-12">
+          <h1 className="text-[clamp(38px,4vw,52px)]">
+            <b className="font-semibold">{t.title}</b>
+          </h1>
+          <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">{t.lead}</p>
+
+          <form onSubmit={submit} className="mt-8 grid gap-3">
+            <label className="grid gap-1.5">
+              <span className="label text-ink-soft">{t.username}</span>
+              <input
+                autoComplete="username"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className={field}
+              />
             </label>
-            <input
-              id="username"
-              autoComplete="username"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder={t.username}
-              className="min-w-0 flex-1 rounded-full bg-white px-5 py-3 text-sm text-ink outline-none placeholder:text-ink-soft focus-visible:shadow-[0_0_0_3px_var(--color-sky)]"
-            />
-            <label className="sr-only" htmlFor="password">
-              {t.password}
+            <label className="grid gap-1.5">
+              <span className="label text-ink-soft">{t.password}</span>
+              <input
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={field}
+              />
             </label>
-            <input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder={t.password}
-              className="min-w-0 flex-1 rounded-full bg-white px-5 py-3 text-sm text-ink outline-none placeholder:text-ink-soft focus-visible:shadow-[0_0_0_3px_var(--color-sky)]"
-            />
-            <Button type="submit" variant="primary" arrow pending={login.isPending}>
+            {login.isError && (
+              <p
+                role="alert"
+                className="flex items-center gap-2 rounded-xl bg-coral-wash px-3.5 py-2.5 text-sm text-coral-ink"
+              >
+                <CircleAlert className="size-4 shrink-0" aria-hidden="true" />
+                {t.failed}
+              </p>
+            )}
+            <Button
+              type="submit"
+              variant="primary"
+              arrow
+              pending={login.isPending}
+              className="mt-2 w-full py-3.5 text-[15px]"
+            >
               {login.isPending ? t.submitting : t.submit}
             </Button>
           </form>
-          <div
-            aria-live="polite"
-            className="mx-auto mt-3 flex min-h-6 max-w-[640px] flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[13px] text-ink"
-          >
-            {login.isError ? (
-              <span className="inline-flex items-center gap-2 rounded-full bg-coral-wash px-3 py-1.5 text-coral-ink">
-                <CircleAlert className="size-4" aria-hidden="true" />
-                {t.failed}
-              </span>
-            ) : (
-              <>
-                <span className="text-ink/75">{t.accounts}</span>
-                {ACCOUNTS.map((account) => (
-                  <button
-                    key={account}
-                    type="button"
-                    onClick={() => fill(account)}
-                    className="rounded-full bg-white/70 px-3 py-1 font-mono text-xs text-ink transition-colors hover:bg-white"
-                  >
-                    {account}
-                  </button>
-                ))}
-              </>
-            )}
+
+          <div className="mt-10">
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="label text-ink-soft">{t.accounts}</span>
+              <span className="text-xs text-ink-soft">{t.accountsHint}</span>
+            </div>
+            <ul className="mt-3 grid gap-2">
+              {ACCOUNTS.map((account) => {
+                const selected = username === account
+                return (
+                  <li key={account}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUsername(account)
+                        setPassword(`demo-${account}`)
+                      }}
+                      aria-pressed={selected}
+                      className={`grid w-full grid-cols-[auto_1fr] items-center gap-x-3 rounded-2xl px-4 py-3 text-left transition-[box-shadow,background] duration-200 ease-out ${selected ? 'bg-sky-wash shadow-[inset_0_0_0_1.5px_var(--color-sky)]' : 'bg-ice shadow-[inset_0_0_0_1px_var(--color-line)] hover:shadow-[inset_0_0_0_1px_var(--color-sky-soft)]'}`}
+                    >
+                      <span className="font-mono text-sm">{account}</span>
+                      <span className="text-right text-xs leading-snug text-ink-soft">
+                        {t.roles[account]}
+                      </span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
           </div>
         </div>
       </section>
+
+      <aside className="relative hidden flex-col overflow-hidden rounded-[32px] bg-[linear-gradient(180deg,var(--color-sky-strong)_0%,var(--color-sky-horizon)_46%,var(--color-sky-haze)_100%)] p-8 text-white lg:flex">
+        <div className="flex justify-end">
+          <DemoBadge />
+        </div>
+        <div className="my-auto">
+          <HeroVisual callouts={false} className="w-full" />
+        </div>
+        <p className="mx-auto max-w-[36ch] text-center text-[15px] text-ink">{t.visualCaption}</p>
+      </aside>
     </div>
   )
 }

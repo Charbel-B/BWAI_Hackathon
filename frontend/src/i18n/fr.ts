@@ -17,24 +17,147 @@ export const fr = {
       'Les envois WhatsApp, SMS, courriel et les paiements mobile money sont simulés. L’extraction, le calcul, les contrôles et la numérotation sont réels.',
   },
   login: {
-    titleLight: 'De la pièce reçue',
-    titleBold: 'à la facture juste',
-    lead: 'L’IA lit le devis, vous confirmez ce qui est incertain, le moteur recalcule chaque franc. Rien n’est validé sans vous.',
+    title: 'Connexion',
+    lead: 'Accédez à l’espace de facturation. Votre rôle détermine ce que vous pouvez faire.',
     username: 'Identifiant',
     password: 'Mot de passe',
     submit: 'Se connecter',
     submitting: 'Connexion…',
     accounts: 'Comptes de démonstration',
-    accountsHint: 'mot de passe : demo-<identifiant>',
+    accountsHint: 'Un clic remplit le formulaire.',
+    roles: {
+      operateur: 'Importe les pièces, revoit les champs, émet et encaisse',
+      validateur: 'Valide, numérote, crée les avoirs, lit le journal',
+      admin: 'Tous les droits, réinitialise la démonstration',
+    } as Record<string, string>,
     failed: 'Identifiant ou mot de passe incorrect.',
-    heroAlt:
-      'Facture en verre dépoli, validée d’une coche, flottant dans un cube de lumière au milieu du ciel',
+    back: 'Retour à l’accueil',
+    visualCaption: 'Chaque valeur lue garde son origine et sa confiance.',
+  },
+  hero: {
+    alt: 'Facture en verre dépoli, validée d’une coche, flottant dans un cube de lumière au milieu du ciel',
     callouts: {
       customer: { title: 'Client reconnu', detail: 'par son IFU · 95 %' },
       vat: { title: 'TVA recalculée', detail: 'par le moteur, au franc près' },
       quantity: { title: 'Quantité à confirmer', detail: '« 20 sacs » · 72 %' },
       corrected: { title: 'Corrigé par vous', detail: 'délai : 30 jours' },
     },
+  },
+  landing: {
+    nav: {
+      flow: 'Le parcours',
+      uncertainty: 'L’incertitude',
+      guarantees: 'Garanties',
+      measures: 'Mesures',
+    },
+    login: 'Se connecter',
+    tryDemo: 'Essayer la démo',
+    openApp: 'Ouvrir l’espace',
+    titleLight: 'De la pièce reçue',
+    titleBold: 'à la facture juste',
+    lead: 'Devis, bons de commande, messages WhatsApp : l’IA lit la pièce, vous confirmez ce qui est incertain, le moteur recalcule chaque franc. Rien n’est validé sans vous.',
+    flowTitle: ['Quatre gestes,', 'aucune ressaisie'],
+    flowLead:
+      'Le parcours complet d’une facture, de la pièce reçue au règlement, sur un seul écran à la fois.',
+    steps: {
+      read: {
+        title: 'Lire la pièce',
+        text: 'Fichier ou message collé : chaque champ est lu avec sa position exacte dans la pièce et un score de confiance.',
+      },
+      review: {
+        title: 'Revoir l’incertain',
+        text: 'Seul ce qui est douteux vous est soumis. Vous confirmez d’un clic ou corrigez la valeur.',
+      },
+      validate: {
+        title: 'Valider et numéroter',
+        text: 'Un validateur, qui n’est pas l’auteur du brouillon, valide. Le numéro est attribué sans trou ni doublon.',
+      },
+      send: {
+        title: 'Émettre et encaisser',
+        text: 'Envoi sur WhatsApp, SMS ou courriel, règlements mobile money : le solde se met à jour seul.',
+      },
+    },
+    samples: {
+      source: [
+        'Client : ',
+        'Entreprise Kpadonou et Fils',
+        '\n- ',
+        '20 sacs',
+        ' de Ciment CPJ 35 à ',
+        '5 500 FCFA',
+      ],
+      quantityLabel: 'Quantité · ligne 1',
+      quantityValue: '20 sacs',
+      quantityTag: 'À confirmer · 72 %',
+      termsLabel: 'Délai de paiement',
+      termsOld: '15 jours',
+      termsNew: '30 jours',
+      corrected: 'Corrigé',
+      customerLabel: 'Client',
+      customerValue: 'Entreprise Kpadonou et Fils',
+      confirmed: 'Confirmé',
+      validatedBy: 'validé par validateur · séparation des tâches',
+    },
+    sampleNumber: 'FA-2026-00001',
+    sampleMessage:
+      'Bonjour, voici votre facture FA-2026-00001 : 180 540 FCFA TTC, à régler avant le 20/12/2026.',
+    uncertaintyTitle: ['L’incertitude', 'se voit'],
+    uncertaintyLead:
+      'Une IA qui se trompe en silence coûte plus cher qu’une IA qui doute à voix haute. Chaque champ dit ce qu’on sait de lui, par sa forme, son mot et sa couleur.',
+    states: [
+      { tone: 'sure', label: 'Sûr', detail: 'Lu dans la pièce, confiance au-dessus du seuil' },
+      { tone: 'unsure', label: 'À confirmer', detail: 'Confiance trop basse : un humain tranche' },
+      {
+        tone: 'missing',
+        label: 'Absent de la pièce',
+        detail: 'Jamais inventé : le champ reste vide',
+      },
+      { tone: 'corrected', label: 'Corrigé', detail: 'La valeur humaine remplace la lecture' },
+    ],
+    guaranteesTitle: ['Ce que le moteur', 'garantit'],
+    guarantees: [
+      {
+        title: 'Calcul au franc près',
+        text: 'Montants en décimal exact, remises puis TVA par taux, arrondi lu dans la configuration.',
+      },
+      {
+        title: 'Aucune donnée inventée',
+        text: 'Un champ absent reste absent ; la validation est bloquée tant qu’un champ obligatoire manque.',
+      },
+      {
+        title: 'Numéro sans trou',
+        text: 'Attribué dans la transaction de validation : si elle échoue, le compteur n’avance pas.',
+      },
+      {
+        title: 'Validation à deux',
+        text: 'Celui qui prépare ne valide pas. Deux validations simultanées : une seule passe.',
+      },
+      {
+        title: 'Rejeu sans doublon',
+        text: 'Un double clic ou une reprise après coupure ne crée jamais deux règlements.',
+      },
+      {
+        title: 'Journal infalsifiable',
+        text: 'Chaque action est chaînée à la précédente par son empreinte ; une retouche casse la chaîne.',
+      },
+    ],
+    measuresTitle: ['Une IA', 'mesurée, pas promise'],
+    measuresLead:
+      'Évaluée sur un jeu de test fictif tenu à l’écart de la mise au point : 6 pièces, 51 champs.',
+    measures: [
+      { value: '90 %', label: 'des champs lus justes' },
+      { value: '0', label: 'fausse certitude au seuil de revue' },
+      { value: '7 / 7', label: 'absences reconnues comme telles' },
+    ],
+    measuresSource: 'Source : docs/ia/fiche-ia.md, extracteur local par règles, hors ligne.',
+    simulatedTitle: 'Ce qui est simulé, et le dit',
+    simulatedText:
+      'Les envois WhatsApp, SMS et courriel et les paiements mobile money sont simulés et marqués comme tels à l’écran. La lecture des pièces, le calcul, les contrôles, la numérotation et le journal sont réels.',
+    ctaTitle: ['Essayez avec', 'une vraie pièce'],
+    ctaLead:
+      'Trois comptes de démonstration vous attendent : opérateur, validateur, administrateur.',
+    footer:
+      'Prototype réalisé pour le hackathon BWAI 2026 · cas pratique 2, automatisation de la facturation.',
   },
   nav: {
     dashboard: 'Tableau',

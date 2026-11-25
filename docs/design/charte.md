@@ -68,8 +68,9 @@ l'interface : elle lit les anomalies calculées par le backend.
 
 | Écran | Route | Rôle |
 | --- | --- | --- |
-| Connexion | `/connexion` | Héros : rendu 3D de la facture en verre, quatre cartes d'annotation |
-| Tableau | `/` | Bento des compteurs, liste des factures |
+| Accueil | `/` | Landing publique : héros (rendu 3D annoté), parcours en quatre gestes, incertitude, garanties, mesures de l'IA, ce qui est simulé, appel final |
+| Connexion | `/connexion` | Page à part : formulaire et comptes de démonstration à gauche, visuel à droite |
+| Tableau | `/tableau` | Bento des compteurs, liste des factures |
 | Import | `/importer` | Fichier déposé ou message collé |
 | Revue | `/factures/:id` (brouillon) | Pièce à gauche, champs à droite, reliés au survol ; anomalies ; totaux ; validation |
 | Facture | `/factures/:id` (validée) | Lignes, totaux et solde, émission simulée, règlements, avoirs |
@@ -80,3 +81,5 @@ l'interface : elle lit les anomalies calculées par le backend.
 | Fichier | Origine |
 | --- | --- |
 | `frontend/src/assets/hero-facture-verre.webp` | Rendu 3D généré pour le projet le 26/11/2026, converti en WebP |
+| `frontend/src/assets/depot-pieces-verre.webp` | Objet 3D (dépôt de pièces), fond transparent, même date |
+| `frontend/src/assets/message-valide-verre.webp` | Objet 3D (message validé), fond transparent, même date |

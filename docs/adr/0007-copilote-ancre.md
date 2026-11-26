@@ -1,10 +1,10 @@
-# ADR 0007 : Un copilote ancré dans les données
+# ADR 0007 : Nera, un assistant ancré dans les données
 
 > Statut : accepté · Date : 2026-11-26 · Auteur : Ange-Marie
 
 ## Contexte
 
-Un assistant conversationnel aide l'opérateur et le validateur : pourquoi une facture est
+Nera, l'assistant conversationnel du produit, aide l'opérateur et le validateur : pourquoi une facture est
 bloquée, d'où vient un total, quelles factures relancer. Un assistant qui affirme un chiffre faux
 détruirait la confiance que le reste du produit construit (calcul exact, journal chaîné).
 

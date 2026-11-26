@@ -14,4 +14,4 @@ de la [doctrine de documentation](../conventions/documentation.md#6-décisions-d
 | [0004](0004-frontend-react.md) | Frontend en React | accepté | 2026-11-24 |
 | [0005](0005-simulation-des-integrations.md) | Simulation des intégrations externes | accepté | 2026-11-25 |
 | [0006](0006-verification-publique.md) | Vérification publique par QR code | accepté | 2026-11-26 |
-| [0007](0007-copilote-ancre.md) | Copilote ancré dans les données | accepté | 2026-11-26 |
+| [0007](0007-copilote-ancre.md) | Nera, assistant ancré dans les données | accepté | 2026-11-26 |

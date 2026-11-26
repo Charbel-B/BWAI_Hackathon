@@ -479,9 +479,9 @@ export const fr = {
     logout: 'Se déconnecter',
   },
   assistant: {
-    name: 'Copilote',
-    open: 'Ouvrir le copilote',
-    close: 'Fermer le copilote',
+    name: 'Nera',
+    open: 'Ouvrir Nera',
+    close: 'Fermer Nera',
     intro:
       'Je réponds à partir des données de l’application, sans rien inventer. Chaque réponse dit d’où elle vient.',
     engine: (name: string) => `Moteur : ${name}`,

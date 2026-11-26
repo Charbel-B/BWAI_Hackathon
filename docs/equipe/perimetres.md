@@ -13,7 +13,7 @@ portée à utiliser dans les messages de commit et les noms de branche
 | Ange-Marie | Lead : architecture, conventions, contrats partagés, frontend, intégration ; depuis le 25/11, aussi backend, API et cycle de vie |
 | Charbel | IA : extraction, évaluation, fiche IA ; depuis le 25/11, aussi métier, référentiels, documents et canaux |
 
-Le copilote (moteur et panneau) est porté par Ange-Marie depuis le 26/11.
+Nera, l'assistant (moteur et panneau), est porté par Ange-Marie depuis le 26/11.
 
 Depuis le 25/11/2026, le développement est assuré à deux : les périmètres de Promis et de Grâce sont
 repris comme indiqué ci-dessous.

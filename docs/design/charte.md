@@ -90,6 +90,7 @@ l'interface : elle lit les anomalies calculées par le backend.
 | Import | `/importer` | Fichier déposé ou message collé |
 | Revue | `/factures/:id` (brouillon) | Pièce à gauche, champs à droite, reliés au survol ; anomalies ; totaux ; validation |
 | Facture | `/factures/:id` (validée) | Lignes, totaux et solde, émission simulée, règlements, avoirs |
+| Recouvrement | `/recouvrement` | Reste à encaisser, retards et échéances proches (totaux du backend) ; par facture, étapes de relance (envoyée, du jour, à venir), bouton d'envoi et historique des messages |
 | Journal | `/journal` | Entrées chaînées et vérification de la chaîne |
 | Vérification | `/verifier/:id?code=` | Page publique ouverte par le QR code : verdict, données essentielles, empreinte, état du journal |
 | Paramètres | `/parametres` | Profil et droits du rôle, mot de passe (simulé, signalé), canal d'émission préféré (enregistré sur l'appareil), informations système réelles, réinitialisation de la démo (administrateur) |
@@ -112,3 +113,4 @@ transparent sauf le héros).
 | `jetons-regles-verre.webp` | Tableau, carte « Réglées » |
 | `plateau-vide-verre.webp` | Tableau, liste vide |
 | `bouclier-qr-verre.webp` | Page publique de vérification |
+| `cloche-relances-verre.webp` | Page Recouvrement |

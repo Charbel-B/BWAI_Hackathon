@@ -1297,6 +1297,115 @@
           }
         }
       }
+    },
+    "/api/v1/receivables": {
+      "get": {
+        "tags": [
+          "recouvrement"
+        ],
+        "summary": "List Receivables",
+        "description": "Factures validées avec un reste dû, les plus en retard d'abord.",
+        "operationId": "list_receivables_api_v1_receivables_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceivablesOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/{invoice_id}/reminders": {
+      "post": {
+        "tags": [
+          "recouvrement"
+        ],
+        "summary": "Send Reminder",
+        "description": "Envoie la relance due aujourd'hui, sur le canal préféré du client (simulé).",
+        "operationId": "send_reminder_api_v1_invoices__invoice_id__reminders_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReminderOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2398,6 +2507,25 @@
         "title": "LoginIn",
         "description": "Identifiants."
       },
+      "NextStepOut": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "label"
+        ],
+        "title": "NextStepOut",
+        "description": "Relance à envoyer aujourd'hui."
+      },
       "PaymentIn": {
         "properties": {
           "amount": {
@@ -2480,6 +2608,161 @@
         ],
         "title": "PaymentOut",
         "description": "Règlement simulé."
+      },
+      "ReceivableOut": {
+        "properties": {
+          "invoice": {
+            "$ref": "#/components/schemas/InvoiceSummaryOut"
+          },
+          "amount_due": {
+            "type": "string",
+            "title": "Amount Due"
+          },
+          "due_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due Date"
+          },
+          "standing": {
+            "type": "string",
+            "title": "Standing"
+          },
+          "days_late": {
+            "type": "integer",
+            "title": "Days Late"
+          },
+          "next_step": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NextStepOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reminders": {
+            "items": {
+              "$ref": "#/components/schemas/ReminderOut"
+            },
+            "type": "array",
+            "title": "Reminders"
+          }
+        },
+        "type": "object",
+        "required": [
+          "invoice",
+          "amount_due",
+          "due_date",
+          "standing",
+          "days_late",
+          "next_step",
+          "reminders"
+        ],
+        "title": "ReceivableOut",
+        "description": "Facture non soldée et sa situation."
+      },
+      "ReceivablesOut": {
+        "properties": {
+          "outstanding": {
+            "type": "string",
+            "title": "Outstanding"
+          },
+          "overdue_count": {
+            "type": "integer",
+            "title": "Overdue Count"
+          },
+          "overdue_amount": {
+            "type": "string",
+            "title": "Overdue Amount"
+          },
+          "due_soon_count": {
+            "type": "integer",
+            "title": "Due Soon Count"
+          },
+          "due_soon_amount": {
+            "type": "string",
+            "title": "Due Soon Amount"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/StepOut"
+            },
+            "type": "array",
+            "title": "Steps"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReceivableOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outstanding",
+          "overdue_count",
+          "overdue_amount",
+          "due_soon_count",
+          "due_soon_amount",
+          "steps",
+          "items"
+        ],
+        "title": "ReceivablesOut",
+        "description": "Échéancier, ses totaux et les étapes de relance configurées."
+      },
+      "ReminderOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "step": {
+            "type": "string",
+            "title": "Step"
+          },
+          "channel": {
+            "type": "string",
+            "title": "Channel"
+          },
+          "recipient": {
+            "type": "string",
+            "title": "Recipient"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "sent_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Sent At"
+          },
+          "is_simulated": {
+            "type": "boolean",
+            "title": "Is Simulated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "step",
+          "channel",
+          "recipient",
+          "message",
+          "sent_at",
+          "is_simulated"
+        ],
+        "title": "ReminderOut",
+        "description": "Relance envoyée (simulée)."
       },
       "ResolveIn": {
         "properties": {
@@ -2575,6 +2858,30 @@
         ],
         "title": "ReviewOut",
         "description": "Décision humaine sur un champ."
+      },
+      "StepOut": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "offset_days": {
+            "type": "integer",
+            "title": "Offset Days"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "label",
+          "offset_days"
+        ],
+        "title": "StepOut",
+        "description": "Étape de relance configurée."
       },
       "TokenOut": {
         "properties": {

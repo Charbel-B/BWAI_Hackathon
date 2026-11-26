@@ -10,6 +10,7 @@ import { AuditPage } from '@/features/audit/audit-page'
 import { DashboardPage } from '@/features/invoices/dashboard-page'
 import { InvoicePage } from '@/features/invoices/invoice-page'
 import { ImportPage } from '@/features/import/import-page'
+import { CollectionPage } from '@/features/collection/collection-page'
 import { SettingsPage } from '@/features/settings/settings-page'
 import { VerificationPage } from '@/features/verification/verification-page'
 
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
           { path: paths.dashboard, element: <DashboardPage /> },
           { path: paths.import, element: <ImportPage /> },
           { path: paths.invoicePattern, element: <InvoicePage /> },
+          { path: paths.collection, element: <CollectionPage /> },
           { path: paths.audit, element: <AuditPage /> },
           { path: paths.settings, element: <SettingsPage /> },
         ],

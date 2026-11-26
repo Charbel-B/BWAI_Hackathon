@@ -15,6 +15,7 @@ from pydantic import TypeAdapter
 
 from invoicing.application.ports import StoredResponse
 from invoicing.domain.audit import GENESIS_HASH, AuditEntry, AuditEvent, chain
+from invoicing.domain.collection import Reminder
 from invoicing.domain.documents import SourceDocument
 from invoicing.domain.invoice import Invoice, InvoiceStatus
 from invoicing.domain.settlement import CreditNote, Dispatch, Payment
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS invoices (
 CREATE TABLE IF NOT EXISTS credit_notes (id TEXT PRIMARY KEY, invoice_id TEXT, body TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS payments (id TEXT PRIMARY KEY, invoice_id TEXT, body TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS dispatches (id TEXT PRIMARY KEY, invoice_id TEXT, body TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS reminders (id TEXT PRIMARY KEY, invoice_id TEXT, body TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS sequences (series TEXT, year INTEGER, value INTEGER NOT NULL,
     PRIMARY KEY (series, year));
 CREATE TABLE IF NOT EXISTS audit_log (seq INTEGER PRIMARY KEY, entity_id TEXT, body TEXT NOT NULL);
@@ -44,6 +46,7 @@ _DATA_TABLES = (
     "credit_notes",
     "payments",
     "dispatches",
+    "reminders",
     "sequences",
     "idempotency",
 )
@@ -53,6 +56,7 @@ _INV = TypeAdapter(Invoice)
 _CRN = TypeAdapter(CreditNote)
 _PAY = TypeAdapter(Payment)
 _DSP = TypeAdapter(Dispatch)
+_REM = TypeAdapter(Reminder)
 _AUD = TypeAdapter(AuditEntry)
 _IDEM = TypeAdapter(StoredResponse)
 
@@ -157,6 +161,16 @@ class SqliteTransaction:
         self._c.execute(
             "INSERT INTO dispatches VALUES (?, ?, ?)",
             (dispatch.id, dispatch.invoice_id, _json(_DSP, dispatch)),
+        )
+
+    def reminders_for(self, invoice_id: str) -> list[Reminder]:
+        sql = "SELECT body FROM reminders WHERE invoice_id = ? ORDER BY rowid"
+        return [_REM.validate_json(b) for b in self._all(sql, invoice_id)]
+
+    def add_reminder(self, reminder: Reminder) -> None:
+        self._c.execute(
+            "INSERT INTO reminders VALUES (?, ?, ?)",
+            (reminder.id, reminder.invoice_id, _json(_REM, reminder)),
         )
 
     def next_sequence(self, series: str, year: int) -> int:

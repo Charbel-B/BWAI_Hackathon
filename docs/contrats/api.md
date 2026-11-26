@@ -40,6 +40,8 @@ départ et reste à jour avec lui.
 | `POST /credit-notes/{id}/validate` | VALIDATOR | Valider et numéroter l'avoir |
 | `GET /audit-log` | VALIDATOR | Journal filtrable par entité |
 | `GET /audit-log/verify` | VALIDATOR | Vérifie la chaîne d'empreintes du journal |
+| `GET /receivables` | OPERATOR | Échéancier des factures validées non soldées : situation (`OVERDUE`, `DUE_SOON`, `NOT_DUE`, `NO_DUE_DATE`), jours de retard, prochaine relance, relances envoyées, totaux et étapes configurées |
+| `POST /invoices/{id}/reminders` | OPERATOR | Envoie la relance due aujourd'hui sur le canal préféré du client (simulé) ; 422 si aucune n'est due |
 | `GET /public/verify/{invoice_id}?code=...` | aucun | Vérification publique d'une facture validée ([ADR 0006](../adr/0006-verification-publique.md)) : `AUTHENTIC`, `CANCELLED`, `ALTERED` ou `UNKNOWN` |
 | `POST /admin/reset` | ADMIN | Réinitialise les données de démonstration ; désactivé hors mode démonstration |
 

@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from invoicing.application.context import NumberingFormats
 from invoicing.domain.calculation import CalculationRules
+from invoicing.domain.collection import CollectionRules, ReminderStep
 from invoicing.domain.controls import ControlRules
 from invoicing.domain.invoice import Severity
 
@@ -63,6 +64,18 @@ class _Account(_Strict):
     mot_de_passe_scrypt: str
 
 
+class _Step(_Strict):
+    code: str
+    libelle: str
+    decalage_jours: int
+    modele: str
+
+
+class _Reminders(_Strict):
+    bientot_du_jours: int = 3
+    etapes: list[_Step]
+
+
 class _Accounts(_Strict):
     comptes: list[_Account]
 
@@ -76,6 +89,7 @@ class BusinessConfig(_Strict):
     securite: _Security
     canaux: _Channels
     utilisateurs: _Accounts
+    relances: _Reminders
 
     def calculation_rules(self) -> CalculationRules:
         """Règles de calcul du domaine."""
@@ -96,6 +110,14 @@ class BusinessConfig(_Strict):
             severities=dict(self.controles.gravites),
         )
 
+    def collection_rules(self) -> CollectionRules:
+        """Étapes de relance du domaine."""
+        steps = tuple(
+            ReminderStep(s.code, s.libelle, s.decalage_jours, s.modele)
+            for s in self.relances.etapes
+        )
+        return CollectionRules(self.relances.bientot_du_jours, steps)
+
     def numbering(self) -> NumberingFormats:
         """Formats de numérotation."""
         return NumberingFormats(self.numerotation.facture, self.numerotation.avoir)
@@ -107,5 +129,13 @@ def _read(path: Path) -> Any:
 
 def load_business_config(config_dir: Path) -> BusinessConfig:
     """Lit les six fichiers de règles et les valide ensemble."""
-    names = ("calcul", "controles", "numerotation", "securite", "canaux", "utilisateurs")
+    names = (
+        "calcul",
+        "controles",
+        "numerotation",
+        "securite",
+        "canaux",
+        "utilisateurs",
+        "relances",
+    )
     return BusinessConfig.model_validate({n: _read(config_dir / f"{n}.yaml") for n in names})

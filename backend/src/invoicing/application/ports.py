@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Protocol
 
 from invoicing.domain.audit import AuditEntry, AuditEvent
+from invoicing.domain.collection import Reminder
 from invoicing.domain.documents import SourceDocument
 from invoicing.domain.extraction import ExtractedField
 from invoicing.domain.invoice import Invoice, InvoiceStatus
@@ -54,6 +55,8 @@ class Transaction(Protocol):
     def payments_for(self, invoice_id: str) -> list[Payment]: ...
     def add_payment(self, payment: Payment) -> None: ...
     def dispatches_for(self, invoice_id: str) -> list[Dispatch]: ...
+    def reminders_for(self, invoice_id: str) -> list[Reminder]: ...
+    def add_reminder(self, reminder: Reminder) -> None: ...
     def add_dispatch(self, dispatch: Dispatch) -> None: ...
     def next_sequence(self, series: str, year: int) -> int:
         """Valeur suivante du compteur ; annulée avec la transaction si elle échoue."""
@@ -84,6 +87,9 @@ class Channel(Protocol):
     """Canal d'émission (WhatsApp, SMS, courriel). Simulé dans ce prototype."""
 
     def send(self, invoice: Invoice, customer: Customer | None, channel: str) -> SentMessage: ...
+    def send_text(self, customer: Customer | None, channel: str, message: str) -> SentMessage:
+        """Envoie un message déjà rédigé (relance)."""
+        ...
 
 
 class UserDirectory(Protocol):

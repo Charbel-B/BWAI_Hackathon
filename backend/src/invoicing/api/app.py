@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from fastapi import APIRouter, FastAPI
 from pydantic import BaseModel
 
-from invoicing.api import routes_documents, routes_invoices, routes_system
+from invoicing.api import routes_documents, routes_invoices, routes_public, routes_system
 from invoicing.api.errors import install_error_handlers
 from invoicing.api.idempotency import IdempotencyMiddleware
 from invoicing.application.context import Context
@@ -68,5 +68,6 @@ def create_api(info: AppInfo, services: Services) -> FastAPI:
     router.include_router(routes_system.router)
     router.include_router(routes_documents.router)
     router.include_router(routes_invoices.router)
+    router.include_router(routes_public.router)
     app.include_router(router)
     return app

@@ -202,7 +202,7 @@ def validate(ctx: Context, user: User, invoice_id: str, version: int) -> Invoice
             "invoice.validated",
             (ENTITY, invoice.id),
             _state(invoice),
-            _state(updated),
+            {**_state(updated), "content_sha256": updated.content_sha256},
         )
     return updated
 

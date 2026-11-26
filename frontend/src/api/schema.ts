@@ -385,6 +385,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/public/verify/{invoice_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Verify Invoice
+         * @description Authentique, annulée par avoir, altérée, ou inconnue (code faux ou facture absente).
+         */
+        get: operations["verify_invoice_api_v1_public_verify__invoice_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -707,6 +727,8 @@ export interface components {
             validated_at: string | null;
             /** Config Sha256 */
             config_sha256: string | null;
+            /** Verification Code */
+            verification_code: string | null;
         };
         /**
          * InvoiceStatus
@@ -915,6 +937,28 @@ export interface components {
             base: string;
             /** Amount */
             amount: string;
+        };
+        /**
+         * VerificationOut
+         * @description Ce qu'un client voit en scannant le QR code : le strict nécessaire, rien de plus.
+         */
+        VerificationOut: {
+            /** Verdict */
+            verdict: string;
+            /** Number */
+            number?: string | null;
+            /** Customer Name */
+            customer_name?: string | null;
+            /** Issue Date */
+            issue_date?: string | null;
+            /** Gross Total */
+            gross_total?: string | null;
+            /** Validated At */
+            validated_at?: string | null;
+            /** Content Sha256 */
+            content_sha256?: string | null;
+            /** Journal Intact */
+            journal_intact?: boolean | null;
         };
     };
     responses: never;
@@ -1581,6 +1625,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CreditNoteOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verify_invoice_api_v1_public_verify__invoice_id__get: {
+        parameters: {
+            query?: {
+                code?: string;
+            };
+            header?: never;
+            path: {
+                invoice_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerificationOut"];
                 };
             };
             /** @description Validation Error */

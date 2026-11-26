@@ -478,6 +478,43 @@ export const fr = {
     session: 'Session',
     logout: 'Se déconnecter',
   },
+  verify: {
+    panelTitle: 'Vérification',
+    panelText:
+      'Le client scanne ce code pour vérifier que la facture est authentique et n’a pas été modifiée depuis sa validation.',
+    open: 'Ouvrir la page de vérification',
+    code: 'Code',
+    pageTitle: 'Vérification de facture',
+    checking: 'Vérification en cours…',
+    verdicts: {
+      AUTHENTIC: {
+        title: 'Facture authentique',
+        text: 'Son contenu est identique à celui validé et inscrit au journal.',
+      },
+      CANCELLED: {
+        title: 'Facture annulée',
+        text: 'Elle est authentique, mais a été entièrement annulée par un avoir.',
+      },
+      ALTERED: {
+        title: 'Facture altérée',
+        text: 'Son contenu ne correspond plus à celui validé. Ne la réglez pas et contactez l’émetteur.',
+      },
+      UNKNOWN: {
+        title: 'Facture introuvable',
+        text: 'Ce code ne correspond à aucune facture validée.',
+      },
+    } as Record<string, { title: string; text: string }>,
+    number: 'Numéro',
+    customer: 'Client',
+    date: 'Date',
+    total: 'Montant TTC',
+    validatedAt: 'Validée le',
+    fingerprint: 'Empreinte du contenu',
+    journal: 'Journal d’audit',
+    journalOk: 'Chaîne intacte',
+    journalKo: 'Chaîne rompue',
+    how: 'Comment c’est vérifié : à la validation, l’empreinte du contenu est calculée et inscrite dans un journal chaîné. Ici, elle est recalculée et comparée.',
+  },
   errors: {
     generic: 'Une erreur est survenue. Réessayez.',
     VERSION_CONFLICT: 'Quelqu’un a modifié cette facture entre-temps. La page a été rechargée.',

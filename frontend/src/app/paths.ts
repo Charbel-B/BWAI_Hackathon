@@ -8,4 +8,6 @@ export const paths = {
   invoicePattern: '/factures/:invoiceId',
   audit: '/journal',
   settings: '/parametres',
+  verify: (id: string, code: string) => `/verifier/${id}?code=${code}`,
+  verifyPattern: '/verifier/:invoiceId',
 } as const

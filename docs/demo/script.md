@@ -25,6 +25,7 @@ docker compose up --build     # puis http://localhost:8080
 | 1:45 | Revue | Survoler les champs | Confiance par champ, source surlignée dans la pièce |
 | 2:15 | Onglet validateur | Se connecter en `validateur`, ouvrir le brouillon, **Valider** | Numéro `FA-2026-00001` attribué dans la transaction ; empreinte des règles enregistrée |
 | 2:45 | Facture | **WhatsApp**, puis règlement de 80 000 en mobile money | Message exact composé, marqué « simulé » ; statut « Partiellement réglée » calculé |
+| 3:15 | Facture | Panneau « Vérification » : ouvrir la page de vérification | Page publique sans connexion : « Facture authentique », empreinte, journal intact. On peut aussi scanner le QR avec un téléphone sur le même réseau |
 | 3:30 | Importer (opérateur) | Coller le scénario 2 (`02-a-corriger`) | Date absente : champ hachuré « Absent de la pièce », validation bloquée, rien n'est inventé |
 | 4:00 | Revue | **Saisir** `2026-11-25` sur la date | Le brouillon se recalcule (version + 1), l'anomalie disparaît, 92 040 TTC |
 | 4:30 | Importer | Coller le scénario 3 (`03-bloque`) | Client hors référentiel et total lu faux : le moteur impose 219 480 TTC, deux points bloquants |

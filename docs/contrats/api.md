@@ -1,6 +1,6 @@
 # Contrat d'API
 
-> Statut : en vigueur · Mis à jour : 2026-11-25 · Responsable : Ange-Marie
+> Statut : en vigueur · Mis à jour : 2026-11-26 · Responsable : Ange-Marie
 
 Préfixe : `/api/v1`. JSON en entrée et en sortie, sauf envoi de fichier et PDF. Le schéma
 OpenAPI généré par FastAPI fait foi une fois le code écrit ; ce document en est la référence de
@@ -29,7 +29,7 @@ départ et reste à jour avec lui.
 | `POST /source-documents/{id}/fields/{name}/review` | OPERATOR | Confirmer ou corriger un champ : `{"action": "confirm"}` ou `{"action": "correct", "value": "..."}`. Un champ absent peut être saisi par `correct`. Les brouillons de la pièce sont recalculés (version + 1) |
 | `POST /invoices` | OPERATOR | Nouveau brouillon depuis une pièce déjà importée (par exemple après un avoir total) : `{"source_document_id": "..."}` |
 | `GET /invoices` | OPERATOR | Liste filtrable par statut |
-| `GET /invoices/{id}` | OPERATOR | Facture, totaux, anomalies, statut de paiement |
+| `GET /invoices/{id}` | OPERATOR | Facture, totaux, anomalies, statut de paiement, `verification_code` (code du QR, une fois validée) |
 | `POST /invoices/{id}/anomalies/{anomaly_id}/resolve` | OPERATOR | Résoudre avec justification |
 | `POST /invoices/{id}/validate` | VALIDATOR | Valider et numéroter |
 | `POST /invoices/{id}/discard` | OPERATOR | Abandonner un brouillon |
@@ -40,6 +40,7 @@ départ et reste à jour avec lui.
 | `POST /credit-notes/{id}/validate` | VALIDATOR | Valider et numéroter l'avoir |
 | `GET /audit-log` | VALIDATOR | Journal filtrable par entité |
 | `GET /audit-log/verify` | VALIDATOR | Vérifie la chaîne d'empreintes du journal |
+| `GET /public/verify/{invoice_id}?code=...` | aucun | Vérification publique d'une facture validée ([ADR 0006](../adr/0006-verification-publique.md)) : `AUTHENTIC`, `CANCELLED`, `ALTERED` ou `UNKNOWN` |
 | `POST /admin/reset` | ADMIN | Réinitialise les données de démonstration ; désactivé hors mode démonstration |
 
 Une correction de brouillon passe toujours par la revue d'un champ de la pièce : la pièce reste

@@ -85,7 +85,7 @@ l'interface : elle lit les anomalies calculées par le backend.
 | Écran | Route | Rôle |
 | --- | --- | --- |
 | Accueil | `/` | Landing publique : héros (rendu 3D annoté), parcours en quatre gestes, incertitude, garanties, mesures de l'IA, ce qui est simulé, appel final |
-| Connexion | `/connexion` | Page à part : formulaire et comptes de démonstration à gauche, visuel à droite |
+| Connexion | `/connexion` | Page à part : formulaire et comptes de démonstration à gauche ; à droite, la scène du rôle (opérateur : message lu et champs ; validateur : coup de cachet et numéro ; admin : journal chaîné), qui défile seule et se cale sur le compte choisi |
 | Tableau | `/tableau` | Bento des compteurs, liste des factures |
 | Import | `/importer` | Fichier déposé ou message collé |
 | Revue | `/factures/:id` (brouillon) | Pièce à gauche, champs à droite, reliés au survol ; anomalies ; totaux ; validation |
@@ -104,7 +104,7 @@ transparent sauf le héros).
 | `hero-facture-verre.webp` | Héros de la landing |
 | `loupe-lecture-verre.webp` | Landing, étape « Lire la pièce » |
 | `message-valide-verre.webp` | Landing, étape « Émettre et encaisser » |
-| `cadenas-verre.webp` | Page de connexion |
+| `cadenas-verre.webp` | Page de connexion, pastille « session sécurisée » |
 | `depot-pieces-verre.webp` | Zone d'import |
 | `bac-arrivee-verre.webp` | Tableau, carte « À traiter » |
 | `cachet-verre.webp` | Tableau, carte « Validées » |

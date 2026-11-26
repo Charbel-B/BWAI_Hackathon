@@ -3,9 +3,9 @@ import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router'
 
 import { paths } from '@/app/paths'
-import uploadImage from '@/assets/depot-pieces-verre.webp'
-import heroImage from '@/assets/hero-facture-verre.webp'
-import messageImage from '@/assets/message-valide-verre.webp'
+import inboxImage from '@/assets/bac-arrivee-verre.webp'
+import stampImage from '@/assets/cachet-verre.webp'
+import tokensImage from '@/assets/jetons-regles-verre.webp'
 import { Button } from '@/components/button'
 import { CountUp } from '@/components/count-up'
 import { Reveal } from '@/components/reveal'
@@ -66,8 +66,8 @@ export function DashboardBento({
       <Reveal index={0} className="grid lg:row-span-2">
         <div className="sky relative isolate flex min-h-[260px] flex-col justify-between gap-6 overflow-hidden rounded-card p-7 text-white shadow-card">
           <Backdrop
-            src={heroImage}
-            className="top-0 right-[-18%] -z-10 h-full w-auto max-w-none opacity-90 [mask-image:linear-gradient(to_right,transparent_0,transparent_18%,#000_62%)]"
+            src={inboxImage}
+            className="right-[-7%] bottom-[-16%] -z-10 w-[min(50%,250px)] drop-shadow-[var(--shadow-object)]"
           />
           <span className="label text-white/80">{t.toReview}</span>
           <div>
@@ -75,7 +75,7 @@ export function DashboardBento({
               value={drafts}
               className="tabular block text-[72px] leading-none tracking-[-0.04em]"
             />
-            <p className="mt-2 max-w-[24ch] text-[15px] text-white/90">
+            <p className="mt-2 max-w-[20ch] text-[15px] text-white/90">
               {t.toReviewDetail(drafts)}
             </p>
           </div>
@@ -93,8 +93,8 @@ export function DashboardBento({
 
       <Card index={1} className="bg-white shadow-card">
         <Backdrop
-          src={messageImage}
-          className="right-[-28px] bottom-[-34px] -z-10 w-[170px] opacity-70 [mask-image:radial-gradient(circle_at_70%_70%,#000_35%,transparent_75%)]"
+          src={stampImage}
+          className="right-[-18px] bottom-[-26px] -z-10 w-[150px] opacity-90 [mask-image:radial-gradient(circle_at_65%_65%,#000_45%,transparent_78%)]"
         />
         <span className="label text-ink-soft">{fr.status.VALIDATED}</span>
         <CountUp value={live} className={figure} />
@@ -115,8 +115,8 @@ export function DashboardBento({
         className="bg-[linear-gradient(160deg,var(--color-sky-wash),var(--color-ice))] shadow-card"
       >
         <Backdrop
-          src={uploadImage}
-          className="right-[-24px] bottom-[-30px] -z-10 w-[160px] opacity-60 [mask-image:radial-gradient(circle_at_70%_70%,#000_35%,transparent_75%)]"
+          src={tokensImage}
+          className="right-[-14px] bottom-[-24px] -z-10 w-[140px] opacity-90 [mask-image:radial-gradient(circle_at_65%_65%,#000_45%,transparent_78%)]"
         />
         <span className="label text-ink-soft">{fr.payment.PAID}</span>
         <CountUp value={paid} className={figure} />

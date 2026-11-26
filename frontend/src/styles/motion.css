@@ -127,3 +127,44 @@
     transition: opacity 300ms ease;
   }
 }
+
+/* Coup de cachet : la frappe descend, l'empreinte apparaît. */
+@keyframes stamp {
+  0% {
+    opacity: 0;
+    transform: translateY(-28px) scale(1.15) rotate(-8deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(0.96) rotate(-8deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-8deg);
+  }
+}
+
+.stamp {
+  animation: stamp 700ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 520ms);
+}
+
+/* Lien du journal qui se trace entre deux blocs. */
+@keyframes link {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+.chain-link {
+  transform-origin: top;
+  animation: link 420ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 160ms + 380ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp,
+  .chain-link {
+    animation: none;
+  }
+}

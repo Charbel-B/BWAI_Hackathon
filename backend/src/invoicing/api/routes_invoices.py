@@ -1,9 +1,10 @@
 """Routes des factures : brouillon, anomalies, validation, émission, règlements, avoirs."""
 
+import re
 from dataclasses import dataclass
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 
 from invoicing.api.deps import Ctx
 from invoicing.api.schemas import (
@@ -52,6 +53,24 @@ def create_invoice(ctx: Ctx, user: Operator, body: CreateInvoiceIn) -> InvoiceOu
 def get_invoice(ctx: Ctx, _: Operator, invoice_id: str) -> InvoiceOut:
     """Facture, totaux, anomalies et statut de paiement dérivé."""
     return _read(ctx, invoice_id)
+
+
+@router.get("/invoices/{invoice_id}/pdf")
+def get_invoice_pdf(ctx: Ctx, _: Operator, invoice_id: str) -> Response:
+    """Brouillon ou facture en PDF (mention BROUILLON si non validée)."""
+    if ctx.renderer is None:
+        return Response(status_code=501)
+    with ctx.store.transaction() as tx:
+        invoice = invoices.load(tx, invoice_id)
+    customer = ctx.referentials.customer(invoice.content.customer_id)
+    pdf_bytes = ctx.renderer.render_pdf(invoice, customer)
+    raw_name = invoice.number or f"brouillon-{invoice.id}"
+    filename = re.sub(r"[^A-Za-z0-9._-]", "_", raw_name)
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'inline; filename="{filename}.pdf"'},
+    )
 
 
 @dataclass(frozen=True, slots=True)

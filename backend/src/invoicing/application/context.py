@@ -6,7 +6,14 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime
 
-from invoicing.application.ports import Channel, Clock, Extractor, Store, Transaction
+from invoicing.application.ports import (
+    Channel,
+    Clock,
+    DocumentRenderer,
+    Extractor,
+    Store,
+    Transaction,
+)
 from invoicing.domain.audit import AuditData, AuditEvent
 from invoicing.domain.calculation import CalculationRules
 from invoicing.domain.controls import ControlRules
@@ -42,6 +49,7 @@ class Context:
     active_channels: tuple[str, ...]
     config_sha256: str
     demo_mode: bool
+    renderer: DocumentRenderer | None = None
 
     def now(self) -> datetime:
         """Instant courant selon l'horloge injectée."""

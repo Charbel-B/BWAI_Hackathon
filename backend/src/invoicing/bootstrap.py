@@ -15,6 +15,7 @@ from invoicing.infrastructure.clock import SystemClock
 from invoicing.infrastructure.config_files import config_sha256
 from invoicing.infrastructure.extraction_config import load_extraction_config
 from invoicing.infrastructure.gemini_extractor import GeminiConfig, GeminiExtractor
+from invoicing.infrastructure.pdf_renderer import HtmlPdfDocumentRenderer
 from invoicing.infrastructure.referentials_csv import load_referentials
 from invoicing.infrastructure.simulated_channel import SimulatedChannel
 from invoicing.infrastructure.sqlite_store import SqliteStore
@@ -70,6 +71,7 @@ def create_app(settings: Settings | None = None, clock: Clock | None = None) -> 
         active_channels=tuple(business.canaux.actifs),
         config_sha256=fingerprint,
         demo_mode=settings.demo_mode,
+        renderer=HtmlPdfDocumentRenderer(),
     )
     accounts = [
         account(a.identifiant, a.nom, a.role, a.mot_de_passe_scrypt)

@@ -1,6 +1,6 @@
 # Facturation assistée : de la pièce commerciale à la facture validée
 
-> Statut : en construction · Mis à jour : 2026-11-25
+> Statut : en vigueur · Mis à jour : 2026-11-26
 
 Prototype réalisé pour le hackathon BWAI 2026, cas pratique 2 « Automatisation de la
 facturation ». Il transforme une pièce commerciale (devis, bon de commande ou message) en
@@ -30,7 +30,32 @@ docker compose down          # arrêt ; les données restent dans le volume « d
 ```
 
 L'API (Python) et l'interface (servie par nginx, qui relaie `/api` vers l'API) tournent dans
-deux conteneurs. Déroulé de démonstration : [docs/demo/script.md](docs/demo/script.md).
+deux conteneurs. Déroulé de démonstration : [docs/demo/script.md](docs/demo/script.md) ;
+reprise après interruption : [docs/demo/reprise.md](docs/demo/reprise.md) ; rapport :
+[docs/rapport/rapport.md](docs/rapport/rapport.md) ; fiche IA : [docs/ia/fiche-ia.md](docs/ia/fiche-ia.md).
+
+## Configuration
+
+| Où | Quoi |
+| --- | --- |
+| `config/*.yaml` | Toutes les règles métier : calcul et taxes, contrôles et seuils, numérotation, sécurité, canaux, relances, émetteur, comptes. Détail : [config/README.md](config/README.md). Modifier un fichier change l'empreinte enregistrée sur les factures validées ensuite |
+| `data/referentiels/` | Clients et articles (CSV) |
+| Variables `INVOICING_*` (voir `.env.example`) | `INVOICING_DEMO_MODE`, `INVOICING_DATABASE_PATH`, `INVOICING_GEMINI_API_KEY` (facultative : sans elle, l'extraction reste locale et hors ligne) |
+
+## Dépendances
+
+Versions verrouillées dans `backend/uv.lock` et `frontend/package-lock.json` ; liste et licences :
+[THIRD_PARTY.md](THIRD_PARTY.md).
+
+## Reproduire les scénarios et les mesures
+
+```bash
+make test                                                              # tous les tests
+cd backend && uv run pytest tests/integration/test_demo_scenarios.py   # les 3 scénarios de démonstration
+cd backend && uv run python -m invoicing.infrastructure.dataset_eval --split controle   # mesure de l'IA
+```
+
+Pièces des scénarios : `data/scenarios/` ; jeux d'évaluation : `data/pieces/`.
 
 ## Comptes de démonstration
 

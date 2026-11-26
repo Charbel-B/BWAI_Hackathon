@@ -13,7 +13,7 @@ de ces deux critères.
 | Unitaire | Une fonction ou une classe du cœur métier, isolée | pytest | `tests/unit/` |
 | Propriétés | Des invariants du calcul vérifiés sur des milliers d'entrées générées | Hypothesis | `tests/unit/` |
 | Intégration | API + base de données + métier ensemble, sur une base jetable | pytest, client de test FastAPI | `tests/integration/` |
-| Scénarios | Les parcours de démonstration de bout en bout, dont la reprise après interruption | **[À COMPLÉTER]** selon le choix du frontend | `tests/e2e/` |
+| Scénarios | Les parcours de démonstration de bout en bout, dont la reprise après interruption | pytest, client de test FastAPI | `tests/integration/test_demo_scenarios.py`, `test_reprise.py` |
 
 L'**évaluation de l'IA** n'est pas un test : c'est une mesure (précision par champ, erreurs
 observées), lancée par une commande séparée et publiée dans la fiche IA. Les tests, eux, ne
@@ -59,4 +59,4 @@ Les seuils sont vérifiés en CI. Une PR qui les fait baisser ne passe pas.
 | `cd backend && uv run pytest tests/unit` | Tests unitaires seuls |
 | `cd backend && uv run pytest tests/integration` | Tests d'intégration seuls |
 
-Commande d'évaluation de l'IA : **[À COMPLÉTER]** par Charbel.
+Commande d'évaluation de l'IA : `cd backend && uv run python -m invoicing.infrastructure.dataset_eval --split controle` (ou `all`).

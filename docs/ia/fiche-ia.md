@@ -89,12 +89,12 @@ En facturation, une fausse certitude (valeur fausse validée à confiance `>= 0.
 | Métrique | Jeu `mise-au-point` (10 pièces) | Jeu `test` (6 pièces) |
 | --- | --- | --- |
 | Sorties valides | 10 / 10 (100,0 %) | 6 / 6 (100,0 %) |
-| Exactitude par champ (Accuracy) | 89,5 % (77 / 86) | 90,2 % (46 / 51) |
+| Exactitude par champ (Accuracy) | 94,2 % (82 / 87) | 90,2 % (46 / 51) |
 | Champs vides à raison (True Missing) | 100,0 % (7 / 7) | 100,0 % (7 / 7) |
 | Précision au-dessus du seuil (0.85) | 100,0 % | 100,0 % |
 | Taux de fausses certitudes | 0,0 % (0) | 0,0 % (0, borne haute IC 95 % ~5,9 %) |
-| Couverture d'automatisation (Rappel) | 84,9 % | 88,2 % |
-| Score F0.5 | 0,966 | 0,974 |
+| Couverture d'automatisation (Rappel) | 89,7 % | 88,2 % |
+| Score F0.5 | 0,978 | 0,974 |
 
 > [!WARNING]
 > **Limite méthodologique assumée** : le jeu `test` initial (6 pièces) ayant été consulté pendant la mise au point des expressions régulières, ses chiffres constituent une mesure interne. Le jeu `controle` ci-dessous est la mesure de référence. Le mode en ligne optionnel (`GeminiExtractor`) n'est pas activé pour la démonstration sans clé et n'a pas fait l'objet d'une passe comparative chiffrée dans ce rapport.

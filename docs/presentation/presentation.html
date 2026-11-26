@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Cachet · BWAI 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@page { size: 1920px 1080px; margin: 0; }
+:root { --deep:#0A3E8C; --strong:#0B53C2; --sky:#2F8CFF; --soft:#BFDDFF; --wash:#EAF3FF; --ice:#F4F8FF; --ink:#0B1B33; --inksoft:#5A6B85; --lime:#D4F25A; --limeink:#243000; --night:#0A2A5E; --amber:#F2A524; --coral:#E5484D; --line:rgba(11,27,51,.1); }
+* { box-sizing: border-box; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: Geist, sans-serif; color: var(--ink); background: #ccd; }
+.slide { width: 1920px; height: 1080px; position: relative; overflow: hidden; page-break-after: always; background: var(--ice); padding: 96px 120px; display: flex; flex-direction: column; }
+.sky { background: linear-gradient(180deg, var(--strong) 0%, #4094f4 55%, #8fc0f6 100%); color: #fff; }
+.night { background: radial-gradient(70% 60% at 85% 0%, rgba(47,140,255,.35), transparent 70%), linear-gradient(160deg,#071D45,var(--night) 55%,var(--deep)); color: #fff; }
+.label { font-family: 'Geist Mono', monospace; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--inksoft); }
+.sky .label, .night .label { color: rgba(255,255,255,.75); }
+h1 { font-weight: 300; font-size: 112px; letter-spacing: -.035em; line-height: 1; }
+h2 { font-weight: 300; font-size: 76px; letter-spacing: -.03em; line-height: 1.04; margin-top: 18px; }
+h1 b, h2 b { font-weight: 600; }
+.lead { font-size: 32px; line-height: 1.45; color: var(--inksoft); max-width: 1180px; margin-top: 28px; }
+.sky .lead, .night .lead { color: rgba(255,255,255,.88); }
+.mark { position: relative; white-space: nowrap; }
+.mark::after { content: ''; position: absolute; left: 0; right: 0; bottom: -.08em; height: .14em; background: var(--lime); border-radius: 99px; }
+.foot { position: absolute; left: 120px; right: 120px; bottom: 48px; display: flex; justify-content: space-between; font-family: 'Geist Mono'; font-size: 18px; color: var(--inksoft); letter-spacing: .06em; }
+.sky .foot, .night .foot { color: rgba(255,255,255,.7); }
+.brand { display: flex; align-items: center; gap: 14px; font-weight: 600; font-size: 30px; }
+.brand i { width: 46px; height: 46px; border-radius: 13px; background: #fff; display: grid; place-items: center; }
+.grid { display: grid; gap: 28px; margin-top: 56px; }
+.card { background: #fff; border-radius: 32px; padding: 40px 44px; box-shadow: 0 1px 2px rgba(10,62,140,.06), 0 20px 48px -20px rgba(10,62,140,.25); }
+.card h3 { font-size: 34px; font-weight: 600; letter-spacing: -.015em; }
+.card p { font-size: 25px; line-height: 1.45; color: var(--inksoft); margin-top: 12px; }
+.num { font-family: 'Geist Mono'; font-size: 22px; color: var(--sky); }
+.shot { border-radius: 26px; box-shadow: 0 30px 70px -30px rgba(6,40,100,.55); border: 1px solid rgba(255,255,255,.6); display: block; }
+.big { font-family: 'Geist Mono'; font-size: 128px; letter-spacing: -.04em; line-height: 1; color: var(--deep); }
+.pill { display: inline-flex; align-items: center; gap: 10px; border-radius: 99px; padding: 10px 20px; font-size: 22px; font-weight: 500; }
+ul.clean { list-style: none; padding: 0; display: grid; gap: 22px; margin-top: 18px; }
+ul.clean li { font-size: 28px; line-height: 1.4; padding-left: 40px; position: relative; }
+ul.clean li::before { content: ''; position: absolute; left: 0; top: 14px; width: 16px; height: 16px; border-radius: 50%; background: var(--sky); }
+.night ul.clean li::before { background: var(--lime); }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; flex: 1; }
+.caption { font-size: 26px; line-height: 1.45; color: var(--inksoft); }
+.caption b { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- 1. Titre -->
+<section class="slide sky">
+  <div class="brand"><i><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 12.5 10 17 19 7" stroke="#0A3E8C" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Cachet</div>
+  <div style="margin-top:110px; position:relative; z-index:2">
+    <h1>De la pièce reçue<br><b>à la <span class="mark">facture juste</span></b></h1>
+    <p class="lead" style="max-width:880px">L'IA lit la pièce, l'humain confirme l'incertain, le moteur calcule chaque franc. Puis la facture est émise, vérifiable et relancée jusqu'au règlement.</p>
+  </div>
+  <img src="../../frontend/src/assets/hero-facture-verre.webp" alt="" style="position:absolute; right:-80px; bottom:-40px; width:1180px; -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 22%,#000 80%,transparent 100%),linear-gradient(to right,transparent 0,#000 22%,#000 85%,transparent 100%); -webkit-mask-composite:source-in; mask-composite:intersect">
+  <div class="foot"><span>BWAI 2026 · Cas pratique 2 · Automatisation de la facturation</span><span>Ange-Marie · Charbel</span></div>
+</section>
+
+<!-- 2. Problème -->
+<section class="slide">
+  <span class="label">Le besoin</span>
+  <h2>Une PME reçoit ses commandes par <b>WhatsApp</b>,<br>puis <b>ressaisit tout à la main</b></h2>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card"><h3>Du temps perdu</h3><p>Chaque devis, bon de commande ou message est recopié champ par champ, calcul compris.</p></div>
+    <div class="card"><h3>Des erreurs coûteuses</h3><p>Client mal identifié, quantité ou prix mal recopiés, total faux, facture envoyée deux fois.</p></div>
+    <div class="card"><h3>De l'argent qui tarde</h3><p>Les échéances passent sans relance ; le client ne peut pas vérifier qu'une facture est authentique.</p></div>
+  </div>
+  <div class="foot"><span>Cachet · BWAI 2026</span><span>2</span></div>
+</section>
+
+<!-- 3. Notre réponse -->
+<section class="slide">
+  <span class="label">Notre réponse</span>
+  <h2>L'IA <b>propose</b>, l'humain <b>décide</b>, le moteur <b>calcule</b></h2>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="card"><span class="num">1 / 4</span><h3 style="margin-top:10px">Lire</h3><p>Extraction hors ligne : chaque champ garde sa position dans la pièce et sa confiance.</p></div>
+    <div class="card"><span class="num">2 / 4</span><h3 style="margin-top:10px">Revoir</h3><p>Seul l'incertain est soumis. Un champ absent reste absent : rien n'est inventé.</p></div>
+    <div class="card"><span class="num">3 / 4</span><h3 style="margin-top:10px">Valider</h3><p>10 contrôles, validation par un autre utilisateur, numéro sans trou.</p></div>
+    <div class="card"><span class="num">4 / 4</span><h3 style="margin-top:10px">Encaisser</h3><p>Émission, règlements, avoirs, relances et vérification par QR code.</p></div>
+  </div>
+  <div class="foot"><span>Cachet · BWAI 2026</span><span>3</span></div>
+</section>
+
+<!-- 4. Revue -->
+<section class="slide">
+  <div class="cols" style="grid-template-columns:1.45fr 1fr">
+    <img class="shot" src="captures/review.webp" alt="" style="width:100%">
+    <div>
+      <span class="label">La revue</span>
+      <h2 style="font-size:64px">L'incertitude <b>se voit</b></h2>
+      <ul class="clean" style="margin-top:34px">
+        <li>La pièce à gauche, ses champs à droite, reliés au survol</li>
+        <li><b>Sûr</b>, <b>à confirmer</b>, <b>absent</b>, <b>corrigé</b> : chaque état a sa forme et son mot</li>
+        <li>Les totaux viennent du moteur, jamais de l'IA</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Cachet · BWAI 2026</span><span>4</span></div>
+</section>
+
+<!-- 5. Contrôles + Nera -->
+<section class="slide">
+  <div class="cols" style="grid-template-columns:1fr 1.45fr">
+    <div>
+      <span class="label">Contrôles et assistant</span>
+      <h2 style="font-size:64px">Bloquer <b>avant</b>,<br>expliquer <b>toujours</b></h2>
+      <ul class="clean" style="margin-top:34px">
+        <li>Client inconnu, total lu faux : la validation est refusée</li>
+        <li><b>Nera</b> répond depuis les données et cite ses sources</li>
+        <li>Aucun chiffre inventé : moteur local, affiché comme tel</li>
+      </ul>
+    </div>
+    <img class="shot" src="captures/nera.webp" alt="" style="width:100%">
+  </div>
+  <div class="foot"><span>Cachet · BWAI 2026</span><span>5</span></div>
+</section>
+
+<!-- 6. Facture + QR -->
+<section class="slide sky">
+  <span class="label">Après validation</span>
+  <h2>Une facture <b>immuable</b>, <b>vérifiable</b> par le client</h2>
+  <div style="display:grid; grid-template-columns:1.5fr 1fr; gap:40px; margin-top:44px; align-items:start">
+    <img class="shot" src="captures/invoice.webp" alt="" style="width:100%">
+    <div>
+      <img class="shot" src="captures/verify.webp" alt="" style="width:100%; height:420px; object-fit:cover; object-position:top">
+      <p class="lead" style="font-size:26px; margin-top:24px">Le QR code ouvre une page publique : l'empreinte du contenu est recalculée et comparée au journal chaîné.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Cachet · BWAI 2026</span><span>6</span></div>
+</section>
+
+<!-- 7. Recouvrement -->
+<section class="slide">
+  <div class="cols" style="grid-template-columns:1.45fr 1fr">
+    <img class="shot" src="captures/recouvrement.webp" alt="" style="width:100%">
+    <div>
+      <span class="label">Recouvrement</span>
+      <h2 style="font-size:64px">Relancer <b>au bon ton</b>, au bon moment</h2>
+      <ul class="clean" style="margin-top:34px">
+        <li>Échéancier : en retard, bientôt dû, à échoir</li>
+        <li>Rappel à J-3, relance à J+1, dernier rappel à J+7</li>
+        <li>Canal préféré du client, une fois par étape, tracé</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Cachet · BWAI 2026</span><span>7</span></div>
+</section>
+
+<!-- 8. Fiabilité -->
+<section class="slide">
+  <span class="label">Fiabilité métier</span>
+  <h2>Ce que le moteur <b>garantit</b></h2>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card"><h3>Calcul au franc près</h3><p>Décimal exact, remises puis TVA par taux, arrondi lu dans la configuration.</p></div>
+    <div class="card"><h3>Numéro sans trou</h3><p>Attribué dans la transaction de validation ; un abandon ne consomme rien.</p></div>
+    <div class="card"><h3>Aucun doublon</h3><p>Clé d'idempotence : double clic ou coupure, un seul effet.</p></div>
+    <div class="card"><h3>Validation à deux</h3><p>Rôles séparés ; deux validations simultanées, une seule passe.</p></div>
+    <div class="card"><h3>Correction par avoir</h3><p>Une facture validée ne se modifie jamais.</p></div>
+    <div class="card"><h3>Journal infalsifiable</h3><p>Chaque action chaînée à la précédente par son empreinte.</p></div>
+  </div>
+  <div class="foot"><span>Cachet · BWAI 2026</span><span>8</span></div>
+</section>
+
+<!-- 9. IA mesurée -->
+<section class="slide">
+  <span class="label">L'apport de l'IA, mesuré</span>
+  <h2>Une IA <b>mesurée, pas promise</b></h2>
+  <p class="lead">Jeu de contrôle étanche : 6 pièces fictives jamais vues pendant le réglage, 70 champs, évaluées une seule fois. Seuil de revue humaine : 0,85.</p>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="card"><div class="big">94<span style="font-size:64px">%</span></div><p>des champs lus justes (66 / 70)</p></div>
+    <div class="card"><div class="big">0</div><p>fausse certitude au-dessus du seuil</p></div>
+    <div class="card"><div class="big">4/4</div><p>absences reconnues : rien d'inventé</p></div>
+    <div class="card"><div class="big">93<span style="font-size:64px">%</span></div><p>des champs sans revue humaine</p></div>
+  </div>
+  <div class="foot"><span>Extracteur local par règles · hors ligne · 0 FCFA par pièce · détail : fiche IA</span><span>9</span></div>
+</section>
+
+<!-- 10. Technique -->
+<section class="slide night">
+  <span class="label">Qualité technique et reproductibilité</span>
+  <h2>Réinstallable en <b>une commande</b></h2>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="card" style="background:rgba(255,255,255,.08); box-shadow:none"><div class="big" style="color:#fff; font-size:96px">192</div><p style="color:rgba(255,255,255,.75)">tests automatisés (180 backend, 12 interface)</p></div>
+    <div class="card" style="background:rgba(255,255,255,.08); box-shadow:none"><div class="big" style="color:#fff; font-size:96px">95,7<span style="font-size:52px">%</span></div><p style="color:rgba(255,255,255,.75)">du code backend couvert par les tests</p></div>
+    <div class="card" style="background:rgba(255,255,255,.08); box-shadow:none"><div class="big" style="color:var(--lime); font-size:72px; margin-top:12px">docker</div><p style="color:rgba(255,255,255,.75)">compose up --build, puis localhost:8080</p></div>
+    <div class="card" style="background:rgba(255,255,255,.08); box-shadow:none"><div class="big" style="color:#fff; font-size:96px">7</div><p style="color:rgba(255,255,255,.75)">décisions d'architecture documentées (ADR)</p></div>
+  </div>
+  <ul class="clean" style="margin-top:56px">
+    <li>Ports et adaptateurs : le cœur métier ne dépend de rien, vérifié à chaque intégration</li>
+    <li>Règles métier en configuration ; leur empreinte est inscrite sur chaque facture validée</li>
+  </ul>
+  <div class="foot"><span>Cachet · BWAI 2026</span><span>10</span></div>
+</section>
+
+<!-- 11. Limites et suite -->
+<section class="slide">
+  <span class="label">Limites et suite</span>
+  <h2>Ce qui reste à <b>prouver</b></h2>
+  <div class="cols" style="align-items:start; margin-top:44px">
+    <div class="card"><h3>Limites assumées</h3>
+      <ul class="clean"><li style="font-size:25px">Pièces texte uniquement (pas encore de photo ni de PDF)</li><li style="font-size:25px">Envois, relances et paiements simulés, et affichés comme tels</li><li style="font-size:25px">22 pièces d'évaluation, écrites par l'équipe</li><li style="font-size:25px">Gain de temps non chronométré : protocole prêt</li></ul></div>
+    <div class="card"><h3>Expérimentation proposée</h3>
+      <ul class="clean"><li style="font-size:25px">Deux PME volontaires, cent pièces réelles anonymisées</li><li style="font-size:25px">Mesure de la ressaisie manuelle, puis du prototype</li><li style="font-size:25px">Canal WhatsApp Business et rappel mobile money réels</li><li style="font-size:25px">Comparer temps, erreurs évitées et délai d'encaissement</li></ul></div>
+  </div>
+  <div class="foot"><span>Cachet · BWAI 2026</span><span>11</span></div>
+</section>
+
+<!-- 12. Merci -->
+<section class="slide sky">
+  <div style="margin:auto 0">
+    <h1>Merci.<br><b>Place à la démo.</b></h1>
+    <p class="lead" style="max-width:1100px">Comptes : operateur, validateur, admin · mot de passe demo-&lt;identifiant&gt;<br>Installation : docker compose up --build, puis http://localhost:8080</p>
+  </div>
+  <img src="../../frontend/src/assets/cachet-verre.webp" alt="" style="position:absolute; right:140px; top:250px; width:520px">
+  <div class="foot"><span>BWAI 2026 · Cas pratique 2</span><span>Ange-Marie · Charbel</span></div>
+</section>
+
+</body>
+</html>

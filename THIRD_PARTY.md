@@ -25,6 +25,7 @@ Toute dépendance ajoutée est déclarée ici dans la même PR. Versions exactes
 | Tailwind CSS | Styles | MIT |
 | Geist, Geist Mono (@fontsource-variable) | Typographies de l'interface, servies par l'application | OFL-1.1 |
 | Lucide (lucide-react) | Icônes au trait | ISC |
+| uqr | Génération des QR codes de vérification | MIT |
 | oxlint, Prettier | Analyse statique et formatage (développement) | MIT |
 | Vitest, Testing Library, jsdom | Tests du frontend (développement) | MIT |
 | import-linter | Vérification du sens des dépendances (développement) | BSD-2-Clause |

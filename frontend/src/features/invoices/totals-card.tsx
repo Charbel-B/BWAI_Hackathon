@@ -24,7 +24,7 @@ export function TotalsCard({
 }) {
   const { totals, balance } = invoice
   return (
-    <div className="grid gap-2 rounded-[22px] bg-graphite p-5 text-white">
+    <div className="grid gap-2 night rounded-[22px] p-5 text-white">
       {totals.global_discount_amount !== '0' && (
         <>
           <Row label={t.lines} value={totals.lines_net_total} />

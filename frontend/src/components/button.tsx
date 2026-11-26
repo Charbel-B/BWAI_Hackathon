@@ -39,7 +39,7 @@ export function Button({
       {pending ? <LoaderCircle className="size-4 animate-spin" aria-hidden="true" /> : icon}
       {children}
       {arrow && (
-        <span className="-mr-2.5 grid size-[26px] place-items-center rounded-full bg-graphite text-white">
+        <span className="-mr-2.5 grid size-[26px] place-items-center rounded-full bg-night text-white">
           <ArrowUpRight className="size-3.5" strokeWidth={2.4} aria-hidden="true" />
         </span>
       )}

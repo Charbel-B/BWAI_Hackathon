@@ -1,7 +1,7 @@
 import { Check, PencilLine } from 'lucide-react'
 import type { ReactNode } from 'react'
 
-import uploadImage from '@/assets/depot-pieces-verre.webp'
+import readImage from '@/assets/loupe-lecture-verre.webp'
 import messageImage from '@/assets/message-valide-verre.webp'
 import { ConfidenceRing } from '@/components/confidence-ring'
 import { Reveal } from '@/components/reveal'
@@ -63,7 +63,7 @@ export function FlowSection() {
               <mark className={MARK_SURE}>{s.source[5]}</mark>
             </pre>
             <img
-              src={uploadImage}
+              src={readImage}
               alt=""
               className="hidden w-[150px] shrink-0 drop-shadow-[var(--shadow-object)] sm:block"
             />

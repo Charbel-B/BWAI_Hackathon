@@ -95,8 +95,18 @@ l'interface : elle lit les anomalies calculées par le backend.
 
 ## Assets
 
-| Fichier | Origine |
+Un emplacement important a son propre visuel ; aucun asset n'est recyclé d'un écran à l'autre.
+Tous sont des rendus 3D générés pour le projet le 26/11/2026, convertis en WebP (fond
+transparent sauf le héros).
+
+| Fichier | Emplacement unique |
 | --- | --- |
-| `frontend/src/assets/hero-facture-verre.webp` | Rendu 3D généré pour le projet le 26/11/2026, converti en WebP |
-| `frontend/src/assets/depot-pieces-verre.webp` | Objet 3D (dépôt de pièces), fond transparent, même date |
-| `frontend/src/assets/message-valide-verre.webp` | Objet 3D (message validé), fond transparent, même date |
+| `hero-facture-verre.webp` | Héros de la landing |
+| `loupe-lecture-verre.webp` | Landing, étape « Lire la pièce » |
+| `message-valide-verre.webp` | Landing, étape « Émettre et encaisser » |
+| `cadenas-verre.webp` | Page de connexion |
+| `depot-pieces-verre.webp` | Zone d'import |
+| `bac-arrivee-verre.webp` | Tableau, carte « À traiter » |
+| `cachet-verre.webp` | Tableau, carte « Validées » |
+| `jetons-regles-verre.webp` | Tableau, carte « Réglées » |
+| `plateau-vide-verre.webp` | Tableau, liste vide |

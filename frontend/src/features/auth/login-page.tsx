@@ -5,7 +5,7 @@ import { Link, Navigate, useLocation } from 'react-router'
 import { paths } from '@/app/paths'
 import { Button } from '@/components/button'
 import { DemoBadge } from '@/components/demo-badge'
-import { HeroVisual } from '@/components/hero-visual'
+import padlockImage from '@/assets/cadenas-verre.webp'
 import { Logo } from '@/components/logo'
 import { fr } from '@/i18n/fr'
 
@@ -134,7 +134,11 @@ export function LoginPage() {
           <DemoBadge />
         </div>
         <div className="my-auto">
-          <HeroVisual callouts={false} className="w-full" />
+          <img
+            src={padlockImage}
+            alt=""
+            className="float mx-auto w-[min(60%,360px)] drop-shadow-[var(--shadow-object)]"
+          />
         </div>
         <p className="mx-auto max-w-[36ch] text-center text-[15px] text-ink">{t.visualCaption}</p>
       </aside>

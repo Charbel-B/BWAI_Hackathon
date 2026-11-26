@@ -1,6 +1,6 @@
 # Fiche IA : extraction locale par règles, calibration de confiance et évaluation
 
-> Statut : en vigueur · Mis à jour : 2026-11-26 · Responsable : Charbel
+> Statut : en vigueur · Mis à jour : 2026-11-26
 
 > [!IMPORTANT]
 > **Configuration active en démonstration ([ADR 0005](../adr/0005-simulation-des-integrations.md))** :

@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { useNavigate } from 'react-router'
 
 import { paths } from '@/app/paths'
@@ -9,6 +10,7 @@ import { useCurrentUser } from '@/features/auth/use-session'
 import { fr } from '@/i18n/fr'
 
 const t = fr.landing
+const order = (i: number) => ({ '--i': i }) as CSSProperties
 const ANCHORS = [
   { id: 'parcours', label: t.nav.flow },
   { id: 'incertitude', label: t.nav.uncertainty },
@@ -59,12 +61,38 @@ export function LandingHero() {
 
       <div className="mx-auto mt-[clamp(36px,7vh,88px)] px-5 text-center">
         <h1 className="mx-auto max-w-[15ch] text-[clamp(40px,6vw,84px)]">
-          {t.titleLight} <b className="font-semibold">{t.titleBold}</b>
+          <span style={order(0)} className="enter block">
+            {t.titleLight}
+          </span>
+          <b style={order(1)} className="enter block font-semibold">
+            {t.titleBold}{' '}
+            <span className="relative inline-block whitespace-nowrap">
+              {t.titleAccent}
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 300 18"
+                preserveAspectRatio="none"
+                className="underline-draw absolute -bottom-[0.14em] left-0 h-[0.22em] w-full overflow-visible"
+              >
+                <path
+                  d="M3 12 C 60 4, 120 3, 175 8 S 270 13, 297 6"
+                  pathLength={1}
+                  fill="none"
+                  stroke="var(--color-lime)"
+                  strokeWidth="7"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>
+          </b>
         </h1>
-        <p className="mx-auto mt-5 max-w-[56ch] text-[17px] leading-relaxed text-white/90">
+        <p
+          style={order(2)}
+          className="enter mx-auto mt-7 max-w-[56ch] text-[17px] leading-relaxed text-white/90"
+        >
           {t.lead}
         </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
+        <div style={order(3)} className="enter mt-8 flex flex-wrap justify-center gap-3">
           <Button variant="primary" arrow onClick={enter}>
             {user ? t.openApp : t.tryDemo}
           </Button>
@@ -77,7 +105,9 @@ export function LandingHero() {
         </div>
       </div>
 
-      <HeroVisual className="mx-auto -mt-4 w-[min(100%,1180px)]" />
+      <div style={order(4)} className="enter">
+        <HeroVisual className="mx-auto -mt-4 w-[min(100%,1180px)]" />
+      </div>
     </section>
   )
 }

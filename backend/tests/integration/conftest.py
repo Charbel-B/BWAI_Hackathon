@@ -11,6 +11,7 @@ import pytest
 from fastapi.testclient import TestClient
 from httpx import Response
 
+from invoicing.application.ports import Clock
 from invoicing.bootstrap import create_app
 from invoicing.settings import REPO_ROOT, Settings
 
@@ -59,12 +60,18 @@ class Api:
         return body
 
 
-@pytest.fixture
-def api(tmp_path: Path) -> Iterator[Api]:
+def build_api(tmp_path: Path, clock: Clock | None = None) -> tuple[TestClient, Settings]:
+    """Application sur une base temporaire ; l'horloge peut être figée pour les échéances."""
     data = tmp_path / "data"
     shutil.copytree(FIXTURES / "referentiels", data / "referentiels")
     settings = Settings(data_dir=data, database_path=tmp_path / "db.sqlite3")
-    with TestClient(create_app(settings)) as client:
+    return TestClient(create_app(settings, clock)), settings
+
+
+@pytest.fixture
+def api(tmp_path: Path) -> Iterator[Api]:
+    client, settings = build_api(tmp_path)
+    with client:
         yield Api(client, settings)
 
 

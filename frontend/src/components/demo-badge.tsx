@@ -5,7 +5,7 @@ export function DemoBadge({ compact = false }: { compact?: boolean }) {
   return (
     <span
       title={fr.demo.explain}
-      className="label inline-flex items-center gap-2 rounded-full bg-graphite px-3 py-2 text-white"
+      className="label inline-flex items-center gap-2 rounded-full bg-night px-3 py-2 text-white"
     >
       <span
         aria-hidden="true"

@@ -152,6 +152,7 @@ class Invoice:
     validated_by: str | None = None
     validated_at: datetime | None = None
     config_sha256: str | None = None
+    content_sha256: str | None = None
 
     def __post_init__(self) -> None:
         numbered = self.status in (

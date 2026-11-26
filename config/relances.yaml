@@ -1,0 +1,17 @@
+# Relances de recouvrement (simulées, ADR 0005). Responsable : Ange-Marie.
+# decalage_jours : jours par rapport à l'échéance (négatif = avant). Les étapes sont dans l'ordre.
+# Variables : {client}, {numero}, {montant} (reste dû), {echeance}, {jours} (retard en jours).
+bientot_du_jours: 3
+etapes:
+  - code: rappel
+    libelle: Rappel courtois
+    decalage_jours: -3
+    modele: "Bonjour {client}, petit rappel : la facture {numero} de {montant} FCFA arrive à échéance le {echeance}. Merci de votre confiance."
+  - code: relance
+    libelle: Relance ferme
+    decalage_jours: 1
+    modele: "Bonjour {client}, la facture {numero} de {montant} FCFA est échue depuis le {echeance}. Merci de procéder au règlement dès que possible."
+  - code: dernier-rappel
+    libelle: Dernier rappel
+    decalage_jours: 7
+    modele: "Bonjour {client}, malgré nos relances, la facture {numero} de {montant} FCFA reste impayée ({jours} jours de retard). Sans règlement sous 48 h, nous suspendrons les prochaines livraisons."

@@ -1,9 +1,10 @@
 import { Check, PencilLine } from 'lucide-react'
 import type { ReactNode } from 'react'
 
-import uploadImage from '@/assets/depot-pieces-verre.webp'
+import readImage from '@/assets/loupe-lecture-verre.webp'
 import messageImage from '@/assets/message-valide-verre.webp'
 import { ConfidenceRing } from '@/components/confidence-ring'
+import { Reveal } from '@/components/reveal'
 import { PaymentBadge, StatusBadge } from '@/components/status-badge'
 import { fr } from '@/i18n/fr'
 
@@ -30,16 +31,18 @@ function Step({
   className?: string
 }) {
   return (
-    <article
-      className={`flex flex-col gap-6 overflow-hidden rounded-card bg-white p-7 shadow-card ${className}`}
-    >
-      <div className="min-h-[190px] flex-1">{children}</div>
-      <div>
-        <span className="tabular text-xs text-sky">{`${index} / 4`}</span>
-        <h3 className="mt-2 text-[24px] font-semibold tracking-[-0.02em]">{title}</h3>
-        <p className="mt-2 max-w-[46ch] text-[15px] leading-relaxed text-ink-soft">{text}</p>
-      </div>
-    </article>
+    <Reveal index={index - 1} className="grid">
+      <article
+        className={`lift flex flex-col gap-6 overflow-hidden rounded-card bg-white p-7 shadow-card ${className}`}
+      >
+        <div className="min-h-[190px] flex-1">{children}</div>
+        <div>
+          <span className="tabular text-xs text-sky">{`${index} / 4`}</span>
+          <h3 className="mt-2 text-[24px] font-semibold tracking-[-0.02em]">{title}</h3>
+          <p className="mt-2 max-w-[46ch] text-[15px] leading-relaxed text-ink-soft">{text}</p>
+        </div>
+      </article>
+    </Reveal>
   )
 }
 
@@ -60,7 +63,7 @@ export function FlowSection() {
               <mark className={MARK_SURE}>{s.source[5]}</mark>
             </pre>
             <img
-              src={uploadImage}
+              src={readImage}
               alt=""
               className="hidden w-[150px] shrink-0 drop-shadow-[var(--shadow-object)] sm:block"
             />

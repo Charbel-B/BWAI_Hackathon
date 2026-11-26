@@ -5,14 +5,15 @@ import { Link, Navigate, useLocation } from 'react-router'
 import { paths } from '@/app/paths'
 import { Button } from '@/components/button'
 import { DemoBadge } from '@/components/demo-badge'
-import { HeroVisual } from '@/components/hero-visual'
 import { Logo } from '@/components/logo'
 import { fr } from '@/i18n/fr'
 
+import { asDemoRole, ROLES } from './demo-roles'
+import { RolePreview } from './role-preview'
 import { useLogin } from './use-login'
 import { useCurrentUser } from './use-session'
 
-const ACCOUNTS = ['operateur', 'validateur', 'admin'] as const
+const ACCOUNTS = ROLES
 const t = fr.login
 const field =
   'w-full rounded-2xl bg-ice px-4 py-3.5 text-[15px] text-ink outline-none shadow-[inset_0_0_0_1px_var(--color-line)] placeholder:text-ink-soft focus-visible:shadow-[inset_0_0_0_2px_var(--color-sky)]'
@@ -133,10 +134,7 @@ export function LoginPage() {
         <div className="flex justify-end">
           <DemoBadge />
         </div>
-        <div className="my-auto">
-          <HeroVisual callouts={false} className="w-full" />
-        </div>
-        <p className="mx-auto max-w-[36ch] text-center text-[15px] text-ink">{t.visualCaption}</p>
+        <RolePreview selected={asDemoRole(username)} />
       </aside>
     </div>
   )

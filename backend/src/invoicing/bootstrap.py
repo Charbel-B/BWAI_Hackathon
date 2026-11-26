@@ -66,6 +66,7 @@ def create_app(settings: Settings | None = None, clock: Clock | None = None) -> 
         referentials=referentials,
         calculation=business.calculation_rules(),
         controls=business.control_rules(threshold),
+        collection=business.collection_rules(),
         numbering=business.numbering(),
         separation_of_duties=business.securite.separation_des_taches,
         active_channels=tuple(business.canaux.actifs),

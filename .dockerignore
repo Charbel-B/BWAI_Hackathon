@@ -1,0 +1,13 @@
+# Liste blanche : seul ce qui sert aux images entre dans le contexte de construction.
+*
+!backend
+!frontend
+!config
+!data
+**/node_modules
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+frontend/dist

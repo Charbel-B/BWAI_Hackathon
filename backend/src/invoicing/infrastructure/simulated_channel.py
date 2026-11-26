@@ -17,10 +17,7 @@ class SimulatedChannel:
 
     def send(self, invoice: Invoice, customer: Customer | None, channel: str) -> SentMessage:
         """Rend le destinataire et le message qui auraient été envoyés."""
-        recipient = "destinataire inconnu"
-        if customer is not None:
-            address = customer.email if channel == "email" else customer.phone
-            recipient = address or customer.legal_name
+        recipient = _recipient(customer, channel)
         template = self._templates.get(channel, DEFAULT_TEMPLATE)
         due = invoice.content.due_date
         message = template.format(
@@ -30,3 +27,14 @@ class SimulatedChannel:
             client=invoice.content.customer_name or "",
         )
         return SentMessage(recipient=recipient, message=message)
+
+    def send_text(self, customer: Customer | None, channel: str, message: str) -> SentMessage:
+        """Message déjà rédigé (relance) : seul le destinataire est résolu."""
+        return SentMessage(recipient=_recipient(customer, channel), message=message)
+
+
+def _recipient(customer: Customer | None, channel: str) -> str:
+    if customer is None:
+        return "destinataire inconnu"
+    address = customer.email if channel == "email" else customer.phone
+    return address or customer.legal_name

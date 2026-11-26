@@ -61,6 +61,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/issuer": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Issuer
+         * @description Émetteur des factures (config/emetteur.yaml).
+         */
+        get: operations["issuer_api_v1_issuer_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/audit-log": {
         parameters: {
             query?: never;
@@ -878,6 +898,22 @@ export interface components {
             created_at: string;
         };
         /**
+         * IssuerOut
+         * @description Identité de l'émetteur, pour l'en-tête des factures.
+         */
+        IssuerOut: {
+            /** Name */
+            name: string;
+            /** Address */
+            address: string;
+            /** Tax Id */
+            tax_id: string;
+            /** Phone */
+            phone: string;
+            /** Email */
+            email: string;
+        };
+        /**
          * LineOut
          * @description Ligne calculée.
          */
@@ -1251,6 +1287,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UserOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    issuer_api_v1_issuer_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IssuerOut"];
                 };
             };
             /** @description Validation Error */

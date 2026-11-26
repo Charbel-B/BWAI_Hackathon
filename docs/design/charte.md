@@ -94,6 +94,7 @@ l'interface : elle lit les anomalies calculées par le backend.
 | Journal | `/journal` | Entrées chaînées et vérification de la chaîne |
 | Vérification | `/verifier/:id?code=` | Page publique ouverte par le QR code : verdict, données essentielles, empreinte, état du journal |
 | Nera (assistant) | Panneau latéral, sur tous les écrans de l'application | Questions suggérées selon l'écran (facture ouverte ou non), réponses avec sources et actions, moteur affiché |
+| Facture imprimable | `/factures/:id/imprimer` | Feuille A4 : émetteur en en-tête, client, dates, lignes, totaux, QR de vérification, mentions de démonstration ; « Télécharger le PDF » passe par l'impression du navigateur |
 | Paramètres | `/parametres` | Profil et droits du rôle, mot de passe (simulé, signalé), canal d'émission préféré (enregistré sur l'appareil), informations système réelles, réinitialisation de la démo (administrateur) |
 
 ## Assets

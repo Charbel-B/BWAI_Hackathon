@@ -18,7 +18,7 @@ from invoicing.domain.audit import AuditData, AuditEvent
 from invoicing.domain.calculation import CalculationRules
 from invoicing.domain.collection import CollectionRules
 from invoicing.domain.controls import ControlRules
-from invoicing.domain.referentials import Referentials
+from invoicing.domain.referentials import Issuer, Referentials
 from invoicing.domain.users import User
 
 
@@ -43,6 +43,7 @@ class Context:
     extractor: Extractor
     channel: Channel
     referentials: Referentials
+    issuer: Issuer
     calculation: CalculationRules
     controls: ControlRules
     collection: CollectionRules

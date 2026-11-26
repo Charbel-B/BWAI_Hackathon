@@ -1,6 +1,7 @@
 """Routes transverses : authentification, journal d'audit, réinitialisation de la démo."""
 
 from fastapi import APIRouter, Request
+from pydantic import BaseModel
 
 from invoicing.api.deps import Ctx
 from invoicing.api.errors import ApiError
@@ -33,6 +34,23 @@ def login(request: Request, body: LoginIn) -> TokenOut:
 def me(user: Operator) -> UserOut:
     """Utilisateur courant."""
     return user_out(user)
+
+
+class IssuerOut(BaseModel):
+    """Identité de l'émetteur, pour l'en-tête des factures."""
+
+    name: str
+    address: str
+    tax_id: str
+    phone: str
+    email: str
+
+
+@router.get("/issuer")
+def issuer(ctx: Ctx, _: Operator) -> IssuerOut:
+    """Émetteur des factures (config/emetteur.yaml)."""
+    i = ctx.issuer
+    return IssuerOut(name=i.name, address=i.address, tax_id=i.tax_id, phone=i.phone, email=i.email)
 
 
 @router.get("/audit-log")

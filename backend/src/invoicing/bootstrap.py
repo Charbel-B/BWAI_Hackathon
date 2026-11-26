@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from invoicing.api.app import AppInfo, Services, create_api
 from invoicing.application.context import Context
 from invoicing.application.ports import Clock, Extractor
-from invoicing.domain.referentials import Referentials
+from invoicing.domain.referentials import Issuer, Referentials
 from invoicing.extraction import CatalogHint, RuleBasedExtractor
 from invoicing.infrastructure.accounts import AccountDirectory, account
 from invoicing.infrastructure.business_config import load_business_config
@@ -15,7 +15,7 @@ from invoicing.infrastructure.clock import SystemClock
 from invoicing.infrastructure.config_files import config_sha256
 from invoicing.infrastructure.extraction_config import load_extraction_config
 from invoicing.infrastructure.gemini_extractor import GeminiConfig, GeminiExtractor
-from invoicing.infrastructure.pdf_renderer import HtmlPdfDocumentRenderer
+from invoicing.infrastructure.pdf_renderer import HtmlPdfDocumentRenderer, IssuerInfo
 from invoicing.infrastructure.referentials_csv import load_referentials
 from invoicing.infrastructure.simulated_channel import SimulatedChannel
 from invoicing.infrastructure.sqlite_store import SqliteStore
@@ -49,6 +49,10 @@ def _extractor(settings: Settings, referentials: Referentials) -> tuple[Extracto
     return local, config.seuil_confiance_revue
 
 
+def _pdf_issuer(issuer: Issuer) -> IssuerInfo:
+    return IssuerInfo(issuer.name, issuer.address, issuer.tax_id, issuer.phone)
+
+
 def create_app(settings: Settings | None = None, clock: Clock | None = None) -> FastAPI:
     """Point d'entrée de uvicorn : `uvicorn --factory invoicing.bootstrap:create_app`."""
     settings = settings or Settings()
@@ -64,6 +68,7 @@ def create_app(settings: Settings | None = None, clock: Clock | None = None) -> 
         extractor=extractor,
         channel=SimulatedChannel(business.canaux.modeles),
         referentials=referentials,
+        issuer=business.issuer(),
         calculation=business.calculation_rules(),
         controls=business.control_rules(threshold),
         collection=business.collection_rules(),
@@ -72,7 +77,7 @@ def create_app(settings: Settings | None = None, clock: Clock | None = None) -> 
         active_channels=tuple(business.canaux.actifs),
         config_sha256=fingerprint,
         demo_mode=settings.demo_mode,
-        renderer=HtmlPdfDocumentRenderer(),
+        renderer=HtmlPdfDocumentRenderer(_pdf_issuer(business.issuer())),
     )
     accounts = [
         account(a.identifiant, a.nom, a.role, a.mot_de_passe_scrypt)

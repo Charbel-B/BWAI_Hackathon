@@ -12,6 +12,7 @@ from invoicing.domain.calculation import CalculationRules
 from invoicing.domain.collection import CollectionRules, ReminderStep
 from invoicing.domain.controls import ControlRules
 from invoicing.domain.invoice import Severity
+from invoicing.domain.referentials import Issuer
 
 
 class _Strict(BaseModel):
@@ -76,6 +77,14 @@ class _Reminders(_Strict):
     etapes: list[_Step]
 
 
+class _Issuer(_Strict):
+    nom: str
+    adresse: str
+    ifu: str
+    telephone: str
+    email: str
+
+
 class _Accounts(_Strict):
     comptes: list[_Account]
 
@@ -90,6 +99,7 @@ class BusinessConfig(_Strict):
     canaux: _Channels
     utilisateurs: _Accounts
     relances: _Reminders
+    emetteur: _Issuer
 
     def calculation_rules(self) -> CalculationRules:
         """Règles de calcul du domaine."""
@@ -118,6 +128,11 @@ class BusinessConfig(_Strict):
         )
         return CollectionRules(self.relances.bientot_du_jours, steps)
 
+    def issuer(self) -> Issuer:
+        """Identité de l'émetteur."""
+        e = self.emetteur
+        return Issuer(e.nom, e.adresse, e.ifu, e.telephone, e.email)
+
     def numbering(self) -> NumberingFormats:
         """Formats de numérotation."""
         return NumberingFormats(self.numerotation.facture, self.numerotation.avoir)
@@ -137,5 +152,6 @@ def load_business_config(config_dir: Path) -> BusinessConfig:
         "canaux",
         "utilisateurs",
         "relances",
+        "emetteur",
     )
     return BusinessConfig.model_validate({n: _read(config_dir / f"{n}.yaml") for n in names})

@@ -38,6 +38,7 @@ départ et reste à jour avec lui.
 | `POST /invoices/{id}/payments` | OPERATOR | Enregistrer un règlement simulé : `{"amount": "5000", "method": "mobile_money"}` |
 | `POST /invoices/{id}/credit-notes` | VALIDATOR | Créer un avoir en brouillon : `{"reason": "..."}` pour un avoir total, ou avec `"lines": [{"line_index": 0, "quantity": "2"}]` |
 | `POST /credit-notes/{id}/validate` | VALIDATOR | Valider et numéroter l'avoir |
+| `GET /issuer` | OPERATOR | Identité de l'émetteur (`config/emetteur.yaml`), pour l'en-tête des factures |
 | `GET /audit-log` | VALIDATOR | Journal filtrable par entité |
 | `GET /audit-log/verify` | VALIDATOR | Vérifie la chaîne d'empreintes du journal |
 | `POST /assistant/ask` | OPERATOR | Nera, l'assistant ([ADR 0007](../adr/0007-copilote-ancre.md)) : `{"question", "invoice_id"?}` ; rend `intent`, `answer`, `sources`, `actions`, `engine` |

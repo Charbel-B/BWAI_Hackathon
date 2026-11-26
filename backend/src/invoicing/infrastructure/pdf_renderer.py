@@ -25,12 +25,12 @@ _RIGHT_X = 550
 
 @dataclass(frozen=True, slots=True)
 class IssuerInfo:
-    """Coordonnées fictives de la PME émettrice."""
+    """Coordonnées de l'émetteur, lues dans config/emetteur.yaml par le bootstrap."""
 
-    name: str = "Z-Flow Distribution SARL (fictif)"
-    address: str = "Lot 245 Akpakpa, Cotonou, Bénin"
-    tax_id: str = "3201234567890"
-    phone: str = "+229 01 21 00 00 00"
+    name: str
+    address: str
+    tax_id: str
+    phone: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -71,7 +71,7 @@ class HtmlPdfDocumentRenderer:
     """Rend une facture depuis son gabarit HTML et génère un PDF 1.4 multi-pages autonome."""
 
     def __init__(self, issuer: IssuerInfo | None = None) -> None:
-        self._issuer = issuer or IssuerInfo()
+        self._issuer = issuer or IssuerInfo("Émetteur non configuré", "", "", "")
         self._template = Template(_TEMPLATE_PATH.read_text(encoding="utf-8"))
 
     def render_html(self, invoice: Invoice, customer: Customer | None) -> str:

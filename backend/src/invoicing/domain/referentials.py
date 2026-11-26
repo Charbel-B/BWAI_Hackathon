@@ -5,6 +5,17 @@ from decimal import Decimal
 
 
 @dataclass(frozen=True, slots=True)
+class Issuer:
+    """Entreprise qui émet les factures (config/emetteur.yaml)."""
+
+    name: str
+    address: str
+    tax_id: str
+    phone: str
+    email: str
+
+
+@dataclass(frozen=True, slots=True)
 class Customer:
     """Client du référentiel."""
 

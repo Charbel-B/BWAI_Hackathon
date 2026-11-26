@@ -115,6 +115,56 @@
         }
       }
     },
+    "/api/v1/issuer": {
+      "get": {
+        "tags": [
+          "système"
+        ],
+        "summary": "Issuer",
+        "description": "Émetteur des factures (config/emetteur.yaml).",
+        "operationId": "issuer_api_v1_issuer_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssuerOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/audit-log": {
       "get": {
         "tags": [
@@ -2622,6 +2672,40 @@
         ],
         "title": "InvoiceSummaryOut",
         "description": "Ligne de la liste des factures."
+      },
+      "IssuerOut": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          },
+          "tax_id": {
+            "type": "string",
+            "title": "Tax Id"
+          },
+          "phone": {
+            "type": "string",
+            "title": "Phone"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "address",
+          "tax_id",
+          "phone",
+          "email"
+        ],
+        "title": "IssuerOut",
+        "description": "Identité de l'émetteur, pour l'en-tête des factures."
       },
       "LineOut": {
         "properties": {

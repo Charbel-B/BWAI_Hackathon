@@ -7,7 +7,7 @@
 
 | Temps | Écran | Geste | Voix off |
 | --- | --- | --- | --- |
-| 0:00 | Accueil | Laisser jouer le héros | « Une PME reçoit ses commandes par WhatsApp et les ressaisit à la main. Cachet transforme la pièce reçue en facture juste. » |
+| 0:00 | Accueil | Laisser jouer le héros | « Une PME reçoit ses commandes par WhatsApp et les ressaisit à la main. Factia transforme la pièce reçue en facture juste. » |
 | 0:15 | Importer (opérateur) | Coller le scénario 1 | « L'extraction tourne hors ligne ; chaque champ montre sa source et sa confiance. » |
 | 0:35 | Revue | Survoler deux champs ; montrer les totaux | « Le moteur recalcule chaque franc : l'IA ne calcule jamais. » |
 | 0:50 | Importer | Coller le scénario 3 | « Client inconnu, total faux : la validation est bloquée, rien n'est inventé. » |

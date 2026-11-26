@@ -1,0 +1,15 @@
+{
+  "scenario": "02-a-corriger",
+  "initial_status": "DRAFT",
+  "expected_blocking_codes": ["MISSING_REQUIRED_FIELD"],
+  "human_correction": {
+    "field": "document.date",
+    "value": "2026-11-25"
+  },
+  "expected_totals": {
+    "net_total": "78000",
+    "vat_total": "14040",
+    "gross_total": "92040"
+  },
+  "expected_final_status": "VALIDATED"
+}

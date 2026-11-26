@@ -15,3 +15,4 @@
 | [ia/](ia/README.md) | Extraction, évaluation chiffrée et fiche IA |
 | [demo/](demo/README.md) | Scripts de démonstration et reprise après interruption |
 | [rapport/](rapport/README.md) | Rapport remis au jury |
+| [presentation/](presentation/README.md) | Diapositives de présentation |

@@ -18,6 +18,7 @@ from invoicing.domain.drafting import (
     parse_decimal,
 )
 from invoicing.domain.extraction import ExtractedField, FieldStatus, ReviewState
+from invoicing.domain.field_names import human_field
 from invoicing.domain.invoice import Anomaly, DraftContent, Severity, Totals
 from invoicing.domain.referentials import Item, Referentials
 
@@ -240,7 +241,7 @@ def _field_checks(
                 (
                     "MISSING_REQUIRED_FIELD",
                     name,
-                    f"Champ obligatoire « {name} » absent ou illisible",
+                    f"Champ obligatoire « {human_field(name)} » absent ou illisible",
                 )
             )
     for f in fields:
@@ -257,7 +258,7 @@ def _field_checks(
                 (
                     "LOW_CONFIDENCE",
                     f.name,
-                    f"Champ « {f.name} » incertain : à confirmer ou corriger",
+                    f"Champ « {human_field(f.name)} » incertain : à confirmer ou corriger",
                 )
             )
     return result

@@ -93,6 +93,7 @@ l'interface : elle lit les anomalies calculées par le backend.
 | Recouvrement | `/recouvrement` | Reste à encaisser, retards et échéances proches (totaux du backend) ; par facture, étapes de relance (envoyée, du jour, à venir), bouton d'envoi et historique des messages |
 | Journal | `/journal` | Entrées chaînées et vérification de la chaîne |
 | Vérification | `/verifier/:id?code=` | Page publique ouverte par le QR code : verdict, données essentielles, empreinte, état du journal |
+| Nera (assistant) | Panneau latéral, sur tous les écrans de l'application | Questions suggérées selon l'écran (facture ouverte ou non), réponses avec sources et actions, moteur affiché |
 | Paramètres | `/parametres` | Profil et droits du rôle, mot de passe (simulé, signalé), canal d'émission préféré (enregistré sur l'appareil), informations système réelles, réinitialisation de la démo (administrateur) |
 
 ## Assets
@@ -114,3 +115,4 @@ transparent sauf le héros).
 | `plateau-vide-verre.webp` | Tableau, liste vide |
 | `bouclier-qr-verre.webp` | Page publique de vérification |
 | `cloche-relances-verre.webp` | Page Recouvrement |
+| `copilote-orbe-verre.webp` | Nera : bouton d'ouverture et en-tête du panneau |

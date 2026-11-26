@@ -33,6 +33,7 @@ docker compose up --build     # puis http://localhost:8080
 | 5:45 | Onglet validateur | Importer une pièce, puis tenter de la valider soi-même | Séparation des tâches : l'auteur d'un brouillon ne peut pas le valider |
 | 6:15 | Facture `FA-2026-00001` | **Créer un avoir total** avec un motif | Avoir `AV-2026-00001` ; la facture passe « Annulée par avoir », elle n'est jamais modifiée |
 | 6:40 | Recouvrement | Ouvrir l'échéancier, **Envoyer** la relance d'une facture en retard | Le ton suit le retard (rappel, relance, dernier rappel) ; message exact sur le canal préféré du client, marqué « simulé » |
+| 6:50 | Nera (assistant) | Sur un brouillon bloqué : « Pourquoi je ne peux pas valider ? », puis « Explique ce total » | Réponse tirée des données, sources citées, bouton vers l'action ; aucun chiffre inventé |
 | 7:00 | Journal | Ouvrir le journal | Chaque action est chaînée à la précédente ; badge « Chaîne intacte » |
 | 7:30 | Paramètres | Montrer « Système » | Version, extracteur actif, empreinte des règles, et la liste de ce qui est simulé |
 

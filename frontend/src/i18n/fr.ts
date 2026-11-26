@@ -478,6 +478,23 @@ export const fr = {
     session: 'Session',
     logout: 'Se déconnecter',
   },
+  assistant: {
+    name: 'Nera',
+    open: 'Ouvrir Nera',
+    close: 'Fermer Nera',
+    intro:
+      'Je réponds à partir des données de l’application, sans rien inventer. Chaque réponse dit d’où elle vient.',
+    engine: (name: string) => `Moteur : ${name}`,
+    placeholder: 'Posez votre question…',
+    send: 'Envoyer',
+    thinking: 'Je regarde les données…',
+    sources: 'Sources',
+    failed: 'Je n’ai pas pu répondre. Réessayez.',
+    suggestions: {
+      invoice: ['Pourquoi je ne peux pas valider ?', 'Explique ce total', 'Que faire ensuite ?'],
+      general: ['Quelles factures sont en retard ?', 'Que faire ensuite ?', 'Que sais-tu faire ?'],
+    },
+  },
   collection: {
     nav: 'Recouvrement',
     titleLight: 'Suivi du',

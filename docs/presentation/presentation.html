@@ -91,27 +91,35 @@ ul.clean li::before { content: ''; position: absolute; left: 0; top: 14px; width
         <li>La pièce à gauche, ses champs à droite, reliés au survol</li>
         <li><b>Sûr</b>, <b>à confirmer</b>, <b>absent</b>, <b>corrigé</b> : chaque état a sa forme et son mot</li>
         <li>Les totaux viennent du moteur, jamais de l'IA</li>
+        <li>Client inconnu, total lu faux : la validation est refusée</li>
       </ul>
     </div>
   </div>
   <div class="foot"><span>Cachet · BWAI 2026</span><span>4</span></div>
 </section>
 
-<!-- 5. Contrôles + Nera -->
-<section class="slide">
-  <div class="cols" style="grid-template-columns:1fr 1.45fr">
+<!-- 5. Nera -->
+<section class="slide night">
+  <img src="../../frontend/src/assets/copilote-orbe-verre.webp" alt="" style="position:absolute; right:-110px; top:-230px; width:440px; opacity:.6">
+  <div class="cols" style="grid-template-columns:1fr 1.3fr; position:relative">
     <div>
-      <span class="label">Contrôles et assistant</span>
-      <h2 style="font-size:64px">Bloquer <b>avant</b>,<br>expliquer <b>toujours</b></h2>
-      <ul class="clean" style="margin-top:34px">
-        <li>Client inconnu, total lu faux : la validation est refusée</li>
-        <li><b>Nera</b> répond depuis les données et cite ses sources</li>
-        <li>Aucun chiffre inventé : moteur local, affiché comme tel</li>
+      <span class="label">Nera, l'assistant</span>
+      <h2 style="font-size:64px">Nera répond,<br><b>preuves à l'appui</b></h2>
+      <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:34px">
+        <span class="pill" style="background:rgba(255,255,255,.12); color:#fff">« Pourquoi je ne peux pas valider ? »</span>
+        <span class="pill" style="background:rgba(255,255,255,.12); color:#fff">« Explique ce total »</span>
+        <span class="pill" style="background:rgba(255,255,255,.12); color:#fff">« Quelles factures sont en retard ? »</span>
+        <span class="pill" style="background:rgba(255,255,255,.12); color:#fff">« Que faire ensuite ? »</span>
+      </div>
+      <ul class="clean" style="margin-top:38px">
+        <li>Réponse construite à partir des données réelles : anomalies, totaux du moteur, échéancier</li>
+        <li>Chaque réponse cite ses <b>sources</b> et propose l'<b>action</b> qui suit</li>
+        <li>Question hors de son champ : l'aide, jamais un chiffre approximatif</li>
       </ul>
     </div>
     <img class="shot" src="captures/nera.webp" alt="" style="width:100%">
   </div>
-  <div class="foot"><span>Cachet · BWAI 2026</span><span>5</span></div>
+  <div class="foot"><span>Moteur local par intentions · hors ligne · ADR 0007</span><span>5</span></div>
 </section>
 
 <!-- 6. Facture + QR -->

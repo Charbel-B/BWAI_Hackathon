@@ -144,3 +144,18 @@ Le seuil **`0.85`** (dans `config/extraction.yaml`) est retenu car il maintient 
 
 - **Démo 100 % autonome sans clé** : avec `extracteur_actif: local` par défaut, **aucune donnée ne quitte le poste** et aucune clé API externe n'est nécessaire pour installer, tester ou démontrer le produit.
 - **Coût** : 0 FCFA en mode actif (`local-rules-v1`). Si une PME choisit d'activer l'option `extracteur_actif: gemini` avec sa propre clé, la cascade `local_first=True` limite l'envoi aux seules pièces non structurées ; les conditions de rétention et tarifs du palier Google AI Studio restent **[À VÉRIFIER]** avant toute mise en production avec des données réelles.
+
+## 9. Assistant Nera : répondre sans inventer
+
+Nera est l'assistant conversationnel du produit ([ADR 0007](../adr/0007-copilote-ancre.md)). Il applique à la conversation la même règle que l'extraction : **aucune valeur produite par l'IA**.
+
+| Aspect | Choix |
+| --- | --- |
+| Moteur | `local-intents-v1` : intentions reconnues par mots-clés, hors ligne, 0 FCFA ; le nom du moteur est affiché dans l'interface |
+| Intentions | `pourquoi_bloquee`, `expliquer_total`, `factures_en_retard`, `que_faire_ensuite`, `aide` |
+| Origine des chiffres | Anomalies ouvertes, totaux du moteur de calcul, échéancier de recouvrement : rien n'est recalculé par l'assistant |
+| Traçabilité | Chaque réponse porte ses **sources** (anomalie, facture, règle de `config/calcul.yaml`) et ses **actions** (lien vers l'écran concerné) |
+| Hors champ | Une question non reconnue reçoit l'aide, jamais une réponse approximative |
+| Tests | 5 tests d'intégration (`backend/tests/integration/test_assistant.py`) : intention reconnue sans accents ni casse, points bloquants d'un brouillon, total expliqué avec les chiffres du moteur, aide hors contexte, factures en retard listées |
+
+**Évolution prévue** : un modèle de langage pourra reformuler la réponse, derrière le même contrat (`POST /api/v1/assistant/ask`), sans jamais produire de montant ni de règle.

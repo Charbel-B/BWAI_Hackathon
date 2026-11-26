@@ -1,7 +1,7 @@
 /** Tous les textes affichés. Aucun texte en dur dans les composants. */
 export const fr = {
   brand: {
-    name: 'Cachet',
+    name: 'Factia',
     tagline: 'De la pièce reçue à la facture juste',
   },
   health: {

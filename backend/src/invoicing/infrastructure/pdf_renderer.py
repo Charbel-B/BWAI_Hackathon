@@ -2,15 +2,21 @@
 
 import html
 from dataclasses import dataclass
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 from string import Template
 
+from invoicing.domain.fingerprint import verification_code
 from invoicing.domain.invoice import Invoice, InvoiceLine, InvoiceStatus
 from invoicing.domain.referentials import Customer
 
 _TEMPLATE_PATH = Path(__file__).resolve().parent / "templates" / "invoice.html"
-_SIMULATION_MENTION = "SIMULÉ — e-MECeF simulé, document de démonstration non valable fiscalement"
+_SIMULATION_MENTION = "SIMULÉ — document de démonstration non valable fiscalement"
+_STATUS_BANNERS: dict[InvoiceStatus, str] = {
+    InvoiceStatus.DRAFT: "BROUILLON — NON VALIDÉ, NON VALABLE FISCALEMENT",
+    InvoiceStatus.DISCARDED: "BROUILLON ABANDONNÉ — NON VALABLE",
+    InvoiceStatus.CANCELLED: "FACTURE ANNULÉE PAR AVOIR",
+}
 _PAGE_START_Y = 795
 _PAGE_BOTTOM_Y = 60
 _LEFT_X = 45
@@ -38,7 +44,7 @@ class _PdfItem:
 
 
 def _fmt_fcfa(amount: Decimal) -> str:
-    rounded = int(amount)
+    rounded = int(amount.quantize(Decimal(1), rounding=ROUND_HALF_UP))
     return f"{rounded:,}".replace(",", " ") + " FCFA"
 
 
@@ -53,6 +59,14 @@ def _escape_pdf_text(text: str) -> str:
     return latin.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
 
 
+def _verification_info(invoice: Invoice) -> tuple[str, str] | None:
+    """Retourne (code court, chemin public) si la facture porte une empreinte validée."""
+    if not invoice.content_sha256:
+        return None
+    code = verification_code(invoice.content_sha256)
+    return code, f"/verifier/{invoice.id}?code={code}"
+
+
 class HtmlPdfDocumentRenderer:
     """Rend une facture depuis son gabarit HTML et génère un PDF 1.4 multi-pages autonome."""
 
@@ -62,12 +76,8 @@ class HtmlPdfDocumentRenderer:
 
     def render_html(self, invoice: Invoice, customer: Customer | None) -> str:
         """Rend le gabarit HTML complet avec échappement strict des valeurs."""
-        is_draft = invoice.status is InvoiceStatus.DRAFT
-        banner = (
-            '<div class="banner">BROUILLON — NON VALIDÉ, NON VALABLE FISCALEMENT</div>'
-            if is_draft
-            else ""
-        )
+        banner_text = _STATUS_BANNERS.get(invoice.status)
+        banner = f'<div class="banner">{html.escape(banner_text)}</div>' if banner_text else ""
         rows = (
             "\n".join(self._html_row(line) for line in invoice.lines)
             if invoice.lines
@@ -77,6 +87,17 @@ class HtmlPdfDocumentRenderer:
             f"<tr><th>TVA {html.escape(str(v.rate))} % (base {html.escape(_fmt_fcfa(v.base))})</th>"
             f'<td class="num">{html.escape(_fmt_fcfa(v.amount))}</td></tr>'
             for v in invoice.totals.vat_breakdown
+        )
+        verify = _verification_info(invoice)
+        verify_html = (
+            '<div class="verify">'
+            f"<strong>Vérification d'authenticité (QR)</strong> : code "
+            f"<code>{html.escape(verify[0])}</code> · lien "
+            f"<code>{html.escape(verify[1])}</code><br />"
+            f"Empreinte facture : <code>{html.escape(invoice.content_sha256 or '')}</code>"
+            "</div>"
+            if verify
+            else ""
         )
         return self._template.substitute(
             draft_banner=banner,
@@ -100,15 +121,14 @@ class HtmlPdfDocumentRenderer:
             vat_breakdown_html=vat_rows,
             vat_total=html.escape(_fmt_fcfa(invoice.totals.vat_total)),
             gross_total=html.escape(_fmt_fcfa(invoice.totals.gross_total)),
+            verification_html=verify_html,
             config_sha256=html.escape(invoice.config_sha256 or "brouillon"),
         )
 
     def render_pdf(self, invoice: Invoice, customer: Customer | None) -> bytes:
         """Génère un PDF 1.4 A4 paginé automatiquement contenant toutes les mentions."""
         _ = self.render_html(invoice, customer)
-        items = self._pdf_items(invoice, customer)
-        page_streams = _paginate_pdf_items(items)
-        return _assemble_multipage_pdf(page_streams)
+        return _assemble_multipage_pdf(_paginate_pdf_items(self._pdf_items(invoice, customer)))
 
     @staticmethod
     def _html_row(line: InvoiceLine) -> str:
@@ -131,10 +151,9 @@ class HtmlPdfDocumentRenderer:
         cust_ifu = (customer.tax_id if customer else None) or "Non renseigné"
 
         items: list[_PdfItem] = []
-        if invoice.status is InvoiceStatus.DRAFT:
-            items.append(
-                _PdfItem("text", "F2", 14, "BROUILLON - NON VALIDÉ, NON VALABLE FISCALEMENT")
-            )
+        banner = _STATUS_BANNERS.get(invoice.status)
+        if banner:
+            items.append(_PdfItem("text", "F2", 13, banner))
         items.extend(
             [
                 _PdfItem("text", "F2", 14, self._issuer.name),
@@ -171,32 +190,45 @@ class HtmlPdfDocumentRenderer:
                     f"TVA {_fmt_fcfa(line.line_vat)}",
                 )
             )
-        items.append(_PdfItem("rule"))
-        items.append(
-            _PdfItem("text", "F1", 11, f"Total HT : {_fmt_fcfa(invoice.totals.net_total)}")
-        )
-        items.append(
+        items.extend(self._pdf_totals_and_footer(invoice))
+        return items
+
+    @staticmethod
+    def _pdf_totals_and_footer(invoice: Invoice) -> list[_PdfItem]:
+        items: list[_PdfItem] = [
+            _PdfItem("rule"),
+            _PdfItem("text", "F1", 11, f"Total HT : {_fmt_fcfa(invoice.totals.net_total)}"),
             _PdfItem(
                 "text",
                 "F1",
                 10,
                 f"Remise globale : {_fmt_fcfa(invoice.totals.global_discount_amount)}",
-            )
-        )
-        for v in invoice.totals.vat_breakdown:
-            items.append(
+            ),
+            *(
                 _PdfItem(
                     "text",
                     "F1",
                     9,
                     f"TVA {v.rate} % (base {_fmt_fcfa(v.base)}) : {_fmt_fcfa(v.amount)}",
                 )
+                for v in invoice.totals.vat_breakdown
+            ),
+            _PdfItem("text", "F1", 11, f"Total TVA : {_fmt_fcfa(invoice.totals.vat_total)}"),
+            _PdfItem("text", "F2", 13, f"TOTAL TTC : {_fmt_fcfa(invoice.totals.gross_total)}"),
+            _PdfItem("rule"),
+        ]
+        verify = _verification_info(invoice)
+        if verify:
+            code, path = verify
+            items.extend(
+                [
+                    _PdfItem("text", "F2", 9, f"Vérification d'authenticité (QR) : {code}"),
+                    _PdfItem("text", "F1", 8, f"Lien public : {path}"),
+                    _PdfItem("text", "F1", 8, f"Empreinte facture : {invoice.content_sha256}"),
+                ]
             )
         items.extend(
             [
-                _PdfItem("text", "F1", 11, f"Total TVA : {_fmt_fcfa(invoice.totals.vat_total)}"),
-                _PdfItem("text", "F2", 13, f"TOTAL TTC : {_fmt_fcfa(invoice.totals.gross_total)}"),
-                _PdfItem("rule"),
                 _PdfItem("text", "F1", 8, _SIMULATION_MENTION),
                 _PdfItem(
                     "text", "F1", 8, f"Empreinte règles : {invoice.config_sha256 or 'brouillon'}"
@@ -232,8 +264,7 @@ def _assemble_multipage_pdf(page_streams: list[bytes]) -> bytes:
     dynamic_objects: list[bytes] = []
     next_id = 5
     for stream in page_streams:
-        page_id = next_id
-        content_id = next_id + 1
+        page_id, content_id = next_id, next_id + 1
         next_id += 2
         page_ids.append(page_id)
         page_dict = (
@@ -254,17 +285,19 @@ def _assemble_multipage_pdf(page_streams: list[bytes]) -> bytes:
         b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>",
         *dynamic_objects,
     ]
-    parts: list[bytes] = [b"%PDF-1.4\n"]
+    header = b"%PDF-1.4\n"
+    parts: list[bytes] = [header]
     offsets: list[int] = [0]
+    cursor = len(header)
     for obj_num, body in enumerate(objects, start=1):
-        offsets.append(sum(len(p) for p in parts))
-        parts.append(f"{obj_num} 0 obj\n".encode("ascii") + body + b"\nendobj\n")
+        offsets.append(cursor)
+        chunk = f"{obj_num} 0 obj\n".encode("ascii") + body + b"\nendobj\n"
+        parts.append(chunk)
+        cursor += len(chunk)
 
-    xref_pos = sum(len(p) for p in parts)
     xref_lines = [f"xref\n0 {len(objects) + 1}\n0000000000 65535 f \n".encode("ascii")]
-    for off in offsets[1:]:
-        xref_lines.append(f"{off:010d} 00000 n \n".encode("ascii"))
+    xref_lines.extend(f"{off:010d} 00000 n \n".encode("ascii") for off in offsets[1:])
     trailer = (
-        f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R >>\nstartxref\n{xref_pos}\n%%EOF\n"
+        f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R >>\nstartxref\n{cursor}\n%%EOF\n"
     ).encode("ascii")
-    return b"".join(parts + xref_lines + [trailer])
+    return b"".join([*parts, *xref_lines, trailer])

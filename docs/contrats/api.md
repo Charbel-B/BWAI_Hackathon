@@ -34,7 +34,7 @@ départ et reste à jour avec lui.
 | `POST /invoices/{id}/validate` | VALIDATOR | Valider et numéroter |
 | `POST /invoices/{id}/discard` | OPERATOR | Abandonner un brouillon |
 | `POST /invoices/{id}/dispatch` | OPERATOR | Émettre sur un canal : `{"channel": "whatsapp"}` |
-| `GET /invoices/{id}/pdf` | OPERATOR | Brouillon ou facture en PDF ; un brouillon porte la mention BROUILLON. **[À COMPLÉTER]** : pas encore implémenté (Charbel) |
+| `GET /invoices/{id}/pdf` | OPERATOR | Brouillon ou facture en PDF ; mention BROUILLON sur un brouillon, code et lien de vérification d'authenticité sur une facture validée |
 | `POST /invoices/{id}/payments` | OPERATOR | Enregistrer un règlement simulé : `{"amount": "5000", "method": "mobile_money"}` |
 | `POST /invoices/{id}/credit-notes` | VALIDATOR | Créer un avoir en brouillon : `{"reason": "..."}` pour un avoir total, ou avec `"lines": [{"line_index": 0, "quantity": "2"}]` |
 | `POST /credit-notes/{id}/validate` | VALIDATOR | Valider et numéroter l'avoir |

@@ -69,7 +69,10 @@ def get_invoice_pdf(ctx: Ctx, _: Operator, invoice_id: str) -> Response:
     return Response(
         content=pdf_bytes,
         media_type="application/pdf",
-        headers={"Content-Disposition": f'inline; filename="{filename}.pdf"'},
+        headers={
+            "Content-Disposition": f'inline; filename="{filename}.pdf"',
+            "Cache-Control": "no-store",
+        },
     )
 
 

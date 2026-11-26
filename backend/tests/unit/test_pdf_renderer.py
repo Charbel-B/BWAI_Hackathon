@@ -11,7 +11,9 @@ from invoicing.infrastructure.pdf_renderer import HtmlPdfDocumentRenderer
 AT = datetime(2026, 11, 25, tzinfo=UTC)
 
 
-def _sample_invoice(status: InvoiceStatus, number: str | None) -> Invoice:
+def _sample_invoice(
+    status: InvoiceStatus, number: str | None, content_sha256: str | None = None
+) -> Invoice:
     line_inputs = (
         LineInput(
             "Ciment CPJ 35 (sac de 50 kg)", Decimal(20), Decimal(5500), Decimal(18), unit="sac"
@@ -41,6 +43,7 @@ def _sample_invoice(status: InvoiceStatus, number: str | None) -> Invoice:
         created_at=AT,
         number=number,
         config_sha256="abc123",
+        content_sha256=content_sha256,
     )
 
 
@@ -59,13 +62,15 @@ def _sample_customer() -> Customer:
 
 def test_pdf_and_html_contain_number_customer_and_gross_total() -> None:
     renderer = HtmlPdfDocumentRenderer()
-    invoice = _sample_invoice(InvoiceStatus.VALIDATED, "FA-2026-00001")
+    sha = "0123456789abcdef" * 4
+    invoice = _sample_invoice(InvoiceStatus.VALIDATED, "FA-2026-00001", content_sha256=sha)
     customer = _sample_customer()
 
     rendered_html = renderer.render_html(invoice, customer)
     assert "FA-2026-00001" in rendered_html
     assert "180 540 FCFA" in rendered_html
     assert "Entreprise Kpadonou et Fils" in rendered_html
+    assert "/verifier/INV-demo?code=0123456789abcdef" in rendered_html
     assert "BROUILLON" not in rendered_html
 
     pdf_bytes = renderer.render_pdf(invoice, customer)
@@ -75,7 +80,29 @@ def test_pdf_and_html_contain_number_customer_and_gross_total() -> None:
     assert b"180 540 FCFA" in pdf_bytes
     assert "SIMULÉ".encode("cp1252") in pdf_bytes
     assert b"TVA 18 %" in pdf_bytes
+    assert b"/verifier/INV-demo?code=0123456789abcdef" in pdf_bytes
     assert b"BROUILLON" not in pdf_bytes
+
+
+def test_cancelled_invoice_banner_and_html_xss_escaping() -> None:
+    renderer = HtmlPdfDocumentRenderer()
+    cancelled = _sample_invoice(InvoiceStatus.CANCELLED, "FA-2026-00002")
+    pdf_bytes = renderer.render_pdf(cancelled, None)
+    assert "ANNULÉE".encode("cp1252") in pdf_bytes
+
+    xss_customer = Customer(
+        id="CLI-XSS",
+        legal_name="<script>alert(1)</script>",
+        tax_id="3999900000011",
+        phone="+2290199990001",
+        email="x@example.test",
+        preferred_channel="email",
+        payment_terms_days=30,
+        vat_liable=True,
+    )
+    rendered_html = renderer.render_html(cancelled, xss_customer)
+    assert "<script>" not in rendered_html
+    assert "&lt;script&gt;alert(1)&lt;/script&gt;" in rendered_html
 
 
 def test_draft_pdf_carries_brouillon_mention_and_handles_empty_lines() -> None:

@@ -719,6 +719,63 @@
         }
       }
     },
+    "/api/v1/invoices/{invoice_id}/pdf": {
+      "get": {
+        "tags": [
+          "factures"
+        ],
+        "summary": "Get Invoice Pdf",
+        "description": "Brouillon ou facture en PDF (mention BROUILLON si non validée).",
+        "operationId": "get_invoice_pdf_api_v1_invoices__invoice_id__pdf_get",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/invoices/{invoice_id}/anomalies/{anomaly_id}/resolve": {
       "post": {
         "tags": [

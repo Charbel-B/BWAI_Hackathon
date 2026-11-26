@@ -1,0 +1,12 @@
+{
+  "fields": {
+    "customer.name": "Atelier de Couture Mawuli",
+    "customer.tax_id": null,
+    "document.date": null,
+    "lines[0].label": "Serrure de porte à cylindre",
+    "lines[0].quantity": "5",
+    "lines[0].unit": "unités",
+    "lines[0].unit_price": "6500"
+  },
+  "expected_anomalies": ["MISSING_REQUIRED_FIELD"]
+}

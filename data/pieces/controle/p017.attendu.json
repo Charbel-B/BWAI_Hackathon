@@ -1,0 +1,19 @@
+{
+  "fields": {
+    "customer.name": "Hôtel Résidence du Lac",
+    "customer.tax_id": "3999900000099",
+    "document.reference": "BC-2026-031",
+    "document.date": "2026-11-24",
+    "lines[0].label": "Carreaux de sol 40x40",
+    "lines[0].quantity": "40",
+    "lines[0].unit": "m2",
+    "lines[0].unit_price": "5500",
+    "lines[1].label": "Colle à carrelage (sac de 25 kg)",
+    "lines[1].quantity": "8",
+    "lines[1].unit": "sacs",
+    "lines[1].unit_price": "4200",
+    "payment.terms_days": "30",
+    "totals.net": "253600"
+  },
+  "expected_anomalies": []
+}

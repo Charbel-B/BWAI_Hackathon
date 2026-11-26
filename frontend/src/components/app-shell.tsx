@@ -1,6 +1,7 @@
 import { LogOut } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router'
 
+import { Copilot } from '@/features/assistant/copilot'
 import { useCurrentUser } from '@/features/auth/use-session'
 import { session } from '@/features/auth/session'
 import { paths } from '@/app/paths'
@@ -75,6 +76,7 @@ export function AppShell() {
       <main className="relative mx-auto -mt-36 max-w-[1320px] px-4 pb-24 sm:px-8">
         <Outlet />
       </main>
+      <Copilot />
     </div>
   )
 }

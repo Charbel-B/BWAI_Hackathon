@@ -1406,10 +1406,89 @@
           }
         }
       }
+    },
+    "/api/v1/assistant/ask": {
+      "post": {
+        "tags": [
+          "copilote"
+        ],
+        "summary": "Ask",
+        "description": "Répond à partir des données réelles ; `engine` dit quel moteur a répondu.",
+        "operationId": "ask_api_v1_assistant_ask_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnswerOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "ActionOut": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "path": {
+            "type": "string",
+            "title": "Path"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "path"
+        ],
+        "title": "ActionOut",
+        "description": "Action proposée."
+      },
       "AnchorOut": {
         "properties": {
           "kind": {
@@ -1546,6 +1625,73 @@
         ],
         "title": "AnomalyOut",
         "description": "Anomalie et sa résolution éventuelle."
+      },
+      "AnswerOut": {
+        "properties": {
+          "intent": {
+            "type": "string",
+            "title": "Intent"
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceOut"
+            },
+            "type": "array",
+            "title": "Sources"
+          },
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/ActionOut"
+            },
+            "type": "array",
+            "title": "Actions"
+          },
+          "engine": {
+            "type": "string",
+            "title": "Engine"
+          }
+        },
+        "type": "object",
+        "required": [
+          "intent",
+          "answer",
+          "sources",
+          "actions",
+          "engine"
+        ],
+        "title": "AnswerOut",
+        "description": "Réponse du copilote."
+      },
+      "AskIn": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Question"
+          },
+          "invoice_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invoice Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "question"
+        ],
+        "title": "AskIn",
+        "description": "Question posée, et facture ouverte s'il y en a une."
       },
       "AuditOut": {
         "properties": {
@@ -2858,6 +3004,44 @@
         ],
         "title": "ReviewOut",
         "description": "Décision humaine sur un champ."
+      },
+      "SourceOut": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "invoice_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invoice Id"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "invoice_id",
+          "field"
+        ],
+        "title": "SourceOut",
+        "description": "Source d'une affirmation."
       },
       "StepOut": {
         "properties": {

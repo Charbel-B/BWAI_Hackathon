@@ -6,6 +6,7 @@ from fastapi import APIRouter, FastAPI
 from pydantic import BaseModel
 
 from invoicing.api import (
+    routes_assistant,
     routes_collection,
     routes_documents,
     routes_invoices,
@@ -80,5 +81,6 @@ def create_api(info: AppInfo, services: Services) -> FastAPI:
     router.include_router(routes_invoices.router)
     router.include_router(routes_public.router)
     router.include_router(routes_collection.router)
+    router.include_router(routes_assistant.router)
     app.include_router(router)
     return app

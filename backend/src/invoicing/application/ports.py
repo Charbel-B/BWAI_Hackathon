@@ -92,6 +92,13 @@ class Channel(Protocol):
         ...
 
 
+class DocumentRenderer(Protocol):
+    """Produit le HTML et le PDF d'un brouillon ou d'une facture."""
+
+    def render_html(self, invoice: Invoice, customer: Customer | None) -> str: ...
+    def render_pdf(self, invoice: Invoice, customer: Customer | None) -> bytes: ...
+
+
 class UserDirectory(Protocol):
     """Comptes et jetons."""
 

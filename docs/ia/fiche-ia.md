@@ -7,7 +7,7 @@
 > - L'extracteur actif par défaut est l'**extracteur local déterministe par règles** (`local-rules-v1`, configuré par `extracteur_actif: local` dans `config/extraction.yaml`).
 > - **La démonstration complète tourne sans clé API et sans connexion Internet.**
 > - Le modèle en ligne **Gemini (`gemini-2.5-flash`) est strictement optionnel** : il n'est instancié par `bootstrap.py` que si `extracteur_actif: gemini` est choisi dans `config/extraction.yaml` **et** que la variable d'environnement `INVOICING_GEMINI_API_KEY` est renseignée.
-> - Conformément à l'ADR 0005, les intégrations externes (canaux WhatsApp/SMS/courriel, règlements mobile money, mentions e-MECeF) sont **simulées** et affichées comme telles ; l'extraction, le moteur de calcul, les contrôles et le journal d'audit sont **réels**.
+> - Conformément à l'ADR 0005, les intégrations externes (canaux WhatsApp/SMS/courriel, règlements mobile money) sont **simulées** et affichées comme telles ; l'extraction, le moteur de calcul, les contrôles et le journal d'audit sont **réels**.
 
 ## 1. Rôle et frontière de l'extraction
 

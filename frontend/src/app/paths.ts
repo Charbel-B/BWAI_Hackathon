@@ -6,6 +6,8 @@ export const paths = {
   import: '/importer',
   invoice: (id: string) => `/factures/${id}`,
   invoicePattern: '/factures/:invoiceId',
+  invoicePrint: (id: string) => `/factures/${id}/imprimer`,
+  invoicePrintPattern: '/factures/:invoiceId/imprimer',
   audit: '/journal',
   collection: '/recouvrement',
   settings: '/parametres',

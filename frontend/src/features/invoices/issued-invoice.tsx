@@ -1,4 +1,8 @@
+import { FileDown } from 'lucide-react'
+import { Link } from 'react-router'
+
 import type { Invoice } from '@/api/types'
+import { paths } from '@/app/paths'
 import { PaymentBadge, StatusBadge } from '@/components/status-badge'
 import { useCurrentUser } from '@/features/auth/use-session'
 import { fr } from '@/i18n/fr'
@@ -32,21 +36,30 @@ export function IssuedInvoice({ invoice }: { invoice: Invoice }) {
             {invoice.reference && ` · ${t.reference} ${invoice.reference}`}
           </p>
         </div>
-        <dl className="grid gap-1 text-right text-sm text-ink-soft">
-          {invoice.validated_at && (
-            <dd>
-              {t.issuedOn(formatDate(invoice.validated_at))}
-              {invoice.validated_by && ` ${t.validator(displayUser(invoice.validated_by))}`}
-            </dd>
-          )}
-          {invoice.due_date && <dd>{t.due(formatDate(invoice.due_date))}</dd>}
-          {invoice.config_sha256 && (
-            <dd
-              className="font-mono text-[11px]"
-              title={invoice.config_sha256}
-            >{`${t.configHash} · ${invoice.config_sha256.slice(0, 12)}`}</dd>
-          )}
-        </dl>
+        <div className="grid justify-items-end gap-3">
+          <Link
+            to={paths.invoicePrint(invoice.id)}
+            className="inline-flex items-center gap-2 rounded-full bg-night px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-sky-deep"
+          >
+            <FileDown className="size-4" aria-hidden="true" />
+            {fr.print.download}
+          </Link>
+          <dl className="grid gap-1 text-right text-sm text-ink-soft">
+            {invoice.validated_at && (
+              <dd>
+                {t.issuedOn(formatDate(invoice.validated_at))}
+                {invoice.validated_by && ` ${t.validator(displayUser(invoice.validated_by))}`}
+              </dd>
+            )}
+            {invoice.due_date && <dd>{t.due(formatDate(invoice.due_date))}</dd>}
+            {invoice.config_sha256 && (
+              <dd
+                className="font-mono text-[11px]"
+                title={invoice.config_sha256}
+              >{`${t.configHash} · ${invoice.config_sha256.slice(0, 12)}`}</dd>
+            )}
+          </dl>
+        </div>
       </header>
 
       <div className="grid items-start gap-5 lg:grid-cols-[1.1fr_1fr]">

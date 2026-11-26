@@ -68,6 +68,7 @@ anomalies que la pièce doit déclencher :
 | `config/numerotation.yaml` | Formats des numéros de facture et d'avoir | Promis |
 | `config/extraction.yaml` | Extracteur actif, modèle et version, seuil de confiance | Charbel |
 | `config/canaux.yaml` | Canaux activés et modèles de message (`{numero}`, `{montant}`, `{echeance}`, `{client}`) | Charbel |
+| `config/emetteur.yaml` | Identité de l'entreprise émettrice (fictive) : nom, adresse, IFU, téléphone, courriel ; lue par le PDF de l'API et la facture imprimable | Ange-Marie |
 | `config/relances.yaml` | Seuil « bientôt due » et étapes de relance (code, libellé, décalage en jours par rapport à l'échéance, modèle de message) | Ange-Marie |
 | `config/utilisateurs.yaml` | Comptes de démonstration : identifiant, nom, rôle, empreinte scrypt du mot de passe | Ange-Marie |
 | `config/securite.yaml` | `separation_des_taches`, durée de validité du jeton | Promis |

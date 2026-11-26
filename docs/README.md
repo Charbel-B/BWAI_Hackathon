@@ -12,3 +12,4 @@
 | [contrats/](contrats/README.md) | Contrats entre périmètres : domaine, cycle de vie, champ extrait, API, formats de données |
 | [adr/](adr/README.md) | Décisions d'architecture |
 | [design/](design/README.md) | Charte graphique et écrans |
+| [ia/](ia/README.md) | Extraction, évaluation chiffrée et fiche IA |

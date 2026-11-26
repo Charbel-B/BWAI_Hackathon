@@ -30,7 +30,9 @@ docker compose down          # arrêt ; les données restent dans le volume « d
 ```
 
 L'API (Python) et l'interface (servie par nginx, qui relaie `/api` vers l'API) tournent dans
-deux conteneurs. Déroulé de démonstration : [docs/demo/script.md](docs/demo/script.md).
+deux conteneurs. Déroulé de démonstration : [docs/demo/script.md](docs/demo/script.md) ;
+reprise après interruption : [docs/demo/reprise.md](docs/demo/reprise.md) ; rapport :
+[docs/rapport/rapport.md](docs/rapport/rapport.md) ; fiche IA : [docs/ia/fiche-ia.md](docs/ia/fiche-ia.md).
 
 ## Comptes de démonstration
 

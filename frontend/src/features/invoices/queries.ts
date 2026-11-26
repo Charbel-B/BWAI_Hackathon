@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { api } from '@/api/client'
-import { unwrap } from '@/api/problem'
+import { ApiProblem, unwrap } from '@/api/problem'
 import type { Invoice } from '@/api/types'
 
 export const keys = {
@@ -43,10 +43,18 @@ export function useSourceDocument(documentId: string | undefined) {
 }
 
 /** Après chaque action, la facture renvoyée par le serveur remplace celle du cache. */
+/**
+ * Une coupure réseau (TypeError de fetch) est retentée ; une réponse du serveur ne l'est pas.
+ * Les retentatives réutilisent la clé d'idempotence portée par la requête : aucun doublon.
+ */
+export const retryOnNetworkError = (failures: number, error: unknown) =>
+  !(error instanceof ApiProblem) && failures < 3
+
 function useInvoiceMutation<V>(invoiceId: string, run: (vars: V) => Promise<Invoice>) {
   const client = useQueryClient()
   return useMutation({
     mutationFn: run,
+    retry: retryOnNetworkError,
     onSuccess: (invoice) => {
       client.setQueryData(keys.invoice(invoiceId), invoice)
       void client.invalidateQueries({ queryKey: keys.invoices })
@@ -127,11 +135,16 @@ export function useDispatchInvoice(invoiceId: string) {
 export function useRecordPayment(invoiceId: string) {
   return useInvoiceMutation(
     invoiceId,
-    async (vars: { amount: string; method: 'mobile_money' | 'especes' | 'virement' }) =>
+    async (vars: {
+      amount: string
+      method: 'mobile_money' | 'especes' | 'virement'
+      idempotencyKey: string
+    }) =>
       unwrap(
         await api.POST('/api/v1/invoices/{invoice_id}/payments', {
           params: path(invoiceId),
-          body: vars,
+          body: { amount: vars.amount, method: vars.method },
+          headers: { 'Idempotency-Key': vars.idempotencyKey },
         }),
       ),
   )

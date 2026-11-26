@@ -75,6 +75,7 @@ export function DispatchPanel({ invoice }: { invoice: Invoice }) {
 
 export function PaymentsPanel({ invoice }: { invoice: Invoice }) {
   const record = useRecordPayment(invoice.id)
+  const [pendingKey, setPendingKey] = useState(() => crypto.randomUUID())
   const [amount, setAmount] = useState('')
   const [method, setMethod] = useState<Method>('mobile_money')
   const open =
@@ -84,7 +85,17 @@ export function PaymentsPanel({ invoice }: { invoice: Invoice }) {
   function submit(event: FormEvent) {
     event.preventDefault()
     const value = (amount || invoice.balance.amount_due).replace(/\s/g, '')
-    record.mutate({ amount: value, method }, { onSuccess: () => setAmount('') })
+    // La même clé est renvoyée tant que le règlement n'est pas confirmé : un nouvel essai
+    // après une coupure ne peut pas l'enregistrer deux fois.
+    record.mutate(
+      { amount: value, method, idempotencyKey: pendingKey },
+      {
+        onSuccess: () => {
+          setAmount('')
+          setPendingKey(crypto.randomUUID())
+        },
+      },
+    )
   }
 
   return (
@@ -116,7 +127,10 @@ export function PaymentsPanel({ invoice }: { invoice: Invoice }) {
             id="amount"
             inputMode="decimal"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => {
+              setAmount(e.target.value)
+              setPendingKey(crypto.randomUUID())
+            }}
             placeholder={formatAmount(invoice.balance.amount_due)}
             className="tabular min-w-0 rounded-full bg-ice px-4 py-3 text-sm outline-none focus-visible:shadow-[inset_0_0_0_2px_var(--color-sky)]"
           />
@@ -126,7 +140,10 @@ export function PaymentsPanel({ invoice }: { invoice: Invoice }) {
           <select
             id="method"
             value={method}
-            onChange={(e) => setMethod(e.target.value as Method)}
+            onChange={(e) => {
+              setMethod(e.target.value as Method)
+              setPendingKey(crypto.randomUUID())
+            }}
             className="rounded-full bg-ice px-4 py-3 text-sm outline-none"
           >
             {Object.entries(t.methods).map(([id, label]) => (

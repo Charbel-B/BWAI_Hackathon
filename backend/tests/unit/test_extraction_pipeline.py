@@ -469,3 +469,68 @@ def test_total_mismatch_check_is_skipped_when_discount_is_present() -> None:
     fields = _extract(text)
     assert fields["totals.net"].value == "45000"
     assert fields["totals.net"].confidence == 0.88
+
+
+def test_delivered_quantity_normalization_and_partial_delivery_extraction() -> None:
+    assert normalize_field_value("lines[0].delivered_quantity", "8 rouleaux") == "8"
+    assert is_value_grounded_in_raw_text("lines[0].delivered_quantity", "8", "8")
+
+    p008 = (
+        "Bonsoir boss, Pharmacie Espoir de Calavi (IFU 3999900000066) le 23/11/2026. "
+        "On a bien reçu Fil électrique 2.5 mm2 (rouleau de 100 m), qté livrée 8 rouleaux "
+        "sur les 10 commandés, tarif convenu 32000f le rouleau."
+    )
+    catalog = CatalogHint(
+        customer_names=("Pharmacie Espoir de Calavi",),
+        tax_ids=("3999900000066",),
+        item_labels=("Fil électrique 2.5 mm2 (rouleau de 100 m)",),
+        item_prices=(("Fil électrique 2.5 mm2 (rouleau de 100 m)", "32000"),),
+    )
+    fields = {
+        f.name: f
+        for f in RuleBasedExtractor(catalog=catalog).extract(p008.encode("utf-8"), "text/plain")
+    }
+    assert fields["customer.name"].value == "Pharmacie Espoir de Calavi"
+    assert fields["lines[0].label"].value == "Fil électrique 2.5 mm2 (rouleau de 100 m)"
+    assert fields["lines[0].quantity"].value == "10"
+    assert fields["lines[0].delivered_quantity"].value == "8"
+    assert fields["lines[0].unit"].value == "rouleaux"
+    assert fields["lines[0].unit_price"].value == "32000"
+    assert "lines[1].quantity" not in fields
+
+
+def test_structured_line_reads_trailing_or_separate_delivered_quantity() -> None:
+    inline = (
+        "Commande du 23/11/2026\nClient : Test\n"
+        "- 10 sacs de Ciment CPJ 35 à 5 500 FCFA (qté livrée : 8)\n"
+    )
+    fields = _extract(inline)
+    assert fields["lines[0].quantity"].value == "10"
+    assert fields["lines[0].delivered_quantity"].value == "8"
+
+    separate = (
+        "Commande du 23/11/2026\nClient : Test\n"
+        "- 10 sacs de Ciment CPJ 35 à 5 500 FCFA\n"
+        "Livraison partielle : 7 sacs sur les 10 commandés.\n"
+    )
+    sep_fields = _extract(separate)
+    assert sep_fields["lines[0].quantity"].value == "10"
+    assert sep_fields["lines[0].delivered_quantity"].value == "7"
+    assert "lines[1].quantity" not in sep_fields
+
+
+def test_multiple_partial_deliveries_keep_bounded_windows_and_zero_delivery() -> None:
+    text = (
+        "Client : Test\nDate : 24/11/2026\n"
+        "On a reçu Ciment CPJ 35, 0 sacs sur les 10 prévus.\n"
+        "On a reçu Peinture blanche à 28 000 FCFA, livré 3 seaux sur les 5 commandés.\n"
+    )
+    fields = _extract(text)
+    assert fields["lines[0].label"].value == "Ciment CPJ 35"
+    assert fields["lines[0].quantity"].value == "10"
+    assert fields["lines[0].delivered_quantity"].value == "0"
+    assert fields["lines[0].unit_price"].status is FieldStatus.MISSING
+    assert fields["lines[1].label"].value == "Peinture blanche à 28 000 FCFA"
+    assert fields["lines[1].quantity"].value == "5"
+    assert fields["lines[1].delivered_quantity"].value == "3"
+    assert fields["lines[1].unit_price"].value == "28000"

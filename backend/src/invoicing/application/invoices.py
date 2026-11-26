@@ -1,14 +1,15 @@
 """Cas d'usage des factures : brouillon, résolution d'anomalie, validation, abandon."""
 
+import re
 from dataclasses import dataclass
 
 from invoicing.application.context import Context, NotFoundError, Operation, new_id, operation
 from invoicing.application.ports import Transaction
 from invoicing.domain import lifecycle
 from invoicing.domain.calculation import compute_invoice
-from invoicing.domain.controls import DraftUnderReview, check_draft
+from invoicing.domain.controls import DraftUnderReview, RelatedDocument, check_draft
 from invoicing.domain.documents import SourceDocument
-from invoicing.domain.drafting import build_draft
+from invoicing.domain.drafting import build_draft, delivered_quantities
 from invoicing.domain.invoice import (
     EMPTY_TOTALS,
     Anomaly,
@@ -58,6 +59,9 @@ class _Evaluation:
     anomalies: tuple[Anomaly, ...]
 
 
+_RE_BL_TOKEN = re.compile(r"(?:^|[^a-z0-9])bl(?:[^a-z0-9]|$)")
+
+
 def _evaluate(
     tx: Transaction, ctx: Context, document: SourceDocument, invoice_id: str
 ) -> _Evaluation:
@@ -70,9 +74,68 @@ def _evaluate(
     else:
         lines, totals = (), EMPTY_TOTALS
     duplicate = _duplicate_of(tx, document, content.customer_id, content.reference, invoice_id)
-    draft = DraftUnderReview(content, totals, document.fields, duplicate)
+    delivered = delivered_quantities(
+        document.fields, ctx.referentials, ctx.calculation.default_vat_rate
+    )
+    related = _related_documents(tx, document, content, invoice_id)
+    draft = DraftUnderReview(
+        content=content,
+        totals=totals,
+        fields=document.fields,
+        duplicate_of=duplicate,
+        delivered_quantities=delivered,
+        related_documents=related,
+    )
     anomalies = check_draft(draft, ctx.referentials, ctx.controls)
     return _Evaluation(content, lines, totals, anomalies)
+
+
+def _related_documents(
+    tx: Transaction,
+    document: SourceDocument,
+    content: DraftContent,
+    invoice_id: str,
+) -> tuple[RelatedDocument, ...]:
+    """Autres pièces actives portant la même référence, pour contrôler la cohérence."""
+    if not content.reference:
+        return ()
+    target_ref = _norm_ref(content.reference)
+    related: list[RelatedDocument] = []
+    seen_docs: set[str] = {document.id}
+    for inv in tx.list_invoices():
+        if inv.id == invoice_id or inv.status is InvoiceStatus.DISCARDED:
+            continue
+        if inv.source_document_id in seen_docs:
+            continue
+        other_ref = inv.content.reference
+        if not other_ref or _norm_ref(other_ref) != target_ref:
+            continue
+        seen_docs.add(inv.source_document_id)
+        other_doc = tx.get_document(inv.source_document_id)
+        kind = _infer_related_kind(other_doc.filename if other_doc else None, other_ref)
+        related.append(
+            RelatedDocument(
+                kind=kind,
+                customer_name=inv.content.customer_name,
+                reference=other_ref,
+                issue_date=inv.content.issue_date,
+            )
+        )
+    return tuple(related)
+
+
+def _infer_related_kind(filename: str | None, reference: str) -> str:
+    lower_name = (filename or "").lower()
+    upper_ref = reference.strip().upper()
+    if "devis" in lower_name or "quote" in lower_name or upper_ref.startswith("DEV-"):
+        return "devis"
+    if "livraison" in lower_name or _RE_BL_TOKEN.search(lower_name) or upper_ref.startswith("BL-"):
+        return "bon de livraison"
+    return "commande"
+
+
+def _norm_ref(value: str) -> str:
+    return " ".join(value.strip().lower().split())
 
 
 def _duplicate_of(

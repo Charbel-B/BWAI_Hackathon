@@ -10,7 +10,7 @@ from invoicing.domain.controls import (
     RelatedDocument,
     check_draft,
 )
-from invoicing.domain.drafting import build_draft
+from invoicing.domain.drafting import build_draft, delivered_quantities
 from invoicing.domain.extraction import (
     ExtractedField,
     FieldStatus,
@@ -149,6 +149,22 @@ def test_quantity_mismatch_triggers_and_matching_delivery_does_not() -> None:
         _nominal_fields(), delivered_quantities={0: Decimal(10), 1: Decimal(3)}
     )
 
+    # Aligne delivered_quantities même si une ligne précédente est incomplète
+    mixed_fields = [
+        _found("customer.name", "Entreprise Kpadonou et Fils"),
+        _found("document.date", "2026-11-20"),
+        _found("lines[0].label", "Ciment CPJ 35 (sac de 50 kg)"),
+        _found("lines[0].quantity", "5"),
+        # lines[0].unit_price manquant -> lines[0] écartée par build_draft
+        _found("lines[1].label", "Ciment CPJ 35 (sac de 50 kg)"),
+        _found("lines[1].quantity", "10"),
+        _found("lines[1].delivered_quantity", "10"),
+        _found("lines[1].unit_price", "5500"),
+    ]
+    aligned = delivered_quantities(mixed_fields, REFS, CALC_RULES.default_vat_rate)
+    assert aligned == {0: Decimal(10)}
+    assert "QUANTITY_MISMATCH" not in _run(mixed_fields, delivered_quantities=aligned)
+
 
 def test_document_inconsistency_triggers_on_conflict_and_not_when_coherent() -> None:
     coherent_bl = RelatedDocument(
@@ -163,8 +179,14 @@ def test_document_inconsistency_triggers_on_conflict_and_not_when_coherent() -> 
         reference="CMD-2026-001",
         issue_date=date(2026, 11, 18),
     )
+    coherent_order = RelatedDocument(
+        kind="commande",
+        customer_name="Entreprise Kpadonou et Fils",
+        reference="CMD-2026-001",
+        issue_date=date(2026, 11, 18),
+    )
     assert "DOCUMENT_INCONSISTENCY" not in _run(
-        _nominal_fields(), related_documents=(coherent_bl, coherent_quote)
+        _nominal_fields(), related_documents=(coherent_bl, coherent_quote, coherent_order)
     )
 
     conflicting_customer = RelatedDocument(kind="devis", customer_name="Autre Client")

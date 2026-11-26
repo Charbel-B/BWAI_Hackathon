@@ -26,7 +26,8 @@ _STATIC_ALLOWED_FIELDS = frozenset(
     }
 )
 _RE_ALLOWED_LINE_FIELD = re.compile(
-    r"^lines\[(?P<idx>\d+)\]\.(?P<attr>label|quantity|unit|unit_price|discount_rate)$"
+    r"^lines\[(?P<idx>\d+)\]\."
+    r"(?P<attr>label|quantity|delivered_quantity|unit|unit_price|discount_rate)$"
 )
 _REQUIRED_LINE_ATTRS = ("label", "quantity", "unit_price")
 _DISCOUNT_FIELDS = ("discount.global_rate",)

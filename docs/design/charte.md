@@ -85,18 +85,30 @@ l'interface : elle lit les anomalies calculées par le backend.
 | Écran | Route | Rôle |
 | --- | --- | --- |
 | Accueil | `/` | Landing publique : héros (rendu 3D annoté), parcours en quatre gestes, incertitude, garanties, mesures de l'IA, ce qui est simulé, appel final |
-| Connexion | `/connexion` | Page à part : formulaire et comptes de démonstration à gauche, visuel à droite |
+| Connexion | `/connexion` | Page à part : formulaire et comptes de démonstration à gauche ; à droite, la scène du rôle (opérateur : message lu et champs ; validateur : coup de cachet et numéro ; admin : journal chaîné), qui défile seule et se cale sur le compte choisi |
 | Tableau | `/tableau` | Bento des compteurs, liste des factures |
 | Import | `/importer` | Fichier déposé ou message collé |
 | Revue | `/factures/:id` (brouillon) | Pièce à gauche, champs à droite, reliés au survol ; anomalies ; totaux ; validation |
 | Facture | `/factures/:id` (validée) | Lignes, totaux et solde, émission simulée, règlements, avoirs |
 | Journal | `/journal` | Entrées chaînées et vérification de la chaîne |
+| Vérification | `/verifier/:id?code=` | Page publique ouverte par le QR code : verdict, données essentielles, empreinte, état du journal |
 | Paramètres | `/parametres` | Profil et droits du rôle, mot de passe (simulé, signalé), canal d'émission préféré (enregistré sur l'appareil), informations système réelles, réinitialisation de la démo (administrateur) |
 
 ## Assets
 
-| Fichier | Origine |
+Un emplacement important a son propre visuel ; aucun asset n'est recyclé d'un écran à l'autre.
+Tous sont des rendus 3D générés pour le projet le 26/11/2026, convertis en WebP (fond
+transparent sauf le héros).
+
+| Fichier | Emplacement unique |
 | --- | --- |
-| `frontend/src/assets/hero-facture-verre.webp` | Rendu 3D généré pour le projet le 26/11/2026, converti en WebP |
-| `frontend/src/assets/depot-pieces-verre.webp` | Objet 3D (dépôt de pièces), fond transparent, même date |
-| `frontend/src/assets/message-valide-verre.webp` | Objet 3D (message validé), fond transparent, même date |
+| `hero-facture-verre.webp` | Héros de la landing |
+| `loupe-lecture-verre.webp` | Landing, étape « Lire la pièce » |
+| `message-valide-verre.webp` | Landing, étape « Émettre et encaisser » |
+| `cadenas-verre.webp` | Page de connexion, pastille « session sécurisée » |
+| `depot-pieces-verre.webp` | Zone d'import |
+| `bac-arrivee-verre.webp` | Tableau, carte « À traiter » |
+| `cachet-verre.webp` | Tableau, carte « Validées » |
+| `jetons-regles-verre.webp` | Tableau, carte « Réglées » |
+| `plateau-vide-verre.webp` | Tableau, liste vide |
+| `bouclier-qr-verre.webp` | Page publique de vérification |

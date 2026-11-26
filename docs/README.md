@@ -13,3 +13,4 @@
 | [adr/](adr/README.md) | Décisions d'architecture |
 | [design/](design/README.md) | Charte graphique et écrans |
 | [ia/](ia/README.md) | Extraction, évaluation chiffrée et fiche IA |
+| [demo/](demo/README.md) | Script de démonstration au jury |

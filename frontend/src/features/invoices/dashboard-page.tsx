@@ -3,7 +3,7 @@ import { ChevronRight, ShieldCheck, ShieldAlert } from 'lucide-react'
 import { Link, useNavigate } from 'react-router'
 
 import { api } from '@/api/client'
-import uploadImage from '@/assets/depot-pieces-verre.webp'
+import emptyImage from '@/assets/plateau-vide-verre.webp'
 import { unwrap } from '@/api/problem'
 import type { InvoiceSummary } from '@/api/types'
 import { Money } from '@/components/money'
@@ -138,11 +138,7 @@ export function DashboardPage() {
         </div>
         {list.length === 0 ? (
           <div className="flex flex-col items-center gap-3 px-6 pt-2 pb-12 text-center">
-            <img
-              src={uploadImage}
-              alt=""
-              className="w-[140px] drop-shadow-[var(--shadow-object)]"
-            />
+            <img src={emptyImage} alt="" className="w-[140px] drop-shadow-[var(--shadow-object)]" />
             <p className="max-w-[40ch] text-ink-soft">{t.empty}</p>
           </div>
         ) : (

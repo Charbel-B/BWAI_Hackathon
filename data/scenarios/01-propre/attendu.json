@@ -1,0 +1,11 @@
+{
+  "scenario": "01-propre",
+  "initial_status": "DRAFT",
+  "expected_blocking_codes": [],
+  "expected_totals": {
+    "net_total": "153000",
+    "vat_total": "27540",
+    "gross_total": "180540"
+  },
+  "expected_final_status": "VALIDATED"
+}

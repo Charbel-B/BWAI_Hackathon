@@ -7,6 +7,7 @@ import { displayUser, formatDate } from '@/lib/format'
 import { LinesList } from './lines-list'
 import { CreditPanel, DispatchPanel, PaymentsPanel } from './settlement-panels'
 import { TotalsCard } from './totals-card'
+import { VerificationPanel } from './verification-panel'
 
 const t = fr.invoice
 
@@ -58,6 +59,7 @@ export function IssuedInvoice({ invoice }: { invoice: Invoice }) {
         </div>
         <div className="grid gap-5">
           <TotalsCard invoice={invoice} withBalance={live} />
+          <VerificationPanel invoice={invoice} />
           {live && <PaymentsPanel invoice={invoice} />}
           {live && <CreditPanel invoice={invoice} canCredit={canCredit} />}
         </div>

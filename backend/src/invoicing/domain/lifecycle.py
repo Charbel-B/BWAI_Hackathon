@@ -13,6 +13,7 @@ from invoicing.domain.errors import (
     ValidationBlockedError,
     VersionConflictError,
 )
+from invoicing.domain.fingerprint import invoice_fingerprint
 from invoicing.domain.invoice import (
     Anomaly,
     DraftContent,
@@ -90,7 +91,7 @@ class ValidationStamp:
 def validate(invoice: Invoice, stamp: ValidationStamp, separation_of_duties: bool) -> Invoice:
     """Valide un brouillon. Le numéro est attribué par l'appelant dans la même transaction."""
     check_can_validate(invoice, stamp.by, separation_of_duties)
-    return replace(
+    validated = replace(
         invoice,
         status=InvoiceStatus.VALIDATED,
         number=stamp.number,
@@ -99,6 +100,7 @@ def validate(invoice: Invoice, stamp: ValidationStamp, separation_of_duties: boo
         config_sha256=stamp.config_sha256,
         version=invoice.version + 1,
     )
+    return replace(validated, content_sha256=invoice_fingerprint(validated))
 
 
 def check_can_validate(invoice: Invoice, by: str, separation_of_duties: bool) -> None:

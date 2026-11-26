@@ -10,6 +10,7 @@ from invoicing.application.invoices import InvoiceView
 from invoicing.domain.audit import AuditEntry
 from invoicing.domain.documents import SourceDocument
 from invoicing.domain.extraction import ExtractedField, RegionAnchor, TextAnchor
+from invoicing.domain.fingerprint import verification_code
 from invoicing.domain.invoice import Anomaly, InvoiceLine, Totals
 from invoicing.domain.settlement import CreditNote, Dispatch, Payment
 from invoicing.domain.users import User
@@ -255,6 +256,7 @@ class InvoiceOut(BaseModel):
     validated_by: str | None
     validated_at: datetime | None
     config_sha256: str | None
+    verification_code: str | None
 
 
 class InvoiceSummaryOut(BaseModel):
@@ -462,6 +464,7 @@ def invoice_out(v: InvoiceView) -> InvoiceOut:
         validated_by=inv.validated_by,
         validated_at=inv.validated_at,
         config_sha256=inv.config_sha256,
+        verification_code=verification_code(inv.content_sha256) if inv.content_sha256 else None,
     )
 
 

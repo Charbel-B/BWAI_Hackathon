@@ -33,6 +33,39 @@ export const fr = {
     failed: 'Identifiant ou mot de passe incorrect.',
     back: 'Retour à l’accueil',
     visualCaption: 'Chaque valeur lue garde son origine et sa confiance.',
+    preview: {
+      secure: 'Session sécurisée · jeton valable 8 h',
+      operateur: {
+        title: 'Opérateur',
+        lead: 'Une pièce arrive, ses champs sont lus et vous confirmez l’incertain.',
+        message:
+          'Bonjour, ici Pharmacie Espoir de Calavi : 10 rouleaux de fil électrique 2,5 mm² à 32 000 F.',
+        fields: [
+          { label: 'Client', value: 'Pharmacie Espoir de Calavi', confidence: 0.95 },
+          { label: 'Quantité', value: '10 rouleaux', confidence: 0.72 },
+          { label: 'Prix unitaire', value: '32 000', confidence: 0.92 },
+        ],
+      },
+      validateur: {
+        title: 'Validateur',
+        lead: 'Le brouillon est propre : vous validez, le numéro tombe sans trou.',
+        draft: 'Brouillon · Pharmacie Espoir de Calavi',
+        clean: 'Aucun point bloquant',
+        number: 'FA-2026-00042',
+        rule: 'Vous n’êtes pas l’auteur du brouillon : la validation est permise.',
+      },
+      admin: {
+        title: 'Administrateur',
+        lead: 'Chaque action est chaînée à la précédente : rien ne se retouche en silence.',
+        blocks: [
+          { seq: '#21', action: 'Brouillon créé', hash: '8f3a…c41d' },
+          { seq: '#22', action: 'Champ confirmé', hash: '2be9…07aa' },
+          { seq: '#23', action: 'Facture validée', hash: 'd471…9e02' },
+          { seq: '#24', action: 'Facture émise', hash: '63c0…b5f8' },
+        ],
+        intact: 'Chaîne intacte',
+      },
+    },
   },
   hero: {
     alt: 'Facture en verre dépoli, validée d’une coche, flottant dans un cube de lumière au milieu du ciel',
@@ -444,6 +477,43 @@ export const fr = {
     resetDone: 'Données de démonstration réinitialisées.',
     session: 'Session',
     logout: 'Se déconnecter',
+  },
+  verify: {
+    panelTitle: 'Vérification',
+    panelText:
+      'Le client scanne ce code pour vérifier que la facture est authentique et n’a pas été modifiée depuis sa validation.',
+    open: 'Ouvrir la page de vérification',
+    code: 'Code',
+    pageTitle: 'Vérification de facture',
+    checking: 'Vérification en cours…',
+    verdicts: {
+      AUTHENTIC: {
+        title: 'Facture authentique',
+        text: 'Son contenu est identique à celui validé et inscrit au journal.',
+      },
+      CANCELLED: {
+        title: 'Facture annulée',
+        text: 'Elle est authentique, mais a été entièrement annulée par un avoir.',
+      },
+      ALTERED: {
+        title: 'Facture altérée',
+        text: 'Son contenu ne correspond plus à celui validé. Ne la réglez pas et contactez l’émetteur.',
+      },
+      UNKNOWN: {
+        title: 'Facture introuvable',
+        text: 'Ce code ne correspond à aucune facture validée.',
+      },
+    } as Record<string, { title: string; text: string }>,
+    number: 'Numéro',
+    customer: 'Client',
+    date: 'Date',
+    total: 'Montant TTC',
+    validatedAt: 'Validée le',
+    fingerprint: 'Empreinte du contenu',
+    journal: 'Journal d’audit',
+    journalOk: 'Chaîne intacte',
+    journalKo: 'Chaîne rompue',
+    how: 'Comment c’est vérifié : à la validation, l’empreinte du contenu est calculée et inscrite dans un journal chaîné. Ici, elle est recalculée et comparée.',
   },
   errors: {
     generic: 'Une erreur est survenue. Réessayez.',

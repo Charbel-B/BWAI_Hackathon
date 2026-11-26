@@ -1,0 +1,12 @@
+{
+  "scenario": "03-bloque",
+  "initial_status": "DRAFT",
+  "expected_blocking_codes": ["UNKNOWN_CUSTOMER", "AMOUNT_MISMATCH"],
+  "expected_totals": {
+    "net_total": "186000",
+    "vat_total": "33480",
+    "gross_total": "219480"
+  },
+  "expected_validation_http_status": 422,
+  "expected_validation_error_code": "VALIDATION_BLOCKED"
+}

@@ -8,7 +8,7 @@ OPENAPI_TS := $(FRONTEND)/src/api/schema.ts
 OPENAPI_GEN := $(FRONTEND)/tools/openapi/node_modules/.bin/openapi-typescript
 
 .DEFAULT_GOAL := help
-.PHONY: help install dev dev-api dev-front api-types format check check-api test
+.PHONY: help install dev dev-api dev-front api-types format check check-api test docker-up docker-down
 
 help: ## Afficher les commandes disponibles
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-11s %s\n", $$1, $$2}'
@@ -52,3 +52,9 @@ check-api: api-types ## Échouer si les types du frontend ne correspondent plus 
 test: ## Lancer tous les tests (backend avec couverture, puis frontend)
 	$(RUN) pytest
 	$(NPM) test
+
+docker-up: ## Construire et lancer l'installation du jury sur http://localhost:8080
+	docker compose up --build -d
+
+docker-down: ## Arrêter l'installation du jury (les données sont conservées)
+	docker compose down

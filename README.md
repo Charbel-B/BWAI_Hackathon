@@ -20,7 +20,17 @@ make test      # tests et couverture
 make help      # liste des commandes
 ```
 
-Installation par Docker pour le jury : **[À COMPLÉTER]**.
+### Installation pour le jury (Docker)
+
+Prérequis : Docker avec Docker Compose. Aucune autre installation.
+
+```bash
+docker compose up --build    # puis http://localhost:8080
+docker compose down          # arrêt ; les données restent dans le volume « donnees »
+```
+
+L'API (Python) et l'interface (servie par nginx, qui relaie `/api` vers l'API) tournent dans
+deux conteneurs. Déroulé de démonstration : [docs/demo/script.md](docs/demo/script.md).
 
 ## Comptes de démonstration
 

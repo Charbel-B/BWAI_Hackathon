@@ -1,6 +1,6 @@
 # Format d'un champ extrait
 
-> Statut : en vigueur · Mis à jour : 2026-11-24 · Responsable : Ange-Marie
+> Statut : en vigueur · Mis à jour : 2026-11-26 · Responsable : Ange-Marie
 
 Contrat entre le pipeline d'extraction (Charbel), le backend (Promis) et l'écran de revue
 (Ange-Marie). Tout extracteur, en ligne, local ou rejoué, produit exactement ce format.
@@ -42,6 +42,7 @@ Contrat entre le pipeline d'extraction (Charbel), le backend (Promis) et l'écra
 | `document.date` | oui | `AAAA-MM-JJ` |
 | `lines[i].label` | oui | Texte |
 | `lines[i].quantity` | oui | Décimal, point comme séparateur |
+| `lines[i].delivered_quantity` | non | Décimal, point comme séparateur ; comparée à `lines[i].quantity` (`QUANTITY_MISMATCH`) |
 | `lines[i].unit` | non | Texte |
 | `lines[i].unit_price` | oui | Décimal en FCFA |
 | `lines[i].discount_rate` | non | Décimal entre 0 et 1 |

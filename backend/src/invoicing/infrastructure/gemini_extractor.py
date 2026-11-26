@@ -71,9 +71,9 @@ SYSTEM_INSTRUCTION = (
     "4. Pour chaque champ FOUND ou AMBIGUOUS, copie dans raw_text la sous-chaîne EXACTE "
     "mot pour mot depuis la pièce source. "
     "5. Noms de champs autorisés : customer.name, customer.tax_id, document.reference, "
-    "document.date, lines[i].label, lines[i].quantity, lines[i].unit, lines[i].unit_price, "
-    "lines[i].discount_rate, discount.global_rate, payment.terms_days, payment.due_date, "
-    "totals.net, totals.vat, totals.gross."
+    "document.date, lines[i].label, lines[i].quantity, lines[i].delivered_quantity, "
+    "lines[i].unit, lines[i].unit_price, lines[i].discount_rate, discount.global_rate, "
+    "payment.terms_days, payment.due_date, totals.net, totals.vat, totals.gross."
 )
 
 

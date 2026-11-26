@@ -42,7 +42,14 @@ _RE_INT_TOKEN = re.compile(r"\b(\d+)\b")
 
 _DATE_FIELDS = frozenset({"document.date", "payment.due_date"})
 _RATE_SUFFIXES = (".discount_rate", "discount.global_rate")
-_DECIMAL_SUFFIXES = (".quantity", ".unit_price", "totals.net", "totals.vat", "totals.gross")
+_DECIMAL_SUFFIXES = (
+    ".quantity",
+    ".delivered_quantity",
+    ".unit_price",
+    "totals.net",
+    "totals.vat",
+    "totals.gross",
+)
 
 
 def normalize_text(raw: str) -> str | None:

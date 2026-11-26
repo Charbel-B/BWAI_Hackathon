@@ -114,3 +114,31 @@ def _due_date(
     terms = parse_decimal(values.get("payment.terms_days"))
     days = int(terms) if terms is not None else default_terms
     return issue_date + timedelta(days=days) if days is not None else None
+
+
+def delivered_quantities(
+    fields: Sequence[ExtractedField],
+    referentials: Referentials,
+    default_vat_rate: Decimal,
+) -> dict[int, Decimal]:
+    """Quantités livrées effectives alignées sur les indices de ``build_draft``."""
+    values = effective_values(fields)
+    customer = referentials.find_customer(
+        values.get("customer.name"), values.get("customer.tax_id")
+    )
+    vat_liable = customer.vat_liable if customer else True
+    result: dict[int, Decimal] = {}
+    built_pos = 0
+    orphans: list[Decimal] = []
+    for idx in line_indexes(fields):
+        delivered = parse_decimal(values.get(f"lines[{idx}].delivered_quantity"))
+        built = _build_line(values, idx, referentials, default_vat_rate, vat_liable)
+        if built is not None:
+            if delivered is not None and delivered >= ZERO:
+                result[built_pos] = delivered
+            built_pos += 1
+        elif delivered is not None and delivered > ZERO:
+            orphans.append(delivered)
+    for offset, qty in enumerate(orphans):
+        result[built_pos + offset] = qty
+    return result

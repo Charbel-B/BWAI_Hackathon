@@ -23,6 +23,7 @@ from invoicing.domain.referentials import Item, Referentials
 
 HUNDRED = Decimal(100)
 _QUOTE_KINDS = frozenset({"devis", "quote"})
+_DELIVERY_KINDS = frozenset({"bon de livraison", "bl", "livraison", "delivery_note"})
 
 
 @dataclass(frozen=True, slots=True)
@@ -196,8 +197,8 @@ def _check_related_document(
             )
         )
     if content.issue_date and doc.issue_date:
-        is_quote = _norm(doc.kind) in _QUOTE_KINDS
-        if is_quote and doc.issue_date > content.issue_date:
+        norm_kind = _norm(doc.kind)
+        if norm_kind in _QUOTE_KINDS and doc.issue_date > content.issue_date:
             found.append(
                 (
                     "DOCUMENT_INCONSISTENCY",
@@ -206,7 +207,7 @@ def _check_related_document(
                     f"({content.issue_date})",
                 )
             )
-        elif not is_quote and doc.issue_date < content.issue_date:
+        elif norm_kind in _DELIVERY_KINDS and doc.issue_date < content.issue_date:
             found.append(
                 (
                     "DOCUMENT_INCONSISTENCY",

@@ -69,7 +69,14 @@ def is_value_grounded_in_raw_text(
     if field_name.endswith((".discount_rate", "discount.global_rate")):
         return _is_rate_grounded(normalized_value, raw_text)
     if field_name.endswith(
-        (".quantity", ".unit_price", "totals.net", "totals.vat", "totals.gross")
+        (
+            ".quantity",
+            ".delivered_quantity",
+            ".unit_price",
+            "totals.net",
+            "totals.vat",
+            "totals.gross",
+        )
     ) or field_name in {"customer.tax_id", "payment.terms_days"}:
         return _is_number_grounded(normalized_value, raw_text)
     return _is_text_grounded(normalized_value, raw_text)

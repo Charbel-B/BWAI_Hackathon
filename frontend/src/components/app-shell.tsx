@@ -12,6 +12,7 @@ import { Logo } from './logo'
 const LINKS = [
   { to: paths.dashboard, label: fr.nav.dashboard, end: true },
   { to: paths.import, label: fr.nav.import, end: false },
+  { to: paths.collection, label: fr.collection.nav, end: false },
   { to: paths.audit, label: fr.nav.audit, end: false },
   { to: paths.settings, label: fr.settings.nav, end: false },
 ] as const

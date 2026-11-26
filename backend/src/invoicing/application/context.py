@@ -9,6 +9,7 @@ from datetime import datetime
 from invoicing.application.ports import Channel, Clock, Extractor, Store, Transaction
 from invoicing.domain.audit import AuditData, AuditEvent
 from invoicing.domain.calculation import CalculationRules
+from invoicing.domain.collection import CollectionRules
 from invoicing.domain.controls import ControlRules
 from invoicing.domain.referentials import Referentials
 from invoicing.domain.users import User
@@ -37,6 +38,7 @@ class Context:
     referentials: Referentials
     calculation: CalculationRules
     controls: ControlRules
+    collection: CollectionRules
     numbering: NumberingFormats
     separation_of_duties: bool
     active_channels: tuple[str, ...]

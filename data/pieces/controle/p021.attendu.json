@@ -1,0 +1,14 @@
+{
+  "fields": {
+    "customer.name": "Boulangerie La Bonne Miche",
+    "customer.tax_id": null,
+    "document.reference": "CMD-2026-081",
+    "document.date": "2026-11-26",
+    "lines[0].label": "Ciment CPA 42.5 (sac de 50 kg)",
+    "lines[0].quantity": "10",
+    "lines[0].unit": "sacs",
+    "lines[0].unit_price": "6200",
+    "payment.terms_days": "15"
+  },
+  "expected_anomalies": ["UNKNOWN_CUSTOMER"]
+}

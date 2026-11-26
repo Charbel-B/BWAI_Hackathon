@@ -148,7 +148,7 @@ def main(argv: Sequence[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Évaluation chiffrée de l'extracteur.")
     parser.add_argument(
         "--split",
-        choices=("mise-au-point", "test", "all"),
+        choices=("mise-au-point", "test", "controle", "all"),
         default="mise-au-point",
     )
     args = parser.parse_args(list(argv) if argv is not None else None)
@@ -158,7 +158,7 @@ def main(argv: Sequence[str] | None = None) -> None:
     catalog = load_catalog_hint(data_dir / "referentiels")
     extractor = RuleBasedExtractor(catalog=catalog, policy=policy)
 
-    splits = ("mise-au-point", "test") if args.split == "all" else (args.split,)
+    splits = ("mise-au-point", "test", "controle") if args.split == "all" else (args.split,)
     for split in splits:
         split_dir = data_dir / "pieces" / split
         metrics, calibration = run_extractor_on_split(

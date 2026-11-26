@@ -1,0 +1,18 @@
+{
+  "fields": {
+    "customer.name": "Groupe Scolaire Les Palmiers",
+    "customer.tax_id": null,
+    "document.reference": "DEV-2026-044",
+    "document.date": "2026-11-25",
+    "lines[0].label": "Peinture à huile (pot de 4 kg)",
+    "lines[0].quantity": "6",
+    "lines[0].unit": "pots",
+    "lines[0].unit_price": "9500",
+    "lines[1].label": "Fil électrique 2.5 mm2 (rouleau de 100 m)",
+    "lines[1].quantity": "2",
+    "lines[1].unit": "rouleaux",
+    "lines[1].unit_price": "32000",
+    "payment.terms_days": "30"
+  },
+  "expected_anomalies": []
+}

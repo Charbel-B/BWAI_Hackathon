@@ -1,0 +1,19 @@
+{
+  "fields": {
+    "customer.name": "Quincaillerie Le Bon Choix",
+    "customer.tax_id": "3999900000022",
+    "document.reference": "BC-2026-036",
+    "document.date": "2026-11-25",
+    "lines[0].label": "Fer à béton HA 8 mm (barre de 12 m)",
+    "lines[0].quantity": "25",
+    "lines[0].unit": "barres",
+    "lines[0].unit_price": "2800",
+    "lines[1].label": "Clous (carton de 25 kg)",
+    "lines[1].quantity": "4",
+    "lines[1].unit": "cartons",
+    "lines[1].unit_price": "22000",
+    "payment.terms_days": "15",
+    "totals.net": "158000"
+  },
+  "expected_anomalies": []
+}

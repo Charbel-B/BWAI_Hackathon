@@ -66,10 +66,11 @@ confidence = min(confiance_brute, plafond_ancrage, plafond_referentiel, plafond_
 
 ## 4. Jeux de données d'évaluation (`data/pieces/`)
 
-Les 16 pièces sources sont **100 % fictives** et alignées sur `data/referentiels/clients.csv` (10 clients) et `data/referentiels/articles.csv` (20 articles). Elles sont réparties en :
+Les 22 pièces sources sont **100 % fictives** et alignées sur `data/referentiels/clients.csv` (10 clients) et `data/referentiels/articles.csv` (20 articles). Elles sont réparties en :
 
 - **`data/pieces/mise-au-point/` (10 pièces, `p001` à `p010`)** : réglage des règles et calibrage du seuil.
-- **`data/pieces/test/` (6 pièces, `p011` à `p016`)** : évaluation séparée.
+- **`data/pieces/test/` (6 pièces, `p011` à `p016`)** : évaluation séparée, mais consultée pendant le réglage (voir la limite ci-dessous).
+- **`data/pieces/controle/` (6 pièces, `p017` à `p022`)** : jeu de contrôle étanche, écrit le 26/11/2026 après le gel des règles et évalué **une seule fois** ; aucune règle n'a été modifiée ensuite.
 
 Cas couverts : commandes nominales (`p001`, `p011`), IFU absent (`p002`, `p012`), client inconnu en prose WhatsApp (`p003`, `p013`), doublon (`p004`), remises cumulées ambiguës (`p005`, `p015`), prix inhabituel (`p006`, `p014`), écart de total HT (`p007`, `p015`), livraison partielle (`p008`), message ambigu sans quantité ni prix (`p009`, `p016`), article inconnu et date absente (`p010`).
 
@@ -96,7 +97,23 @@ En facturation, une fausse certitude (valeur fausse validée à confiance `>= 0.
 | Score F0.5 | 0,966 | 0,974 |
 
 > [!WARNING]
-> **Limite méthodologique assumée** : le jeu `test` initial (6 pièces) ayant été consulté pendant la mise au point des expressions régulières, ses chiffres constituent une mesure interne. Le mode en ligne optionnel (`GeminiExtractor`) n'est pas activé pour la démonstration sans clé et n'a pas fait l'objet d'une passe comparative chiffrée dans ce rapport.
+> **Limite méthodologique assumée** : le jeu `test` initial (6 pièces) ayant été consulté pendant la mise au point des expressions régulières, ses chiffres constituent une mesure interne. Le jeu `controle` ci-dessous est la mesure de référence. Le mode en ligne optionnel (`GeminiExtractor`) n'est pas activé pour la démonstration sans clé et n'a pas fait l'objet d'une passe comparative chiffrée dans ce rapport.
+
+### Mesure de référence : jeu `controle` étanche (6 pièces, 70 champs)
+
+| Métrique | Jeu `controle` |
+| --- | --- |
+| Sorties valides | 6 / 6 |
+| Exactitude par champ | **94,3 %** (66 / 70) |
+| Champs vides à raison | **100,0 %** (4 / 4) |
+| Précision au-dessus du seuil (0.85) | 100,0 % |
+| Taux de fausses certitudes | **0,0 %** (0) |
+| Couverture d'automatisation (Rappel) | 92,9 % |
+| Score F0.5 | 0,985 |
+
+Commande : `cd backend && uv run python -m invoicing.infrastructure.dataset_eval --split controle`.
+Limite : 6 pièces écrites par l'équipe, dans des formats proches des jeux précédents ; l'échantillon
+est petit et ne mesure pas la robustesse à des formats réellement nouveaux.
 
 ## 6. Calibrage du seuil de revue humaine (`seuil_confiance_revue`)
 

@@ -1,6 +1,6 @@
 # Domaine métier
 
-> Statut : partiel · Mis à jour : 2026-11-24 · Responsable : Ange-Marie
+> Statut : en vigueur · Mis à jour : 2026-11-26 · Responsable : Ange-Marie
 
 Description du métier de la facturation tel que le projet le modélise.
 
@@ -10,4 +10,6 @@ Description du métier de la facturation tel que le projet le modélise.
 
 Modèle de domaine, cycle de vie et formats : [contrats partagés](../contrats/README.md).
 
-**[À COMPLÉTER]** : règles de calcul et contrôles détaillés, par Grâce.
+Règles de calcul : `backend/src/invoicing/domain/calculation.py` et `config/calcul.yaml`.
+Contrôles et anomalies : `backend/src/invoicing/domain/controls.py` et `config/controles.yaml`.
+Relances : `backend/src/invoicing/domain/collection.py` et `config/relances.yaml`.

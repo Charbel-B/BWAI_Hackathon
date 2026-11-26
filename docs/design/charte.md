@@ -24,8 +24,8 @@ citron, libellés à chasse fixe en capitales, cartes en bento).
 | `sky` | `#2F8CFF` | Sélection, valeur sûre, focus |
 | `sky-soft`, `sky-wash`, `ice` | `#BFDDFF`, `#EAF3FF`, `#F4F8FF` | Bas du ciel, fonds légers, fond de l'application |
 | `ink`, `ink-soft` | `#0B1B33`, `#5A6B85` | Texte, bouton secondaire plein ; texte secondaire |
-| `lime` | `#D4F25A` | **Uniquement** l'action principale d'un écran et ce qu'un humain a corrigé |
-| `graphite` | `#0E1014` | Totaux, mode démonstration, journal |
+| `lime` | `#D4F25A` | Action principale, correction humaine, filets et soulignements. **Jamais une section entière** |
+| `night`, `night-deep` | `#0A2A5E`, `#071D45` | Le haut du ciel au crépuscule : totaux, section incertitude, journal, mode démonstration. Remplace le noir, qui cassait la continuité du ciel (décision du 26/11/2026) |
 | `amber` | `#F2A524` | Valeur incertaine |
 | `coral` | `#E5484D` | Champ obligatoire absent, anomalie bloquante |
 
@@ -46,7 +46,23 @@ Les deux polices sont servies par l'application (licence OFL), sans appel à un 
 - Verre : blanc à 55 %, flou de 22 px, filet blanc. Réservé au cadre, jamais sous des données.
 - Ombres teintées de bleu, décalées vers le bas.
 - Icônes : Lucide, trait de 1,5 à 2,6 px selon la taille.
-- Mouvement : 200 à 300 ms, courbe qui ralentit à l'arrivée ; mouvement réduit respecté.
+- Mouvement de l'interface : 200 à 300 ms, courbe `--ease-out` ; mouvement réduit respecté.
+
+## Mouvement
+
+Une seule chorégraphie, définie dans `frontend/src/styles/motion.css`.
+
+| Moment | Effet | Pourquoi |
+| --- | --- | --- |
+| Arrivée sur la landing | Titre, texte, boutons puis visuel entrent en cascade (90 ms d'écart) ; « facture juste » se souligne d'un trait citron tracé à la main | Guider le regard dans l'ordre de lecture |
+| Héros | Les annotations apparaissent après la pièce puis flottent chacune à son rythme ; un balayage de lecture parcourt la facture | Montrer l'extraction au travail |
+| Revue jouable | Les champs s'allument tour à tour et pointent leur passage ; le survol reprend la main | Démontrer le mécanisme au lieu de le décrire |
+| Défilement | Sections et cartes apparaissent à l'entrée dans l'écran, décalées de 70 ms | Rythme sans tout montrer d'un coup |
+| Chiffres | Les compteurs défilent jusqu'à leur valeur à l'entrée dans l'écran | Donner du poids aux mesures |
+| Survol des cartes | Légère élévation, souris uniquement | Retour d'interaction |
+
+Avec `prefers-reduced-motion`, les déplacements sont retirés et seuls des fondus courts restent ;
+tout le contenu est visible par défaut.
 
 ## États d'un champ extrait
 
@@ -75,6 +91,7 @@ l'interface : elle lit les anomalies calculées par le backend.
 | Revue | `/factures/:id` (brouillon) | Pièce à gauche, champs à droite, reliés au survol ; anomalies ; totaux ; validation |
 | Facture | `/factures/:id` (validée) | Lignes, totaux et solde, émission simulée, règlements, avoirs |
 | Journal | `/journal` | Entrées chaînées et vérification de la chaîne |
+| Paramètres | `/parametres` | Profil et droits du rôle, mot de passe (simulé, signalé), canal d'émission préféré (enregistré sur l'appareil), informations système réelles, réinitialisation de la démo (administrateur) |
 
 ## Assets
 

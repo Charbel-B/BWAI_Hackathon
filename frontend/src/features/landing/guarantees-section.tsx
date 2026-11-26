@@ -1,3 +1,4 @@
+import { Reveal } from '@/components/reveal'
 import { fr } from '@/i18n/fr'
 
 import { SectionTitle } from './section-title'
@@ -13,11 +14,13 @@ export function GuaranteesSection() {
     >
       <SectionTitle light={t.guaranteesTitle[0]} bold={t.guaranteesTitle[1]} />
       <dl className="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
-        {t.guarantees.map((g) => (
-          <div key={g.title} className="border-t border-line py-6">
-            <dt className="text-[19px] font-semibold tracking-[-0.01em]">{g.title}</dt>
-            <dd className="mt-2 text-[15px] leading-relaxed text-ink-soft">{g.text}</dd>
-          </div>
+        {t.guarantees.map((g, index) => (
+          <Reveal key={g.title} index={index % 3}>
+            <div className="border-t border-line py-6">
+              <dt className="text-[19px] font-semibold tracking-[-0.01em]">{g.title}</dt>
+              <dd className="mt-2 text-[15px] leading-relaxed text-ink-soft">{g.text}</dd>
+            </div>
+          </Reveal>
         ))}
       </dl>
     </section>

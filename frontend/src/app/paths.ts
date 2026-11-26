@@ -7,4 +7,5 @@ export const paths = {
   invoice: (id: string) => `/factures/${id}`,
   invoicePattern: '/factures/:invoiceId',
   audit: '/journal',
+  settings: '/parametres',
 } as const

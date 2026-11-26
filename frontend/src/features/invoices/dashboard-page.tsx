@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
-import { ChevronRight, FilePlus2, ShieldCheck, ShieldAlert } from 'lucide-react'
+import { ChevronRight, ShieldCheck, ShieldAlert } from 'lucide-react'
 import { Link, useNavigate } from 'react-router'
 
 import { api } from '@/api/client'
 import uploadImage from '@/assets/depot-pieces-verre.webp'
 import { unwrap } from '@/api/problem'
 import type { InvoiceSummary } from '@/api/types'
-import { Button } from '@/components/button'
 import { Money } from '@/components/money'
 import { PageTitle } from '@/components/page-title'
 import { ErrorView, Loading } from '@/components/state-views'
@@ -16,6 +15,7 @@ import { paths } from '@/app/paths'
 import { fr } from '@/i18n/fr'
 import { formatDateTime } from '@/lib/format'
 
+import { DashboardBento } from './dashboard-bento'
 import { useInvoices } from './queries'
 
 const t = fr.dashboard
@@ -36,7 +36,7 @@ function AuditCard() {
   return (
     <Link
       to={paths.audit}
-      className="group flex min-h-[170px] flex-col justify-between rounded-card bg-graphite p-6 text-white transition-transform duration-300 ease-out hover:-translate-y-0.5"
+      className="group flex min-h-[170px] flex-col justify-between night rounded-card p-6 text-white transition-transform duration-300 ease-out hover:-translate-y-0.5"
     >
       <span className="label text-white/60">{t.audit}</span>
       <span className="flex items-center gap-3">
@@ -115,7 +115,6 @@ function InvoiceRow({ invoice }: { invoice: InvoiceSummary }) {
 /** Tableau de bord : ce qui attend une action, puis toutes les factures. */
 export function DashboardPage() {
   const invoices = useInvoices()
-  const navigate = useNavigate()
 
   if (invoices.isPending) return <Loading />
   if (invoices.isError)
@@ -131,48 +130,7 @@ export function DashboardPage() {
 
   return (
     <div className="grid gap-8">
-      <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr_1fr] lg:grid-rows-[auto_auto]">
-        <div className="sky flex min-h-[200px] flex-col justify-between gap-6 rounded-card p-7 text-white shadow-card lg:row-span-2">
-          <span className="label text-white/75">{t.toReview}</span>
-          <div>
-            <div className="tabular text-[64px] leading-none tracking-[-0.03em]">{drafts}</div>
-            <p className="mt-2 max-w-[28ch] text-[15px] text-white/90">
-              {t.toReviewDetail(drafts)}
-            </p>
-          </div>
-          <Button
-            variant="primary"
-            arrow
-            className="self-start"
-            icon={<FilePlus2 className="size-4" aria-hidden="true" />}
-            onClick={() => void navigate(paths.import)}
-          >
-            {t.importCta}
-          </Button>
-        </div>
-        <div className="flex min-h-[170px] flex-col justify-between rounded-card bg-white p-6 shadow-card">
-          <span className="label text-ink-soft">{fr.status.VALIDATED}</span>
-          <div className="tabular text-[44px] leading-none tracking-[-0.03em]">{live}</div>
-          <span className="text-sm text-ink-soft">{t.validated(live)}</span>
-        </div>
-        <div className="flex min-h-[170px] flex-col justify-between rounded-card bg-lime p-6 text-lime-ink">
-          <span className="label">{t.extraction}</span>
-          <div>
-            <div className="tabular text-[44px] leading-none tracking-[-0.03em]">
-              {t.extractionValue}
-            </div>
-            <span className="mt-2 block text-[13px]">{t.extractionDetail}</span>
-          </div>
-        </div>
-        <div className="flex min-h-[170px] flex-col justify-between rounded-card bg-mist p-6">
-          <span className="label text-ink-soft">{fr.payment.PAID}</span>
-          <div className="tabular text-[44px] leading-none tracking-[-0.03em]">{paid}</div>
-          <span className="self-start">
-            <PaymentBadge status="PAID" />
-          </span>
-        </div>
-        <AuditCard />
-      </div>
+      <DashboardBento drafts={drafts} live={live} paid={paid} audit={<AuditCard />} />
 
       <section className="overflow-hidden rounded-card bg-white shadow-card">
         <div className="px-6 pt-6 pb-4">

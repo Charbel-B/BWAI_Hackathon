@@ -1,6 +1,7 @@
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/geist-mono';
 @import 'tailwindcss';
+@import './styles/motion.css';
 
 /*
  * Jetons de conception : seule source des couleurs, typographies, rayons, ombres et courbes.
@@ -27,7 +28,10 @@
   --color-lime: #d4f25a;
   --color-lime-hover: #ddf770;
   --color-lime-ink: #243000;
-  --color-graphite: #0e1014;
+  --color-night: #0a2a5e;
+  --color-scan-soft: rgb(212 242 90 / 0.22);
+  --color-scan-core: rgb(255 255 255 / 0.6);
+  --color-night-deep: #071d45;
   --color-mist: #eef1f5;
   --color-amber: #f2a524;
   --color-amber-wash: #fff6e3;
@@ -53,7 +57,8 @@
   --color-night-line: rgb(255 255 255 / 0.12);
   --shadow-object: 0 24px 30px rgb(10 62 140 / 0.25);
 
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 @layer base {
@@ -121,6 +126,17 @@
     var(--color-sky-soft) 78%,
     var(--color-ice) 100%
   );
+}
+
+@utility night {
+  background:
+    radial-gradient(70% 60% at 85% 0%, rgb(47 140 255 / 0.35), transparent 70%),
+    linear-gradient(
+      160deg,
+      var(--color-night-deep) 0%,
+      var(--color-night) 55%,
+      var(--color-sky-deep) 100%
+    );
 }
 
 @utility sky {

@@ -10,6 +10,7 @@ import { AuditPage } from '@/features/audit/audit-page'
 import { DashboardPage } from '@/features/invoices/dashboard-page'
 import { InvoicePage } from '@/features/invoices/invoice-page'
 import { ImportPage } from '@/features/import/import-page'
+import { SettingsPage } from '@/features/settings/settings-page'
 
 export const router = createBrowserRouter([
   { path: paths.landing, element: <LandingPage /> },
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
           { path: paths.import, element: <ImportPage /> },
           { path: paths.invoicePattern, element: <InvoicePage /> },
           { path: paths.audit, element: <AuditPage /> },
+          { path: paths.settings, element: <SettingsPage /> },
         ],
       },
     ],

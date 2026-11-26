@@ -6,16 +6,13 @@ import { Button } from '@/components/button'
 import { Money } from '@/components/money'
 import { fr } from '@/i18n/fr'
 import { formatAmount, formatDateTime } from '@/lib/format'
+import { orderedChannels, readPreferences } from '@/lib/preferences'
 import { problemMessage } from '@/lib/problem-message'
 
 import { useCreditNote, useDispatchInvoice, useRecordPayment } from './queries'
 
 const t = fr.invoice
-const CHANNELS = [
-  { id: 'whatsapp', Icon: MessageCircle },
-  { id: 'sms', Icon: Smartphone },
-  { id: 'email', Icon: Mail },
-] as const
+const CHANNEL_ICONS = { whatsapp: MessageCircle, sms: Smartphone, email: Mail } as const
 type Method = 'mobile_money' | 'especes' | 'virement'
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
@@ -42,18 +39,21 @@ export function DispatchPanel({ invoice }: { invoice: Invoice }) {
   return (
     <Panel title={t.dispatch}>
       <div className="flex flex-wrap gap-2">
-        {CHANNELS.map(({ id, Icon }) => (
-          <Button
-            key={id}
-            variant={sent.has(id) ? 'ghost' : 'ink'}
-            disabled={!open || sent.has(id)}
-            pending={dispatch.isPending && dispatch.variables === id}
-            icon={<Icon className="size-4" aria-hidden="true" />}
-            onClick={() => dispatch.mutate(id)}
-          >
-            {t.channels[id]}
-          </Button>
-        ))}
+        {orderedChannels(readPreferences().channel).map((id) => {
+          const Icon = CHANNEL_ICONS[id]
+          return (
+            <Button
+              key={id}
+              variant={sent.has(id) ? 'ghost' : 'ink'}
+              disabled={!open || sent.has(id)}
+              pending={dispatch.isPending && dispatch.variables === id}
+              icon={<Icon className="size-4" aria-hidden="true" />}
+              onClick={() => dispatch.mutate(id)}
+            >
+              {t.channels[id]}
+            </Button>
+          )
+        })}
       </div>
       <Failure error={dispatch.error} />
       <ul className="grid gap-3">

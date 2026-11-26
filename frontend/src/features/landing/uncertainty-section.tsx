@@ -1,6 +1,7 @@
 import { PencilLine, X } from 'lucide-react'
 
 import { ConfidenceRing } from '@/components/confidence-ring'
+import { Reveal } from '@/components/reveal'
 import { fr } from '@/i18n/fr'
 
 import { SectionTitle } from './section-title'
@@ -36,7 +37,7 @@ export function UncertaintySection() {
   return (
     <section
       id="incertitude"
-      className="scroll-mt-6 grid gap-10 rounded-[32px] bg-graphite px-6 py-12 text-white sm:px-12 sm:py-16"
+      className="scroll-mt-6 grid gap-10 night rounded-[32px] px-6 py-12 text-white sm:px-12 sm:py-16"
     >
       <SectionTitle
         light={t.uncertaintyTitle[0]}
@@ -44,20 +45,22 @@ export function UncertaintySection() {
         lead={t.uncertaintyLead}
         tone="light"
       />
-      <ul className="grid gap-3 md:grid-cols-2">
-        {t.states.map((state) => (
-          <li
-            key={state.tone}
-            className={`grid grid-cols-[28px_1fr] items-center gap-4 rounded-[18px] px-5 py-5 ${SHELL[state.tone as keyof typeof SHELL]}`}
-          >
-            <Marker tone={state.tone as keyof typeof SHELL} />
-            <span>
-              <b className="block text-[17px] font-semibold">{state.label}</b>
-              <span className="text-sm text-white/65">{state.detail}</span>
-            </span>
-          </li>
-        ))}
-      </ul>
+      <Reveal>
+        <ul className="grid gap-3 md:grid-cols-2">
+          {t.states.map((state) => (
+            <li
+              key={state.tone}
+              className={`grid grid-cols-[28px_1fr] items-center gap-4 rounded-[18px] px-5 py-5 ${SHELL[state.tone as keyof typeof SHELL]}`}
+            >
+              <Marker tone={state.tone as keyof typeof SHELL} />
+              <span>
+                <b className="block text-[17px] font-semibold">{state.label}</b>
+                <span className="text-sm text-white/65">{state.detail}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Reveal>
     </section>
   )
 }
